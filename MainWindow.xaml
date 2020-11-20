@@ -2,13 +2,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:e="clr-namespace:Server_Manager"
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         x:Class="Server_Manager.MainWindow"
         mc:Ignorable="d"
         Title="Server Manager"
         Height="450"
         Width="800"
-        Background="#303030"
+        Background="#282828"
         MinWidth="500">
 
     <Window.Resources>
@@ -23,7 +24,7 @@
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="0"
-                                Background="#282828">
+                                Background="#1E1E1E">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               Margin="{TemplateBinding Padding}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -112,38 +113,46 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
-        <Style x:Key="ServersList"
-               TargetType="{x:Type ListView}">
+
+        <Style x:Key="ServersButton"
+               TargetType="{x:Type Button}">
             <Setter Property="Foreground"
-                    Value="#C8C8C8" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
-                    Value="Hidden" />
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
-                    Value="Visible" />
+                    Value="#CCCCCC" />
+            <Setter Property="FontSize"
+                    Value="20" />
+            <Setter Property="Width"
+                    Value="200" />
+            <Setter Property="Height"
+                    Value="200" />
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListView}">
-                        <Themes:ListBoxChrome x:Name="Bd"
-                                              BorderThickness="0"
-                                              Background="Transparent">
-                            <ScrollViewer Style="{StaticResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
-                                <ItemsPresenter/>
-                            </ScrollViewer>
-                        </Themes:ListBoxChrome>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="0"
+                                Background="#303030">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="true">
+                                <Setter Property="TextBlock.Foreground"
+                                        Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="False">
+                                <Setter Property="TextBlock.FontWeight"
+                                        Value="SemiBold" />
+                                <Setter Property="TextBlock.Foreground"
+                                        Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ServersListHeader"
-               TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Visibility"
-                    Value="Hidden" />
-            <Setter Property="Height"
-                    Value="0" />
-            <Setter Property="IsEnabled"
-                    Value="false" />
-        </Style>
+
     </Window.Resources>
 
     <Grid>
@@ -154,31 +163,30 @@
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="40"/>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" 
-                    Style="{StaticResource MenuButtonWithText}" 
-                    x:Name="TopMenu_Button_Vanilla" 
+            <Button Grid.Column="0"
+                    Style="{StaticResource MenuButtonWithText}"
+                    x:Name="TopMenu_Button_Vanilla"
                     Click="OnClick_Vanilla">
-                <DockPanel Height="40" 
+                <DockPanel Height="40"
                            VerticalAlignment="Center">
-                    <Grid DockPanel.Dock="Bottom" 
+                    <Grid DockPanel.Dock="Bottom"
                           Height="10">
                         <Rectangle Style="{StaticResource GreenRectangle}"
                                    x:Name="TopMenu_GreenBox_Vanilla"
-                                   Visibility="Hidden"/>
+                                   Visibility="Hidden" />
                     </Grid>
-                    <TextBlock 
-                        Text="Vanilla" 
-                        VerticalAlignment="Bottom" 
-                        DockPanel.Dock="Bottom"/>
+                    <TextBlock Text="Vanilla"
+                               VerticalAlignment="Bottom"
+                               DockPanel.Dock="Bottom" />
                 </DockPanel>
             </Button>
             <Button Grid.Column="1"
@@ -208,11 +216,11 @@
                           Height="10">
                         <Rectangle Style="{StaticResource GreenRectangle}"
                                    x:Name="TopMenu_GreenBox_Fabric"
-                                   Visibility="Hidden"/>
+                                   Visibility="Hidden" />
                     </Grid>
                     <TextBlock Text="Fabric"
                                VerticalAlignment="Bottom"
-                               DockPanel.Dock="Bottom"/>
+                               DockPanel.Dock="Bottom" />
                 </DockPanel>
             </Button>
             <Button Grid.Column="3"
@@ -229,7 +237,7 @@
                     </Grid>
                     <TextBlock Text="Spigot"
                                VerticalAlignment="Bottom"
-                               DockPanel.Dock="Bottom"/>
+                               DockPanel.Dock="Bottom" />
                 </DockPanel>
             </Button>
             <Button Grid.Column="4"
@@ -242,11 +250,11 @@
                           Height="10">
                         <Rectangle Style="{StaticResource GreenRectangle}"
                                    x:Name="TopMenu_GreenBox_Bukkit"
-                                   Visibility="Hidden"/>
+                                   Visibility="Hidden" />
                     </Grid>
                     <TextBlock Text="Bukkit"
                                VerticalAlignment="Bottom"
-                               DockPanel.Dock="Bottom"/>
+                               DockPanel.Dock="Bottom" />
                 </DockPanel>
             </Button>
             <Button Grid.Column="5"
@@ -255,19 +263,73 @@
             <Button Grid.Column="6"
                     Style="{StaticResource MenuGearButton}"
                     x:Name="TopMenu_Button_Settings" />
+
         </Grid>
-        <ListView Grid.Row="1"
-                  ItemsSource="{Binding Servers}"
-                  Style="{StaticResource ServersList}">
-            <ListView.View>
-                <GridView ColumnHeaderContainerStyle="{StaticResource ServersListHeader}"
-                          ColumnHeaderTemplate="{StaticResource test}">
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}"
-                                    Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Type}" 
-                                    Width="100"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl x:Name="ServersUI">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Style="{StaticResource ServersButton}">
+                            <DockPanel LastChildFill="False"
+                                       Width="200"
+                                       Height="200">
+                                <TextBlock Text="{Binding}"
+                                           DockPanel.Dock="Top"
+                                           TextAlignment="Center" />
+
+                                <Canvas DockPanel.Dock="Bottom"
+                                        Height="27"
+                                        Width="150"
+                                        Margin="25">
+                                    <Button Width="150"
+                                            Height="27">
+
+                                    </Button>
+                                    <Button Width="150"
+                                            Height="27"
+                                            Visibility="Hidden">
+
+                                    </Button>
+                                </Canvas>
+                            </DockPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <e:StartStopButton Style="{StaticResource ServersButton}"
+                Grid.Row="1">
+            <DockPanel LastChildFill="False"
+                       Width="200"
+                       Height="200">
+                <TextBlock Text="testssssss"
+                           DockPanel.Dock="Top"
+                           TextAlignment="Center"/>
+                
+                <Canvas DockPanel.Dock="Bottom"
+                        Height="27"
+                        Width="150"
+                        Margin="25">
+                    <Button Width="150"
+                            Height="27"
+                            Background="#008441"
+                            Foreground="#CCCCCC">
+                        <TextBlock 
+                            VerticalAlignment="Bottom"
+                            FontSize="16">
+                            START
+                        </TextBlock>
+                    </Button>
+                </Canvas>
+            </DockPanel>
+        </e:StartStopButton>
     </Grid>
 </Window>
