@@ -61,6 +61,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Scripts\Server.cs" />
+    <Compile Include="Viewmodels\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewmodels\ServerInfo.xaml.cs">
+      <DependentUpon>ServerInfo.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,11 +75,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Scripts\Buttons.cs" />
     <Compile Include="Scripts\Library.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Viewmodels\Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewmodels\ServerInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -93,6 +108,24 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-Black.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-BlackItalic.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-Bold.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-BoldItalic.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-ExtraBold.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-ExtraBoldItalic.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-ExtraLight.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-ExtraLightItalic.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-Italic.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-Light.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-LightItalic.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-Medium.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-MediumItalic.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-Regular.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-SemiBold.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-SemiBoldItalic.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-Thin.ttf" />
+    <Resource Include="Fonts\NotoSans-hinted\NotoSans-ThinItalic.ttf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -102,26 +135,33 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Backgrounds\end_portal.png" />
-    <Resource Include="Images\Backgrounds\village.png" />
-    <Resource Include="Images\circle.png" />
-    <Resource Include="Images\TopMenu\gear_white.png" />
-    <Resource Include="Images\none.png" />
-    <Resource Include="Images\outline.png" />
-    <Resource Include="Images\pixel.png" />
-    <Resource Include="Images\X.png" />
+    <Resource Include="Viewmodels\Images\Backgrounds\end_portal.png" />
+    <Resource Include="Viewmodels\Images\Backgrounds\village.png" />
+    <Resource Include="Viewmodels\Images\circle.png" />
+    <Resource Include="Viewmodels\Images\TopMenu\gear_white.png" />
+    <Resource Include="Viewmodels\Images\none.png" />
+    <Resource Include="Viewmodels\Images\outline.png" />
+    <Resource Include="Viewmodels\Images\pixel.png" />
+    <Resource Include="Viewmodels\Images\X.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\TopMenu\gear_gray.png" />
+    <Resource Include="Viewmodels\Images\TopMenu\gear_gray.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\TopMenu\plus_gray.png" />
+    <Resource Include="Viewmodels\Images\TopMenu\plus_gray.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\TopMenu\plus_white.png" />
+    <Resource Include="Viewmodels\Images\TopMenu\plus_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Color palette by Paletton.com.html" />
+    <Resource Include="Colors.txt" />
+    <Resource Include="Viewmodels\Images\Scrollbar\down.png" />
+    <Resource Include="Viewmodels\Images\Scrollbar\down_hover.png" />
+    <Resource Include="Viewmodels\Images\Scrollbar\up_hover.png" />
+    <Resource Include="Viewmodels\Images\Scrollbar\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Fonts\NotoSans-hinted\LICENSE_OFL.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

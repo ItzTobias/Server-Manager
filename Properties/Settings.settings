@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="SERVERS_PATH" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\itzto\AppData\Roaming\Server-Manager\Servers</Value>
+      <Value Profile="(Default)">C:\Users\itzto\AppData\Roaming\.minecraft\Server-Manager\Servers</Value>
     </Setting>
     <Setting Name="BACKUPS_PATH" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\itzto\AppData\Roaming\Server-Manager\Backups</Value>
+      <Value Profile="(Default)">C:\Users\itzto\AppData\Roaming\.minecraft\Server-Manager\Backups</Value>
     </Setting>
   </Settings>
 </SettingsFile>

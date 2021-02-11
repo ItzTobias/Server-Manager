@@ -7,23 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class AppInfo
+public static class Utils
 {
-    /// <summary>
-    /// Path for resources inside the project folder
-    /// </summary>
-    public static string DataPath { get => "pack://application:,,,/"; }
-    /// <summary>
-    /// Path to the folder where the Application is installed in
-    /// </summary>
-    public static string AppDirectory { get => AppDomain.CurrentDomain.BaseDirectory; }
-}
-
-public enum ServerType
-{
-    Vanilla,
-    Forge,
-    Fabric,
-    Spigot,
-    Bukkit
+    public static T Last<T>(this ObservableCollection<T> collection)
+    {
+        return collection[collection.Count - 1];
+    }
 }
