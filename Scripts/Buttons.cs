@@ -38,14 +38,14 @@ namespace Server_Manager.Scripts
             {
                 status = (TextBlock)Content;
 
-                Server.stateChange += OnstateChange;
-                OnstateChange(this, EventArgs.Empty);
+                if (Server != null) Server.stateChange += OnStateChange;
+                OnStateChange(Server, EventArgs.Empty);
             };
         }
 
-        void OnstateChange(object sender, EventArgs args)
+        void OnStateChange(object sender, EventArgs args)
         {
-            if (status == null) return;
+            if (status == null || Server == null || Server != (Server)sender) return;
 
             switch (Server.State)
             {
@@ -65,7 +65,7 @@ namespace Server_Manager.Scripts
                     break;
             }
         }
-
+        
         void OnMouseEnter(object o, EventArgs e)
         {
             switch (Server.State)
@@ -97,19 +97,21 @@ namespace Server_Manager.Scripts
 
         void SwitchState(object o, EventArgs e)
         {
+            IsEnabled = false;
+
             switch (Server.State)
             {
                 case State.started:
-                    Background = Colors.redBrush;
                     Stop();
                     break;
                 case State.stopped:
-                    Background = Colors.greenBrush;
                     Start();
                     break;
                 default:
                     break;
             }
+
+            IsEnabled = true;
         }
         async void Start()
         {
@@ -131,29 +133,21 @@ namespace Server_Manager.Scripts
         {
             Background = greenLoadingBackground;
             status.Text = "STARTING";
-
-            IsEnabled = false;
         }
         void SetToRunning()
         {
             Background = Colors.redBrush;
             status.Text = "STOP";
-
-            IsEnabled = true;
         }
         void SetToStopping()
         {
             Background = redLoadingBackground;
             status.Text = "STOPPING";
-
-            IsEnabled = false;
         }
         void SetToOff()
         {
             Background = Colors.greenBrush;
             status.Text = "START";
-
-            IsEnabled = true;
         }
     }
 }
