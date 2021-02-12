@@ -178,8 +178,6 @@
             <Style.Triggers>
                 <Trigger Property="Orientation"
                          Value="Vertical">
-                    <Setter Property="Width"
-                            Value="20" />
                     <Setter Property="Template"
                             Value="{DynamicResource MainScrollBar}" />
                 </Trigger>
@@ -204,14 +202,20 @@
                    IsDirectionReversed="True">
                 <Track.DecreaseRepeatButton>
                     <RepeatButton Style="{StaticResource ScrollbarFreeSpaceButton}"
-                                  Command="ScrollBar.PageUpCommand" />
+                                  Command="ScrollBar.PageUpCommand"
+                                  Width="8"
+                                  HorizontalAlignment="Right"/>
                 </Track.DecreaseRepeatButton>
                 <Track.Thumb>
-                    <Thumb Style="{StaticResource Scrollbar_Thumb}" />
+                    <Thumb Style="{StaticResource Scrollbar_Thumb}"
+                           Width="8"
+                           HorizontalAlignment="Right"/>
                 </Track.Thumb>
                 <Track.IncreaseRepeatButton>
                     <RepeatButton Style="{StaticResource ScrollbarFreeSpaceButton}"
-                                  Command="ScrollBar.PageDownCommand" />
+                                  Command="ScrollBar.PageDownCommand"
+                                  Width="8"
+                                  HorizontalAlignment="Right" />
                 </Track.IncreaseRepeatButton>
             </Track>
         </ControlTemplate>
