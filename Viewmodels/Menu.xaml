@@ -155,7 +155,7 @@
             <Setter Property="BorderThickness"
                     Value="0" />
             <Setter Property="Background"
-                    Value="#595959" />
+                    Value="{StaticResource Brightness2}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
@@ -167,7 +167,7 @@
                             <Trigger Property="IsMouseOver"
                                      Value="True">
                                 <Setter Property="Background"
-                                        Value="#636363" />
+                                        Value="{StaticResource ScrollBarThumbHover}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -190,7 +190,7 @@
                     <ControlTemplate TargetType="{x:Type RepeatButton}">
                         <Border x:Name="border"
                                 BorderThickness="0"
-                                Background="#303030" />
+                                Background="{StaticResource Light Gray}" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

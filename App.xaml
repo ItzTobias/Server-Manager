@@ -19,6 +19,8 @@
         <Color x:Key="-Light Gray">#303030</Color>
         <Color x:Key="-FontColor">#CCCCCC</Color>
         <Color x:Key="-Gray Hover">#454545</Color>
+        <Color x:Key="-Line">#373737</Color>
+        <Color x:Key="-ScrollBarThumbHover">#636363</Color>
 
         <Color x:Key="-Brightness1">#4e4e4e</Color>
         <Color x:Key="-Brightness2">#595959</Color>
@@ -40,6 +42,8 @@
         <Brush x:Key="Light Gray">#303030</Brush>
         <Brush x:Key="FontColor">#CCCCCC</Brush>
         <Brush x:Key="Gray Hover">#454545</Brush>
+        <Brush x:Key="Line">#373737</Brush>
+        <Brush x:Key="ScrollBarThumbHover">#636363</Brush>
 
         <Brush x:Key="Brightness1">#4e4e4e</Brush>
         <Brush x:Key="Brightness2">#595959</Brush>
