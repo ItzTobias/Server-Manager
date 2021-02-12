@@ -7,7 +7,6 @@ namespace Server_Manager
     public partial class MainWindow : Window
     {
         public static MainWindow GetMainWindow { get; private set; }
-
         public readonly Menu menu = new Menu();
         public readonly ServerInfo info = new ServerInfo();
 

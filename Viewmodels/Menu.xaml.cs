@@ -1,9 +1,9 @@
-﻿using Server_Manager.Properties;
-using Server_Manager.Scripts;
+﻿using Server_Manager.Scripts;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -45,7 +45,9 @@ namespace Server_Manager.Viewmodels
 
             DataContext = this;
 
-            OnClick_Vanilla(null, null);
+            OnClick_Vanilla(this, null);
+
+            InitializeServers();
         }
 
         public void OpenServerInfo(object sender, RoutedEventArgs args)
@@ -56,17 +58,7 @@ namespace Server_Manager.Viewmodels
         }
 
         #region TopMenu Tab Functions
-        void OnClick_Vanilla(object sender, RoutedEventArgs e)
-        {
-            ChangeTab(ServerType.Vanilla);
-
-            string[] dirs = Directory.GetDirectories(Settings.Default.SERVERS_PATH + @"\Vanilla");
-            Trace.WriteLine("Registered " + dirs.Length + " Servers");
-            foreach (string serverDir in dirs)
-            {
-                vanillaServers.Add(new Vanilla(Path.GetFileName(serverDir)));
-            }
-        }
+        void OnClick_Vanilla(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Vanilla);
         void OnClick_Forge(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Forge);
         void OnClick_Fabric(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Fabric);
         void OnClick_Spigot(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Spigot);
@@ -123,6 +115,39 @@ namespace Server_Manager.Viewmodels
                     TopMenu_Button_Bukkit.IsEnabled = false;
                     break;
             }
+        }
+        #endregion
+
+        #region ServerInitializing
+        void InitializeServers()
+        {
+            InitializeVanillaServers();
+            InitializeForgeServers();
+            InitializeFabricServers();
+            InitializeSpigotServers();
+            InitializeBukkitServers();
+        }
+
+        void InitializeVanillaServers()
+        {
+            string[] vanillaServers = Directory.GetDirectories(Vanilla.VanillaDirectory);
+
+            Trace.WriteLine("Registered " + vanillaServers.Length + " Servers");
+
+            foreach (string serverDir in vanillaServers)
+                this.vanillaServers.Add(new Vanilla(Path.GetFileName(serverDir)));
+        }
+        void InitializeForgeServers()
+        {
+        }
+        void InitializeFabricServers()
+        {
+        }
+        void InitializeSpigotServers()
+        {
+        }
+        void InitializeBukkitServers()
+        {
         }
         #endregion
     }
