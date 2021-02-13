@@ -11,6 +11,83 @@
              FontFamily="{StaticResource NotoSans}">
 
     <UserControl.Resources>
+        <Style x:Key="DataGridStyle"
+               TargetType="DataGrid">
+            <Setter Property="Background"
+                    Value="{StaticResource Light Gray}" />
+            <Setter Property="BorderThickness"
+                    Value="0" />
+        </Style>
+
+        <Style x:Key="Scrollbar_Thumb"
+               TargetType="{x:Type Thumb}">
+            <Setter Property="BorderThickness"
+                    Value="0" />
+            <Setter Property="Background"
+                    Value="{StaticResource Brightness2}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Border x:Name="border"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="White"
+                                Background="{TemplateBinding Background}" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        Value="{StaticResource ScrollBarThumbHover}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ScrollBar">
+            <Style.Triggers>
+                <Trigger Property="Orientation"
+                         Value="Vertical">
+                    <Setter Property="Template"
+                            Value="{DynamicResource MainScrollBar}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ScrollbarFreeSpaceButton"
+               TargetType="{x:Type RepeatButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border x:Name="border"
+                                BorderThickness="0"
+                                Background="{StaticResource Light Gray}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="MainScrollBar"
+                         TargetType="{x:Type ScrollBar}">
+            <Track Name="PART_Track"
+                   IsDirectionReversed="True">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource ScrollbarFreeSpaceButton}"
+                                  Command="ScrollBar.PageUpCommand"
+                                  Width="8"
+                                  HorizontalAlignment="Right" />
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource Scrollbar_Thumb}"
+                           Width="8"
+                           HorizontalAlignment="Right" />
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource ScrollbarFreeSpaceButton}"
+                                  Command="ScrollBar.PageDownCommand"
+                                  Width="8"
+                                  HorizontalAlignment="Right" />
+                </Track.IncreaseRepeatButton>
+            </Track>
+        </ControlTemplate>
     </UserControl.Resources>
     
     <Grid>
@@ -49,11 +126,8 @@
                     Height="30"
                     Style="{StaticResource GrayButton}">
                 <TextBlock FontSize="14"
-                           Height="15"
-                           Width="100"
                            TextAlignment="Center"
-                           Text="Back"
-                           x:Name="BackButton"/>
+                           Text="BACK" />
             </Button>
             
             <e:StartStopButton Grid.Column="1"
@@ -63,8 +137,6 @@
                                Height="30"
                                Margin="5">
                 <TextBlock FontSize="14"
-                           Height="15"
-                           Width="100"
                            TextAlignment="Center" />
             </e:StartStopButton>
             
@@ -73,10 +145,8 @@
                     Height="30"
                     Style="{StaticResource GreenButton}">
                 <TextBlock FontSize="15"
-                           Height="15"
-                           Width="100"
                            TextAlignment="Center"
-                           Text="Save" />
+                           Text="SAVE" />
             </Button>
         </Grid>
     </Grid>
