@@ -5,7 +5,7 @@
              xmlns:e="clr-namespace:Server_Manager.Scripts"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <FontFamily x:Key="NotoSans">/Fonts/NotoSans/#Noto Sans</FontFamily>
+        <FontFamily x:Key="NotoSans">/Fonts/NotoSans-hinted/#Noto Sans</FontFamily>
         <!--#region Colors-->
         <Color x:Key="-Red">#d44410</Color>
         <Color x:Key="-Red Hover">#e7643a</Color>
