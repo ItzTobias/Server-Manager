@@ -132,22 +132,22 @@ namespace Server_Manager.Scripts
         void SetToLaunching()
         {
             Background = greenLoadingBackground;
-            status.Text = "STARTING";
+            status.Text = "Starting";
         }
         void SetToRunning()
         {
             Background = Colors.redBrush;
-            status.Text = "STOP";
+            status.Text = "Stop";
         }
         void SetToStopping()
         {
             Background = redLoadingBackground;
-            status.Text = "STOPPING";
+            status.Text = "Stopping";
         }
         void SetToOff()
         {
             Background = Colors.greenBrush;
-            status.Text = "START";
+            status.Text = "Start";
         }
     }
 }

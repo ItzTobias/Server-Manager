@@ -14,6 +14,7 @@
         <Color x:Key="-Green Hover">#0dd164</Color>
 
         <Color x:Key="-Input">#121212</Color>
+        <Color x:Key="-InputHover">0E0E0E</Color>
         <Color x:Key="-Dark Gray">#1e1e1e</Color>
         <Color x:Key="-Gray">#282828</Color>
         <Color x:Key="-Light Gray">#303030</Color>
@@ -37,6 +38,7 @@
         <Brush x:Key="Green Hover">#0dd164</Brush>
         
         <Brush x:Key="Input">#121212</Brush>
+        <Brush x:Key="InputHover">0E0E0E</Brush>
         <Brush x:Key="Dark Gray">#1E1E1E</Brush>
         <Brush x:Key="Gray">#282828</Brush>
         <Brush x:Key="Light Gray">#303030</Brush>
@@ -87,19 +89,15 @@
         </Style>
         <Style x:Key="GrayButton"
                TargetType="{x:Type Button}">
-            <Setter Property="Background"
-                    Value="{StaticResource Gray}" />
             <Setter Property="Foreground"
                     Value="White" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="BorderBrush"
-                    Value="White" />
+            <Setter Property="Background"
+                    Value="Transparent" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
+                        <Border BorderThickness="1"
+                                BorderBrush="{StaticResource Brightness3}"
                                 Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               Margin="{TemplateBinding Padding}"
@@ -109,7 +107,7 @@
                             <Trigger Property="IsMouseOver"
                                      Value="True">
                                 <Setter Property="Background"
-                                        Value="{StaticResource Gray Hover}" />
+                                        Value="{StaticResource Brightness2}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

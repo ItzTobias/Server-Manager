@@ -33,6 +33,7 @@ namespace Server_Manager
         public static readonly Color greenHover          = new Color() { R = 13 , G = 209, B = 100, A = 255 };
 
         public static readonly Color input               = new Color() { R = 18 , G = 18 , B = 18 , A = 255 };
+        public static readonly Color inputHover          = new Color() { R = 14 , G = 14 , B = 14 , A = 255 };
         public static readonly Color darkGray            = new Color() { R = 30 , G = 30 , B = 30 , A = 255 };
         public static readonly Color gray                = new Color() { R = 40 , G = 40 , B = 40 , A = 255 };
         public static readonly Color lightGray           = new Color() { R = 48 , G = 48 , B = 48 , A = 255 };
@@ -56,6 +57,7 @@ namespace Server_Manager
         public static readonly SolidColorBrush greenHoverBrush          = new SolidColorBrush(greenHover         );
 
         public static readonly SolidColorBrush inputBrush               = new SolidColorBrush(input              );
+        public static readonly SolidColorBrush inputHoverBrush          = new SolidColorBrush(inputHover         );
         public static readonly SolidColorBrush darkGrayBrush            = new SolidColorBrush(darkGray           );
         public static readonly SolidColorBrush grayBrush                = new SolidColorBrush(gray               );
         public static readonly SolidColorBrush lightGrayBrush           = new SolidColorBrush(lightGray          );
