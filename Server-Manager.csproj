@@ -75,7 +75,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scripts\Buttons.cs" />
+    <Compile Include="Scripts\UIElements.cs" />
     <Compile Include="Scripts\Library.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -162,6 +162,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\NotoSans-hinted\LICENSE_OFL.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Viewmodels\Images\Arrows\arrow_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Viewmodels\Images\Arrows\arrow_down_hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Viewmodels\Images\Arrows\arrow_up.png" />
+    <Resource Include="Viewmodels\Images\Arrows\arrow_up_hover.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

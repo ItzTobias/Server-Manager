@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
-public static class Utils
+namespace Library
 {
-    public static T Last<T>(this ObservableCollection<T> collection)
+    public static class Utils
     {
-        return collection[collection.Count - 1];
+        public static T Last<T>(this ObservableCollection<T> collection)
+        {
+            return collection[collection.Count - 1];
+        }
     }
 }

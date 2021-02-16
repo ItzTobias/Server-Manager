@@ -1,5 +1,6 @@
 ﻿using Server_Manager.Properties;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -7,6 +8,10 @@ namespace Server_Manager.Scripts
 {
     public abstract class Server
     {
+        public string Name { get; protected set; }
+        public abstract string Directory { get; }
+        string PropertiesPath { get => Path.Combine(Directory, "server.properties"); }
+
         State state = State.stopped;
         public State State
         {
@@ -17,10 +22,9 @@ namespace Server_Manager.Scripts
                 stateChange?.Invoke(this, EventArgs.Empty);
             }
         }
-        public string Name { get; protected set; }
-        public abstract string Directory { get; }
-
         public EventHandler stateChange;
+
+        public List<NameValuePair> properties = new List<NameValuePair>();
 
         public Server(string name) => Name = name;
 
@@ -46,6 +50,40 @@ namespace Server_Manager.Scripts
 
             State = State.stopped;
         }
+        public void UpdateProperties()
+        {
+            if (!File.Exists(PropertiesPath)) return;
+            string[] lines = File.ReadAllLines(PropertiesPath);
+
+            properties.Clear();
+            foreach (var property in lines)
+            {
+                string[] nameProperty = property.Split('=');
+                if (nameProperty.Length != 2) continue;
+                properties.Add(new NameValuePair(nameProperty[0], nameProperty[1]));
+            }
+        }
+        public void SaveProperties()
+        {
+            List<string> props = new List<string>();
+
+            foreach (var property in properties) props.Add(property.Name + '=' + property.Value);
+
+            File.WriteAllLines(PropertiesPath, props);
+
+        }
+    }
+
+    public class NameValuePair
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+
+        public NameValuePair(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
     }
 
     public enum State
@@ -59,7 +97,7 @@ namespace Server_Manager.Scripts
     public class Vanilla : Server
     {
         public static string VanillaDirectory { get => Path.Combine(Settings.Default.SERVERS_PATH, "Vanilla"); }
-        public override string Directory { get => Path.Combine(Settings.Default.SERVERS_PATH, "Vanilla", Name); }
+        public override string Directory { get => Path.Combine(VanillaDirectory, Name); }
 
         public Vanilla(string name) : base(name) { }
 

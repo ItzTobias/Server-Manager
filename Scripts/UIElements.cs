@@ -11,8 +11,7 @@ namespace Server_Manager.Scripts
             DependencyProperty.Register(
             "Server",
             typeof(Server),
-            typeof(ServerButton)
-        );
+            typeof(ServerButton));
 
         public Server Server
         {
