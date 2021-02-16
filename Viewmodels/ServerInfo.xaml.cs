@@ -35,5 +35,7 @@ namespace Server_Manager.Viewmodels
 
             server.SaveProperties();
         }
+
+        private void SelectAllText(object sender, EventArgs args) => ((TextBox)sender).SelectAll();
     }
 }

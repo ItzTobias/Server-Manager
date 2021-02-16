@@ -249,7 +249,9 @@
                                                Margin="0, 20, 0, 3" />
 
                                     <TextBox Style="{StaticResource TextBoxStyle}"
-                                             Text="{Binding Value}" />
+                                             Text="{Binding Value}"
+                                             GotKeyboardFocus="SelectAllText"
+                                             GotMouseCapture="SelectAllText"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
