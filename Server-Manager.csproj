@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -172,6 +173,12 @@
   <ItemGroup>
     <Resource Include="Viewmodels\Images\Arrows\arrow_up.png" />
     <Resource Include="Viewmodels\Images\Arrows\arrow_up_hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\default_server.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\reset_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

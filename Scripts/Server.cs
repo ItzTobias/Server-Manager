@@ -1,16 +1,22 @@
 ﻿using Server_Manager.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Server_Manager.Scripts
 {
     public abstract class Server
     {
         public string Name { get; protected set; }
-        public abstract string Directory { get; }
-        string PropertiesPath { get => Path.Combine(Directory, "server.properties"); }
+        public abstract string ParentDirectory { get; }
+        public string ServerDirectory { get => Path.Combine(ParentDirectory, Name); }
+        string PropertiesPath { get => Path.Combine(ServerDirectory, "server.properties"); }
+        string IconPath { get => Path.Combine(ServerDirectory, "server-icon.png"); }
 
         State state = State.stopped;
         public State State
@@ -25,6 +31,31 @@ namespace Server_Manager.Scripts
         public EventHandler stateChange;
 
         public List<NameValuePair> properties = new List<NameValuePair>();
+
+        public BitmapImage Icon 
+        {
+            get
+            {
+                if (!File.Exists(IconPath)) return null;
+
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                image.UriSource = new Uri(IconPath);
+                image.EndInit();
+
+                return image;
+            }
+            set
+            {
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(value));
+
+                using FileStream stream = new FileStream(IconPath, FileMode.Create);
+                encoder.Save(stream);
+            }
+        }
 
         public Server(string name) => Name = name;
 
@@ -67,16 +98,53 @@ namespace Server_Manager.Scripts
         {
             List<string> props = new List<string>();
 
-            foreach (var property in properties) props.Add(property.Name + '=' + property.Value);
+            foreach (var property in properties) props.Add(property.GetNameUnformatted() + '=' + property.Value);
 
             File.WriteAllLines(PropertiesPath, props);
 
+        }
+
+        public void ChangeName(string name)
+        {
+            string newDir = Path.Combine(ParentDirectory, name);
+            if (Directory.Exists(newDir)) return;
+
+            Directory.Move(ServerDirectory, newDir);
+
+            Name = name;
+
+        }
+
+        public void ChangeIcon(string path)
+        {
+            if (path == null)
+            {
+                File.Delete(IconPath);
+                return;
+            }
+            else if (!File.Exists(path)) return;
+
+            if (File.Exists(IconPath)) File.Delete(IconPath);
+
+            File.Copy(path, IconPath);
         }
     }
 
     public class NameValuePair
     {
-        public string Name { get; set; }
+        string name;
+        public string Name { 
+            get
+            {
+                string formattedName = string.Copy(name);
+
+                formattedName = formattedName.Replace('-', ' ');
+                formattedName = formattedName.ToUpper();
+
+                return formattedName;
+            }
+            set => name = value;
+        }
         public string Value { get; set; }
 
         public NameValuePair(string name, string value)
@@ -84,6 +152,8 @@ namespace Server_Manager.Scripts
             Name = name;
             Value = value;
         }
+
+        public string GetNameUnformatted() => name;
     }
 
     public enum State
@@ -96,8 +166,7 @@ namespace Server_Manager.Scripts
 
     public class Vanilla : Server
     {
-        public static string VanillaDirectory { get => Path.Combine(Settings.Default.SERVERS_PATH, "Vanilla"); }
-        public override string Directory { get => Path.Combine(VanillaDirectory, Name); }
+        public override string ParentDirectory { get => Path.Combine(Settings.Default.SERVERS_PATH, "Vanilla"); }
 
         public Vanilla(string name) : base(name) { }
 

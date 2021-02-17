@@ -126,6 +126,53 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ExpanderUpHeaderStyle"
+               TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="1"
+                                CornerRadius="4">
+                            <Grid Margin="3, 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="11" />
+                                </Grid.ColumnDefinitions>
+
+                                <ContentPresenter Grid.Column="0"
+                                                  RecognizesAccessKey="True"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Margin="0, 0, 5, 0" />
+
+                                <Image Grid.Column="1"
+                                       x:Name="arrow"
+                                       Source="Images/Arrows/arrow_up.png"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Width="11" />
+
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Source"
+                                        TargetName="arrow"
+                                        Value="Images/Arrows/arrow_up_hover.png" />
+                                <Setter Property="Background"
+                                        Value="#1AFFFFFF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="ServerInfoExpander"
                TargetType="{x:Type Expander}">
             <Setter Property="Template">
@@ -156,6 +203,9 @@
                                 <Setter Property="Visibility"
                                         TargetName="ExpandSite"
                                         Value="Visible" />
+                                <Setter Property="Style"
+                                        TargetName="HeaderSite"
+                                        Value="{StaticResource ExpanderUpHeaderStyle}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -203,6 +253,93 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="ImageButton"
+               TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="Images/ServerInfoButtonIcons/default_server.png" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderThickness="1"
+                                CornerRadius="4"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="BorderBrush"
+                                        Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ResetButton"
+               TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="Images/ServerInfoButtonIcons/reset_icon.png" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderThickness="1"
+                                CornerRadius="4"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="BorderBrush"
+                                        Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RoundGrayButton"
+               TargetType="{x:Type Button}">
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderThickness="1"
+                                CornerRadius="4"
+                                BorderBrush="{StaticResource Brightness3}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        Value="{StaticResource Brightness2}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -220,7 +357,7 @@
                    FontSize="18"
                    FontWeight="Bold"
                    VerticalAlignment="Center"
-                   x:Name="InfoName" />
+                   Text="Edit Server" />
 
         <Rectangle Grid.Row="1"
                    Fill="{StaticResource Line}" />
@@ -230,6 +367,50 @@
                       Margin="16, 0, 0, 0">
             <StackPanel Margin="0, 20"
                         Width="400">
+
+                <Grid Margin="0, 0, 0, 25">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="48"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel>
+                        <TextBlock Foreground="White"
+                                   DockPanel.Dock="Top"
+                                   FontSize="11"
+                                   FontWeight="Bold"
+                                   Text="NAME"
+                                   Margin="0, 0, 0, 3" />
+                        <TextBox Style="{StaticResource TextBoxStyle}"
+                                 DockPanel.Dock="Top"
+                                 GotKeyboardFocus="SelectAllText"
+                                 GotMouseCapture="SelectAllText"
+                                 x:Name="ServerName" />
+                    </StackPanel>
+
+                    <Canvas Grid.Column="2">
+                        <Button Style="{StaticResource ImageButton}"
+                                x:Name="ChangeServerIcon"
+                                Click="OnChangeServerIconClick"
+                                Width="48"
+                                Height="48"/>
+
+                        <Button Style="{StaticResource ResetButton}"   
+                                Click="OnResetIcon"
+                                Width="20"
+                                Height="20"
+                                Canvas.Right="0"
+                                Canvas.Bottom="0"/>
+                    </Canvas>
+                </Grid>
+
+                <Button Click="OpenServerDirectory"
+                        Content="Open Server Directory"
+                        Style="{StaticResource RoundGrayButton}"
+                        Height="30"
+                        Margin="0, 0, 0, 25" />
+
                 <Expander Header="SERVER PROPERTIES"
                           Style="{StaticResource ServerInfoExpander}">
                     <ItemsControl x:Name="ServerProperties">
@@ -243,15 +424,14 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <TextBlock Foreground="White"
-                                               FontSize="11.5"
+                                               FontSize="11"
                                                FontWeight="Bold"
                                                Text="{Binding Name}"
-                                               Margin="0, 20, 0, 3" />
+                                               Margin="0, 25, 0, 3" />
 
                                     <TextBox Style="{StaticResource TextBoxStyle}"
                                              Text="{Binding Value}"
-                                             GotKeyboardFocus="SelectAllText"
-                                             GotMouseCapture="SelectAllText"/>
+                                             GotFocus="SelectAllText" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

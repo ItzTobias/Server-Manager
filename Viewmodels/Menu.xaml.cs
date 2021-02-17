@@ -32,11 +32,11 @@ namespace Server_Manager.Viewmodels
             }
         }
 
-        readonly ObservableCollection<Vanilla> vanillaServers = new ObservableCollection<Vanilla>();
-        readonly ObservableCollection<Server> forgeServers = new ObservableCollection<Server>();
-        readonly ObservableCollection<Server> fabricServers = new ObservableCollection<Server>();
-        readonly ObservableCollection<Server> spigotServers = new ObservableCollection<Server>();
-        readonly ObservableCollection<Server> bukkitServers = new ObservableCollection<Server>();
+        public static readonly ObservableCollection<Vanilla> vanillaServers = new ObservableCollection<Vanilla>();
+        public static readonly ObservableCollection<Server> forgeServers = new ObservableCollection<Server>();
+        public static readonly ObservableCollection<Server> fabricServers = new ObservableCollection<Server>();
+        public static readonly ObservableCollection<Server> spigotServers = new ObservableCollection<Server>();
+        public static readonly ObservableCollection<Server> bukkitServers = new ObservableCollection<Server>();
 
         public Menu()
         {
@@ -129,12 +129,12 @@ namespace Server_Manager.Viewmodels
 
         void InitializeVanillaServers()
         {
-            string[] vanillaServers = Directory.GetDirectories(Vanilla.VanillaDirectory);
+            string[] vanillaServers = Directory.GetDirectories(new Vanilla("").ParentDirectory);
 
             Trace.WriteLine("Registered " + vanillaServers.Length + " Servers");
 
             foreach (string serverDir in vanillaServers)
-                this.vanillaServers.Add(new Vanilla(Path.GetFileName(serverDir)));
+                Menu.vanillaServers.Add(new Vanilla(Path.GetFileName(serverDir)));
         }
         void InitializeForgeServers()
         {
