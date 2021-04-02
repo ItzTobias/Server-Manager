@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -14,14 +16,16 @@ namespace Server_Manager.Scripts
     {
         public string Name { get; protected set; }
         public abstract string ParentDirectory { get; }
+        public virtual string JarName { get; } = "server.jar";
         public string ServerDirectory { get => Path.Combine(ParentDirectory, Name); }
         string PropertiesPath { get => Path.Combine(ServerDirectory, "server.properties"); }
         string IconPath { get => Path.Combine(ServerDirectory, "server-icon.png"); }
+        public readonly int arrayIndex;
 
         State state = State.stopped;
         public State State
         {
-            get => state; 
+            get => state;
             protected set
             {
                 state = value;
@@ -32,7 +36,10 @@ namespace Server_Manager.Scripts
 
         public List<NameValuePair> properties = new List<NameValuePair>();
 
-        public BitmapImage Icon 
+        public Process Process { get; protected set; }
+        public readonly StartArgs StartArgs = new StartArgs();
+
+        public BitmapImage Icon
         {
             get
             {
@@ -57,30 +64,58 @@ namespace Server_Manager.Scripts
             }
         }
 
-        public Server(string name) => Name = name;
+        public Server(string name, int arrayIndex)
+        {
+            Name = name;
+            this.arrayIndex = arrayIndex;
+            StartArgs.ChangeJarName(JarName);
+            StartArgs.AddArg("nogui");
+        }
 
         public abstract void Install();
 
-        public virtual async Task Start()
+        public virtual void Start()
         {
             if (State != State.stopped) return;
 
             State = State.starting;
 
-            await Task.Delay(2000);
+            Trace.WriteLine(StartArgs.ToArg());
 
+            Process = new Process
+            {
+                StartInfo = new ProcessStartInfo("javaw.exe", StartArgs.ToArg())
+                {
+                    WorkingDirectory = ServerDirectory,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
+                },
+ 
+                EnableRaisingEvents = true
+            };
+            
+            Process.Start();
             State = State.started;
         }
-        public virtual async Task Stop()
+        public virtual void Stop()
         {
             if (State != State.started) return;
 
             State = State.stopping;
 
-            await Task.Delay(2000);
+            Process.StandardInput.WriteLine("stop");
 
-            State = State.stopped;
+            Process.Exited += delegate
+            {
+                Process.Dispose();
+
+                Application.Current.Dispatcher.Invoke(() => State = State.stopped);
+
+                Trace.WriteLine("Exited Pocess");
+            };
         }
+
         public void UpdateProperties()
         {
             if (!File.Exists(PropertiesPath)) return;
@@ -164,11 +199,39 @@ namespace Server_Manager.Scripts
         stopped
     }
 
+    public class StartArgs
+    {
+        readonly List<string> args = new List<string>(new string[1] { "-jar" });
+
+        public void ChangeJarName(string name)
+        {
+            if (args.Count > 1) args[1] = name;
+            else args.Add(name);
+        }
+
+        public void AddArg(string arg) => args.Add(arg);
+
+        public void RemoveArg(string arg)
+        {
+            int index = args.FindIndex(o => o == arg);
+            if (index != -1) args.RemoveAt(index);
+        }
+
+        public string ToArg()
+        {
+            string argLine = "";
+
+            foreach (var arg in args) argLine += (' ' + arg);
+
+            return argLine;
+        }
+    }
+
     public class Vanilla : Server
     {
         public override string ParentDirectory { get => Path.Combine(Settings.Default.SERVERS_PATH, "Vanilla"); }
 
-        public Vanilla(string name) : base(name) { }
+        public Vanilla(string name, int arrayIndex) : base(name, arrayIndex) { }
 
         public override void Install()
         {

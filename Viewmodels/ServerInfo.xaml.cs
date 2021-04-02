@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.IO;
 
 namespace Server_Manager.Viewmodels
 {
@@ -86,6 +87,16 @@ namespace Server_Manager.Viewmodels
             ChangeServerIcon.Background = new ImageBrush(image);
         }
         void OpenServerDirectory(object sender, EventArgs args) => Process.Start("explorer.exe", server.ServerDirectory);
+        void DeleteServer(object sender, EventArgs args)
+        {
+            try 
+            { 
+                Menu.vanillaServers.RemoveAt(server.arrayIndex);
+                Directory.Delete(server.ServerDirectory, true);
+                MainWindow.GetMainWindow.OpenMenu();
+            }
+            catch  (Exception e) { Trace.WriteLine(e.Message); }
+        }
         #endregion
 
         void UpdateIcon()

@@ -180,5 +180,11 @@
   <ItemGroup>
     <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\reset_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\send.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\send_hover.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

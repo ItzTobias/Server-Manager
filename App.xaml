@@ -32,7 +32,7 @@
         <!--#endregion-->     
         <!--#region Brushes-->
         <Brush x:Key="Red">#d44410</Brush>
-        <Brush x:Key="Red´Hover">#e7643a</Brush>
+        <Brush x:Key="Red Hover">#e7643a</Brush>
 
         <Brush x:Key="Green">#008540</Brush>
         <Brush x:Key="Green Hover">#0dd164</Brush>

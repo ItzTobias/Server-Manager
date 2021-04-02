@@ -112,19 +112,19 @@ namespace Server_Manager.Scripts
 
             IsEnabled = true;
         }
-        async void Start()
+        void Start()
         {
             SetToLaunching();
 
-            await Server.Start();
+            Server.Start();
 
             SetToRunning();
         }
-        async void Stop()
+        void Stop()
         {
             SetToStopping();
 
-            await Server.Stop();
+            Server.Stop();
 
             SetToOff();
         }

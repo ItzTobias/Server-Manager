@@ -129,12 +129,12 @@ namespace Server_Manager.Viewmodels
 
         void InitializeVanillaServers()
         {
-            string[] vanillaServers = Directory.GetDirectories(new Vanilla("").ParentDirectory);
+            string[] vanillaServers = Directory.GetDirectories(new Vanilla("", -1).ParentDirectory);
 
             Trace.WriteLine("Registered " + vanillaServers.Length + " Servers");
 
-            foreach (string serverDir in vanillaServers)
-                Menu.vanillaServers.Add(new Vanilla(Path.GetFileName(serverDir)));
+            for (int i = 0; i < vanillaServers.Length; i++)
+                Menu.vanillaServers.Add(new Vanilla(Path.GetFileName(vanillaServers[i]), i));
         }
         void InitializeForgeServers()
         {
