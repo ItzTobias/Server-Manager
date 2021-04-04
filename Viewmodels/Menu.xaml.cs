@@ -1,8 +1,8 @@
-﻿using Server_Manager.Scripts;
+﻿using Server_Manager.Scripts.ServerScripts;
+using Server_Manager.Scripts.UIElements.Buttons;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,30 +13,28 @@ namespace Server_Manager.Viewmodels
     /// </summary>
     public partial class Menu : UserControl
     {
-        ServerType _currentServerType = ServerType.Vanilla;
-        public ServerType CurrentServerType
+        ServerType selectedServerType = ServerType.Vanilla;
+        public ServerType SelectedServerType
         {
-            get => _currentServerType;
+            get => selectedServerType;
             private set
             {
-                _currentServerType = value;
-                ServersUI.ItemsSource = _currentServerType switch
+                selectedServerType = value;
+                ServersUI.ItemsSource = selectedServerType switch
                 {
-                    ServerType.Vanilla => vanillaServers,
-                    ServerType.Forge => forgeServers,
-                    ServerType.Fabric => fabricServers,
-                    ServerType.Spigot => spigotServers,
-                    ServerType.Bukkit => bukkitServers,
+                    ServerType.Vanilla => VanillaServers,
+                    ServerType.Forge => ForgeServers,
+                    ServerType.Fabric => FabricServers,
+                    ServerType.Bukkit => BukkitServers,
                     _ => throw new Exception("Invalid ServerType")
                 };
             }
         }
 
-        public static readonly ObservableCollection<Vanilla> vanillaServers = new ObservableCollection<Vanilla>();
-        public static readonly ObservableCollection<Server> forgeServers = new ObservableCollection<Server>();
-        public static readonly ObservableCollection<Server> fabricServers = new ObservableCollection<Server>();
-        public static readonly ObservableCollection<Server> spigotServers = new ObservableCollection<Server>();
-        public static readonly ObservableCollection<Server> bukkitServers = new ObservableCollection<Server>();
+        public static ObservableCollection<Vanilla> VanillaServers { get; private set; } = new ObservableCollection<Vanilla>();
+        public static ObservableCollection<Server> ForgeServers { get; private set; } = new ObservableCollection<Server>();
+        public static ObservableCollection<Server> FabricServers { get; private set; } = new ObservableCollection<Server>();
+        public static ObservableCollection<Server> BukkitServers { get; private set; } = new ObservableCollection<Server>();
 
         public Menu()
         {
@@ -44,9 +42,32 @@ namespace Server_Manager.Viewmodels
 
             DataContext = this;
 
-            OnClick_Vanilla(this, null);
+            ServerCollections.onCollectionUpdate += OnCollectionUpdate;
+            ServerCollections.UpdateAll();
 
-            InitializeServers();
+            OnClick_Vanilla(this, null);
+        }
+
+        void OnCollectionUpdate(object sender, CollectionUpdateEventArgs args)
+        {
+            switch (args.collectionType)
+            {
+                case CollectionType.Vanilla:
+                    VanillaServers = new ObservableCollection<Vanilla>(ServerCollections.Vanilla);
+                    break;
+                case CollectionType.Forge:
+                    ForgeServers = new ObservableCollection<Server>(ServerCollections.Forge);
+                    break;
+                case CollectionType.Fabric:
+                    FabricServers = new ObservableCollection<Server>(ServerCollections.Fabric);
+                    break;
+                case CollectionType.Bukkit:
+                    BukkitServers = new ObservableCollection<Server>(ServerCollections.Bukkit);
+                    break;
+                default:
+                    Trace.WriteLine("No Server Type is matching");
+                    break;
+            }
         }
 
         public void OpenServerInfo(object sender, RoutedEventArgs args)
@@ -60,12 +81,11 @@ namespace Server_Manager.Viewmodels
         void OnClick_Vanilla(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Vanilla);
         void OnClick_Forge(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Forge);
         void OnClick_Fabric(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Fabric);
-        void OnClick_Spigot(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Spigot);
         void OnClick_Bukkit(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Bukkit);
 
         void ChangeTab(ServerType newServerType)
         {
-            switch (CurrentServerType)
+            switch (SelectedServerType)
             {
                 case ServerType.Vanilla:
                     TopMenu_GreenBox_Vanilla.Visibility = Visibility.Hidden;
@@ -79,19 +99,15 @@ namespace Server_Manager.Viewmodels
                     TopMenu_GreenBox_Fabric.Visibility = Visibility.Hidden;
                     TopMenu_Button_Fabric.IsEnabled = true;
                     break;
-                case ServerType.Spigot:
-                    TopMenu_GreenBox_Spigot.Visibility = Visibility.Hidden;
-                    TopMenu_Button_Spigot.IsEnabled = true;
-                    break;
                 case ServerType.Bukkit:
                     TopMenu_GreenBox_Bukkit.Visibility = Visibility.Hidden;
                     TopMenu_Button_Bukkit.IsEnabled = true;
                     break;
             }
 
-            CurrentServerType = newServerType;
+            SelectedServerType = newServerType;
 
-            switch (CurrentServerType)
+            switch (SelectedServerType)
             {
                 case ServerType.Vanilla:
                     TopMenu_GreenBox_Vanilla.Visibility = Visibility.Visible;
@@ -105,48 +121,11 @@ namespace Server_Manager.Viewmodels
                     TopMenu_GreenBox_Fabric.Visibility = Visibility.Visible;
                     TopMenu_Button_Fabric.IsEnabled = false;
                     break;
-                case ServerType.Spigot:
-                    TopMenu_GreenBox_Spigot.Visibility = Visibility.Visible;
-                    TopMenu_Button_Spigot.IsEnabled = false;
-                    break;
                 case ServerType.Bukkit:
                     TopMenu_GreenBox_Bukkit.Visibility = Visibility.Visible;
                     TopMenu_Button_Bukkit.IsEnabled = false;
                     break;
             }
-        }
-        #endregion
-
-        #region ServerInitializing
-        void InitializeServers()
-        {
-            InitializeVanillaServers();
-            InitializeForgeServers();
-            InitializeFabricServers();
-            InitializeSpigotServers();
-            InitializeBukkitServers();
-        }
-
-        void InitializeVanillaServers()
-        {
-            string[] vanillaServers = Directory.GetDirectories(new Vanilla("", -1).ParentDirectory);
-
-            Trace.WriteLine("Registered " + vanillaServers.Length + " Servers");
-
-            for (int i = 0; i < vanillaServers.Length; i++)
-                Menu.vanillaServers.Add(new Vanilla(Path.GetFileName(vanillaServers[i]), i));
-        }
-        void InitializeForgeServers()
-        {
-        }
-        void InitializeFabricServers()
-        {
-        }
-        void InitializeSpigotServers()
-        {
-        }
-        void InitializeBukkitServers()
-        {
         }
         #endregion
     }

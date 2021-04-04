@@ -1,32 +1,16 @@
-﻿using System;
-using System.Windows;
+﻿using Server_Manager.Scripts.ServerScripts;
+using System;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Server_Manager.Scripts
+namespace Server_Manager.Scripts.UIElements.Buttons
 {
-    public class ServerButton : Button
-    {
-        public static readonly DependencyProperty ServerProperty =
-            DependencyProperty.Register(
-            "Server",
-            typeof(Server),
-            typeof(ServerButton));
-
-        public Server Server
-        {
-            get { return (Server)GetValue(ServerProperty); }
-            set { SetValue(ServerProperty, value); }
-        }
-
-        public ServerButton() : base() { }
-    }
     public class StartStopButton : ServerButton
     {
         TextBlock status;
 
         static readonly SolidColorBrush greenLoadingBackground = new SolidColorBrush(new Color() { R = 0, G = 107, B = 53, A = 255 });
-        static readonly SolidColorBrush redLoadingBackground   = new SolidColorBrush(new Color() { R = 188, G = 45, B = 0, A = 255 });
+        static readonly SolidColorBrush redLoadingBackground = new SolidColorBrush(new Color() { R = 188, G = 45, B = 0, A = 255 });
 
         public StartStopButton() : base()
         {
@@ -49,22 +33,38 @@ namespace Server_Manager.Scripts
             switch (Server.State)
             {
                 case State.starting:
-                    SetToLaunching();
+                    IsEnabled = false;
+
+                    //Update Visuals
+                    Background = greenLoadingBackground;
+                    status.Text = "Starting";
                     break;
                 case State.started:
-                    SetToRunning();
+                    IsEnabled = true;
+
+                    //Update Visuals
+                    Background = Colors.redBrush;
+                    status.Text = "Stop";
                     break;
                 case State.stopping:
-                    SetToStopping();
+                    IsEnabled = false;
+
+                    //Update Visuals
+                    Background = redLoadingBackground;
+                    status.Text = "Stopping";
                     break;
                 case State.stopped:
-                    SetToOff();
+                    IsEnabled = true;
+
+                    //Update Visuals
+                    Background = Colors.greenBrush;
+                    status.Text = "Start";
                     break;
                 default:
                     break;
             }
         }
-        
+
         void OnMouseEnter(object o, EventArgs e)
         {
             switch (Server.State)
@@ -96,57 +96,17 @@ namespace Server_Manager.Scripts
 
         void SwitchState(object o, EventArgs e)
         {
-            IsEnabled = false;
-
             switch (Server.State)
             {
                 case State.started:
-                    Stop();
+                    Server.Stop();
                     break;
                 case State.stopped:
-                    Start();
+                    Server.Start();
                     break;
                 default:
                     break;
             }
-
-            IsEnabled = true;
-        }
-        void Start()
-        {
-            SetToLaunching();
-
-            Server.Start();
-
-            SetToRunning();
-        }
-        void Stop()
-        {
-            SetToStopping();
-
-            Server.Stop();
-
-            SetToOff();
-        }
-        void SetToLaunching()
-        {
-            Background = greenLoadingBackground;
-            status.Text = "Starting";
-        }
-        void SetToRunning()
-        {
-            Background = Colors.redBrush;
-            status.Text = "Stop";
-        }
-        void SetToStopping()
-        {
-            Background = redLoadingBackground;
-            status.Text = "Stopping";
-        }
-        void SetToOff()
-        {
-            Background = Colors.greenBrush;
-            status.Text = "Start";
         }
     }
 }

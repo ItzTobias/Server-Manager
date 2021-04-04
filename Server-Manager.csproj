@@ -61,7 +61,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Scripts\Server.cs" />
+    <Compile Include="Scripts\Colors.cs" />
+    <Compile Include="Scripts\ServerScripts\Console.cs" />
+    <Compile Include="Scripts\ServerScripts\CollectionType.cs" />
+    <Compile Include="Scripts\ServerScripts\CollectionUpdateEventArgs.cs" />
+    <Compile Include="Scripts\ServerScripts\Server.cs" />
+    <Compile Include="Scripts\ServerScripts\ServerCollections.cs" />
+    <Compile Include="Scripts\ServerScripts\ServerType.cs" />
+    <Compile Include="Scripts\ServerScripts\Vanilla.cs" />
+    <Compile Include="Scripts\UIElements\Buttons\ServerButton.cs" />
+    <Compile Include="Scripts\UIElements\Buttons\StartStopButton.cs" />
     <Compile Include="Viewmodels\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
@@ -76,8 +85,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scripts\UIElements.cs" />
-    <Compile Include="Scripts\Library.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -1,4 +1,4 @@
-﻿using Server_Manager.Scripts;
+﻿using Server_Manager.Scripts.ServerScripts;
 using Server_Manager.Viewmodels;
 using System.Windows;
 
@@ -16,9 +16,16 @@ namespace Server_Manager
 
             GetMainWindow = this;
             DataContext = menu;
+
+            ServerCollections.UpdateAll();
         }
 
-        public void OpenMenu() => DataContext = menu;
+        public void OpenMenu()
+        {
+            DataContext = menu;
+            info.OnDeactivate();
+        }
+
         public void OpenInfo(Server server)
         {
             DataContext = info;

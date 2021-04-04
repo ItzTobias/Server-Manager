@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:e="clr-namespace:Server_Manager.Scripts"
+             xmlns:e="clr-namespace:Server_Manager.Scripts.UIElements.Buttons"
              mc:Ignorable="d"
              FontFamily="{StaticResource NotoSans}">
 
@@ -311,7 +311,6 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
-                <ColumnDefinition />
                 <ColumnDefinition Width="35" />
                 <ColumnDefinition Width="35" />
             </Grid.ColumnDefinitions>
@@ -369,23 +368,6 @@
             </Button>
             <Button Grid.Column="3"
                     Style="{StaticResource MenuButtonWithText}"
-                    x:Name="TopMenu_Button_Spigot"
-                    Click="OnClick_Spigot">
-                <DockPanel Height="35"
-                           VerticalAlignment="Center">
-                    <Rectangle Style="{StaticResource GreenRectangle}"
-                               x:Name="TopMenu_GreenBox_Spigot"
-                               Visibility="Hidden"
-                               DockPanel.Dock="Bottom"
-                               Height="4" />
-                    <TextBlock Text="Spigot"
-                               Margin="0, 5, 0, 0"
-                               DockPanel.Dock="Bottom"
-                               FontSize="17.5" />
-                </DockPanel>
-            </Button>
-            <Button Grid.Column="4"
-                    Style="{StaticResource MenuButtonWithText}"
                     x:Name="TopMenu_Button_Bukkit"
                     Click="OnClick_Bukkit">
                 <DockPanel Height="35"
@@ -401,10 +383,10 @@
                                FontSize="17.5" />
                 </DockPanel>
             </Button>
-            <Button Grid.Column="5"
+            <Button Grid.Column="4"
                     Style="{StaticResource MenuPlusButton}"
                     x:Name="TopMenu_Button_AddServer" />
-            <Button Grid.Column="6"
+            <Button Grid.Column="5"
                     Style="{StaticResource MenuGearButton}"
                     x:Name="TopMenu_Button_Settings" />
         </Grid>

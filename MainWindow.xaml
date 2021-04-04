@@ -6,9 +6,9 @@
         mc:Ignorable="d"
         Title="Server Manager"
         Height="493"
-        MinHeight="285"
+        MinHeight="284"
         Width="878"
-        MinWidth="500"
+        MinWidth="443"
         Background="{StaticResource Light Gray}">
 
     <ContentControl Content="{Binding}" />

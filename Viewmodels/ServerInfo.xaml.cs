@@ -1,12 +1,11 @@
-﻿using Server_Manager.Scripts;
+﻿using Microsoft.Win32;
+using Server_Manager.Scripts.ServerScripts;
 using System;
-using System.Drawing;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
-using System.Diagnostics;
-using System.IO;
 
 namespace Server_Manager.Viewmodels
 {
@@ -22,6 +21,7 @@ namespace Server_Manager.Viewmodels
         public void OnActivate()
         {
             StartStopButton.Server = server;
+            server.stateChange += OnServerStart;
 
             //Load Name
             ServerName.Text = server.Name;
@@ -32,6 +32,16 @@ namespace Server_Manager.Viewmodels
             //Load Properties
             server.UpdateProperties();
             ServerProperties.ItemsSource = server.properties;
+        }
+
+        public void OnDeactivate()
+        {
+            server.stateChange -= OnServerStart;
+        }
+
+        void OnServerStart(object sender, EventArgs args)
+        {
+
         }
 
         #region ButtonEvents
@@ -91,7 +101,7 @@ namespace Server_Manager.Viewmodels
         {
             try 
             { 
-                Menu.vanillaServers.RemoveAt(server.arrayIndex);
+                Menu.VanillaServers.RemoveAt(server.arrayIndex);
                 Directory.Delete(server.ServerDirectory, true);
                 MainWindow.GetMainWindow.OpenMenu();
             }
