@@ -3,7 +3,9 @@ using Server_Manager.Scripts.ServerScripts;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -15,13 +17,14 @@ namespace Server_Manager.Viewmodels
     public partial class ServerInfo : UserControl
     {
         public Server server;
+        string lastLine = "";
+        int repeatCount = 0;
 
         public ServerInfo() => InitializeComponent();
 
         public void OnActivate()
         {
             StartStopButton.Server = server;
-            server.stateChange += OnServerStart;
 
             //Load Name
             ServerName.Text = server.Name;
@@ -39,10 +42,49 @@ namespace Server_Manager.Viewmodels
             server.stateChange -= OnServerStart;
         }
 
-        void OnServerStart(object sender, EventArgs args)
+        void OnServerStart(object sender, EventArgs e)
         {
+            server.Process.OutputDataReceived += (object sender, DataReceivedEventArgs args) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    bool scrollToEnd = ConsoleScrollViewer.VerticalOffset == ConsoleScrollViewer.ScrollableHeight;
 
+                    BlockCollection blocks = ConsoleTextBlock.Document.Blocks;
+                    string value = args.Data;
+
+                    FlowDocument flowDocument = new FlowDocument();
+                    Paragraph paragraph = new Paragraph();
+                    InlineCollection inlines = paragraph.Inlines;
+
+                    if (blocks.Count == 0)
+                    {
+                        inlines.Add(value);
+                        lastLine = value;
+                    }
+                    else if (value == lastLine)
+                    {
+                        repeatCount++;
+                        if (repeatCount == 1) ((Paragraph)blocks.LastBlock).Inlines.Add("(2)");
+                        //else this.value.Replace(repeatCount.ToString(), (repeatCount + 1).ToString(), this.value.Length - 2, 1);
+                    }
+                    else
+                    {
+                        inlines.Add('\n' + value);
+                        repeatCount = 0;
+                        lastLine = value;
+                    }
+
+                    flowDocument.Blocks.Add(paragraph);
+                    ConsoleTextBlock.Document = flowDocument;
+
+                    if (scrollToEnd) ConsoleScrollViewer.ScrollToEnd();
+                });
+
+            };
         }
+
+
 
         #region ButtonEvents
         void OnBackClick(object sender, EventArgs args) => MainWindow.GetMainWindow.OpenMenu();
@@ -85,16 +127,11 @@ namespace Server_Manager.Viewmodels
             server.ChangeIcon(dialog.FileName);
             UpdateIcon();
         }
-        void OnResetIcon(object sender, EventArgs args)
+        void OnDeleteIcon(object sender, EventArgs args)
         {
             server.ChangeIcon(null);
 
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri("pack://application:,,,/Viewmodels/Images/ServerInfoButtonIcons/default_server.png");
-            image.EndInit();
-            ChangeServerIcon.Background = new ImageBrush(image);
+            UpdateIcon();
         }
         void OpenServerDirectory(object sender, EventArgs args) => Process.Start("explorer.exe", server.ServerDirectory);
         void DeleteServer(object sender, EventArgs args)

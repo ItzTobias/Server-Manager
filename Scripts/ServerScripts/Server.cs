@@ -78,11 +78,7 @@ namespace Server_Manager.Scripts.ServerScripts
  
                 EnableRaisingEvents = true
             };
-            Process.Exited += delegate
-            {
-                Process.Dispose();
-                Application.Current.Dispatcher.Invoke(() => State = State.stopped);
-            };
+            Process.Exited += OnProcessExited;
 
             State = State.starting;
             Process.Start();
@@ -90,14 +86,7 @@ namespace Server_Manager.Scripts.ServerScripts
             processID = Process.Id;
             Process.BeginOutputReadLine();
 
-            Process.OutputDataReceived += (object sender, DataReceivedEventArgs args) =>
-            {
-                string data = args.Data;
-                if (string.IsNullOrEmpty(data)) return;
-
-                Trace.WriteLine(data);
-                if (data.Contains("] [Server thread/INFO]: Done (")) Application.Current.Dispatcher.Invoke(() => State = State.started);
-            };
+            Process.OutputDataReceived += OnOutputDataReceived;
         }
         public virtual void Stop()
         {
@@ -108,6 +97,22 @@ namespace Server_Manager.Scripts.ServerScripts
             Process.StandardInput.WriteLine("stop");
         }
 
+        private void OnOutputDataReceived(object sender, DataReceivedEventArgs args)
+        {
+            string data = args.Data;
+            if (string.IsNullOrEmpty(data)) return;
+
+            Trace.WriteLine(data);
+
+            if (data.Contains("] [Server thread/INFO]: Done (")) Application.Current.Dispatcher.Invoke(() => State = State.started);
+        }
+        private void OnProcessExited(object sender, EventArgs args)
+        {
+            Process.Dispose();
+            Application.Current.Dispatcher.Invoke(() => State = State.stopped);
+            Process = null;
+        }
+        
         void OnApplicationExit(object sender, EventArgs args)
         {
             if (processID == -1) return;
@@ -188,67 +193,5 @@ namespace Server_Manager.Scripts.ServerScripts
             File.Copy(path, IconPath);
         }
         #endregion
-    }
-
-    public class NameValuePair
-    {
-        string name;
-        public string Name { 
-            get
-            {
-                string formattedName = string.Copy(name);
-
-                formattedName = formattedName.Replace('-', ' ');
-                formattedName = formattedName.ToUpper();
-
-                return formattedName;
-            }
-            set => name = value;
-        }
-        public string Value { get; set; }
-
-        public NameValuePair(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
-
-        public string GetNameUnformatted() => name;
-    }
-
-    public enum State
-    {
-        starting,
-        started,
-        stopping,
-        stopped
-    }
-
-    public class StartArgs
-    {
-        readonly List<string> args = new List<string>(new string[1] { "-jar" });
-
-        public void ChangeJarName(string name)
-        {
-            if (args.Count > 1) args[1] = name;
-            else args.Add(name);
-        }
-
-        public void AddArg(string arg) => args.Add(arg);
-
-        public void RemoveArg(string arg)
-        {
-            int index = args.FindIndex(o => o == arg);
-            if (index != -1) args.RemoveAt(index);
-        }
-
-        public string ToArg()
-        {
-            string argLine = "";
-
-            foreach (var arg in args) argLine += (' ' + arg);
-
-            return argLine;
-        }
     }
 }
