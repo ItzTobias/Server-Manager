@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Server_Manager.Scripts.ServerScripts
+﻿namespace Server_Manager.Scripts.ServerScripts
 {
     public class NameValuePair
     {
@@ -13,7 +7,7 @@ namespace Server_Manager.Scripts.ServerScripts
         {
             get
             {
-                string formattedName = string.Copy(name);
+                string formattedName = name;
 
                 formattedName = formattedName.Replace('-', ' ');
                 formattedName = formattedName.ToUpper();

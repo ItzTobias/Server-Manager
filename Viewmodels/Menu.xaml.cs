@@ -42,7 +42,7 @@ namespace Server_Manager.Viewmodels
 
             DataContext = this;
 
-            ServerCollections.onCollectionUpdate += OnCollectionUpdate;
+            ServerCollections.OnCollectionUpdate += OnCollectionUpdate;
             ServerCollections.UpdateAll();
 
             OnClick_Vanilla(this, null);

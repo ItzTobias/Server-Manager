@@ -1,0 +1,65 @@
+2021-04-12 17:01:16.644 +02:00 [INF] MSBuild registered from C:\Program Files\dotnet\sdk\5.0.201\
+2021-04-12 17:01:16.672 +02:00 [INF] Registered 1 extensions:
+	Default extension
+2021-04-12 17:01:18.071 +02:00 [INF] Initializing upgrade step Select an entrypoint
+2021-04-12 17:01:18.074 +02:00 [INF] Setting entrypoint to only project in solution: C:\Users\itzto\Documents\Git Projekte\Server-Manager\Server-Manager.csproj
+2021-04-12 17:01:18.082 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-04-12 17:01:18.150 +02:00 [INF] Initializing upgrade step Back up project
+2021-04-12 17:03:15.716 +02:00 [INF] Applying upgrade step Back up project
+2021-04-12 17:03:24.281 +02:00 [INF] Backing up C:\Users\itzto\Documents\Git Projekte\Server-Manager to C:\Users\itzto\Documents\Git Projekte\Server-Manager.backup
+2021-04-12 17:03:24.297 +02:00 [WRN] Could not copy file C:\Users\itzto\Documents\Git Projekte\Server-Manager\log.txt due to 'The process cannot access the file 'C:\Users\itzto\Documents\Git Projekte\Server-Manager\log.txt' because it is being used by another process.'
+2021-04-12 17:03:25.445 +02:00 [INF] Project backed up to C:\Users\itzto\Documents\Git Projekte\Server-Manager.backup
+2021-04-12 17:03:25.446 +02:00 [INF] Upgrade step Back up project applied successfully
+2021-04-12 17:03:40.384 +02:00 [INF] Initializing upgrade step Convert project file to SDK style
+2021-04-12 17:03:52.744 +02:00 [INF] Applying upgrade step Convert project file to SDK style
+2021-04-12 17:03:52.747 +02:00 [INF] Converting project file format with try-convert, version 0.7.217901
+2021-04-12 17:03:53.489 +02:00 [INF] [try-convert] C:\Users\itzto\Documents\Git Projekte\Server-Manager\Server-Manager.csproj contains an App.config file. App.config is replaced by appsettings.json in .NET Core. You will need to delete App.config and migrate to appsettings.json if it's applicable to your project.
+2021-04-12 17:03:55.981 +02:00 [INF] [try-convert] Conversion complete!
+2021-04-12 17:03:56.321 +02:00 [INF] Project file converted successfully! The project may require additional changes to build successfully against the new .NET target.
+2021-04-12 17:03:58.504 +02:00 [INF] Upgrade step Convert project file to SDK style applied successfully
+2021-04-12 17:04:13.942 +02:00 [INF] Initializing upgrade step Clean up NuGet package references
+2021-04-12 17:04:15.406 +02:00 [INF] Marking assembly reference System.Configuration for removal based on package mapping configuration System.Configuration
+2021-04-12 17:04:15.409 +02:00 [INF] Adding package System.Configuration.ConfigurationManager based on package mapping configuration System.Configuration
+2021-04-12 17:04:16.088 +02:00 [INF] Reference to .NET Upgrade Assistant analyzer package (Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, version 0.2.220602) needs added
+2021-04-12 17:04:16.093 +02:00 [INF] References to be removed:
+System.Configuration
+2021-04-12 17:04:16.093 +02:00 [INF] Packages to be addded:
+System.Configuration.ConfigurationManager, Version=5.0.0
+Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.220602
+2021-04-12 17:04:21.530 +02:00 [INF] Applying upgrade step Clean up NuGet package references
+2021-04-12 17:04:21.534 +02:00 [INF] Removing outdated assembly reference: System.Configuration
+2021-04-12 17:04:21.538 +02:00 [INF] Adding package reference: System.Configuration.ConfigurationManager, Version=5.0.0
+2021-04-12 17:04:21.539 +02:00 [INF] Adding package reference: Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.220602
+2021-04-12 17:04:24.858 +02:00 [INF] Upgrade step Clean up NuGet package references applied successfully
+2021-04-12 17:04:26.720 +02:00 [INF] Initializing upgrade step Update TFM
+2021-04-12 17:04:26.725 +02:00 [INF] TFM needs updated to net5.0-windows
+2021-04-12 17:04:30.266 +02:00 [INF] Applying upgrade step Update TFM
+2021-04-12 17:04:36.479 +02:00 [INF] Updated TFM to net5.0-windows
+2021-04-12 17:04:36.480 +02:00 [INF] Upgrade step Update TFM applied successfully
+2021-04-12 17:05:01.466 +02:00 [INF] Initializing upgrade step Update NuGet Packages
+2021-04-12 17:05:03.404 +02:00 [INF] Adding Microsoft.Windows.Compatibility 5.0.2
+2021-04-12 17:05:03.406 +02:00 [INF] Packages to be addded:
+Microsoft.Windows.Compatibility, Version=5.0.2
+2021-04-12 17:05:21.849 +02:00 [INF] Applying upgrade step Update NuGet Packages
+2021-04-12 17:05:21.854 +02:00 [INF] Adding package reference: Microsoft.Windows.Compatibility, Version=5.0.2
+2021-04-12 17:05:28.605 +02:00 [INF] Marking package System.Data.DataSetExtensions for removal because it appears to be a transitive dependency
+2021-04-12 17:05:28.608 +02:00 [INF] Marking package System.Management for removal because it appears to be a transitive dependency
+2021-04-12 17:05:28.611 +02:00 [INF] Marking package System.Configuration.ConfigurationManager for removal because it appears to be a transitive dependency
+2021-04-12 17:05:28.705 +02:00 [INF] Removing outdated package reference: System.Data.DataSetExtensions, Version=4.5.0
+2021-04-12 17:05:28.706 +02:00 [INF] Removing outdated package reference: System.Management, Version=5.0.0
+2021-04-12 17:05:28.707 +02:00 [INF] Removing outdated package reference: System.Configuration.ConfigurationManager, Version=5.0.0
+2021-04-12 17:05:31.104 +02:00 [INF] Upgrade step Update NuGet Packages applied successfully
+2021-04-12 17:05:32.335 +02:00 [INF] Initializing upgrade step Add template files
+2021-04-12 17:05:32.368 +02:00 [INF] 0 expected template items needed
+2021-04-12 17:05:32.369 +02:00 [INF] Initializing upgrade step Upgrade app config files
+2021-04-12 17:05:32.380 +02:00 [INF] Found 0 app settings for upgrade: 
+2021-04-12 17:05:32.385 +02:00 [INF] 0 web page namespace imports need upgraded: 
+2021-04-12 17:05:32.388 +02:00 [INF] Initializing upgrade step Update C# source
+2021-04-12 17:05:33.657 +02:00 [INF] Initializing upgrade step Move to next project
+2021-04-12 17:05:38.161 +02:00 [INF] Applying upgrade step Move to next project
+2021-04-12 17:05:38.162 +02:00 [INF] Upgrade step Move to next project applied successfully
+2021-04-12 17:05:44.593 +02:00 [INF] Initializing upgrade step Finalize upgrade
+2021-04-12 17:05:48.302 +02:00 [INF] Applying upgrade step Finalize upgrade
+2021-04-12 17:05:48.303 +02:00 [INF] Upgrade step Finalize upgrade applied successfully
+2021-04-12 17:05:55.301 +02:00 [INF] Upgrade has completed. Please review any changes.
+2021-04-12 17:05:55.302 +02:00 [INF] Saving upgrade progress file at C:\Users\itzto\Documents\Git Projekte\Server-Manager\.upgrade-assistant

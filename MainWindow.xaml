@@ -8,7 +8,7 @@
         Height="493"
         MinHeight="284"
         Width="878"
-        MinWidth="443"
+        MinWidth="648"
         Background="{StaticResource Light Gray}">
 
     <ContentControl Content="{Binding}" />

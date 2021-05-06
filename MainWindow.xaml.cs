@@ -20,11 +20,7 @@ namespace Server_Manager
             ServerCollections.UpdateAll();
         }
 
-        public void OpenMenu()
-        {
-            DataContext = menu;
-            info.OnDeactivate();
-        }
+        public void OpenMenu() => DataContext = menu;
 
         public void OpenInfo(Server server)
         {

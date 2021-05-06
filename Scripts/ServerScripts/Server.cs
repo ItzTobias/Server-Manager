@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Management;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Linq;
+using System.Timers;
 
 namespace Server_Manager.Scripts.ServerScripts
 {
@@ -39,10 +42,10 @@ namespace Server_Manager.Scripts.ServerScripts
             {
                 state = value;
                 Trace.WriteLine("Server is " + value.ToString());
-                stateChange?.Invoke(this, EventArgs.Empty);
+                stateChange?.Invoke(this, new StateChangeEventArgs(value));
             }
         }
-        public EventHandler stateChange;
+        public EventHandler<StateChangeEventArgs> stateChange;
 
         public Server(string name, int arrayIndex)
         {
@@ -61,6 +64,8 @@ namespace Server_Manager.Scripts.ServerScripts
         public Process Process { get; protected set; }
         int processID = -1;
         public readonly StartArgs StartArgs = new StartArgs();
+
+        string lastMessage;
 
         public virtual void Start()
         {
@@ -97,32 +102,56 @@ namespace Server_Manager.Scripts.ServerScripts
             Process.StandardInput.WriteLine("stop");
         }
 
-        private void OnOutputDataReceived(object sender, DataReceivedEventArgs args)
+        void OnOutputDataReceived(object sender, DataReceivedEventArgs args) => Application.Current?.Dispatcher.Invoke(() => WriteToOutput(args.Data));
+
+        void WriteToOutput(string data)
         {
-            string data = args.Data;
             if (string.IsNullOrEmpty(data)) return;
 
-            Trace.WriteLine(data);
-
+            //Trace.WriteLine(data);
             if (data.Contains("] [Server thread/INFO]: Done (")) Application.Current.Dispatcher.Invoke(() => State = State.started);
+
+            if (data == lastMessage && ConsoleLine.Lines.Count > 0) ConsoleLine.IncreaseDupeCount();
+            else ConsoleLine.Add(data);
+
+            lastMessage = data;
         }
-        private void OnProcessExited(object sender, EventArgs args)
+
+        public void WriteLine(string data)
+        {
+            if (state != State.started) return;
+
+            Process.StandardInput.WriteLine(data);
+            ConsoleLine.Add(data, MessageType.highlighted);
+        }
+
+        void OnProcessExited(object sender, EventArgs args)
         {
             Process.Dispose();
-            Application.Current.Dispatcher.Invoke(() => State = State.stopped);
             Process = null;
+            Application.Current?.Dispatcher.Invoke(() => State = State.stopped);
         }
-        
+
         void OnApplicationExit(object sender, EventArgs args)
         {
             if (processID == -1) return;
 
-            try
+            ManagementObjectSearcher processSearcher = new ManagementObjectSearcher
+            ("Select * From Win32_Process Where ParentProcessID=" + processID);
+            ManagementObjectCollection processCollection = processSearcher.Get();
+
+            foreach (ManagementObject mo in processCollection)
             {
-                Process proc = Process.GetProcessById(processID);
-                proc.Kill();
+                Process process = Process.GetProcessById(Convert.ToInt32(mo["ProcessID"]));
+
+                if (process.ProcessName != "javaw")
+                {
+                    Trace.WriteLine(process.ProcessName);
+                    continue;
+                }
+
+                process.Kill();
             }
-            catch { return; }
         }
         #endregion
 
@@ -192,6 +221,37 @@ namespace Server_Manager.Scripts.ServerScripts
 
             File.Copy(path, IconPath);
         }
+        #endregion
+
+        #region Testing
+        readonly Random random = new Random();
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        public void InitRandom(double interval, bool repeatMessage)
+        {
+            Timer timer = new Timer { Interval = interval };
+
+            if (repeatMessage)
+                timer.Elapsed += (object sender, ElapsedEventArgs args) =>
+                    Application.Current?.Dispatcher.Invoke(() => WriteToOutput("[HH:MM:SS] [Thread]: TestMessage"));
+            else
+            {
+                //string[] strings = new string[200000];
+                //for (int i = 0; i < strings.Length; i++) strings[i] = "[HH:MM:SS] [Thread]: " + RandomString();
+
+                int index = 0;
+                timer.Elapsed += (object sender, ElapsedEventArgs args) => Application.Current?.Dispatcher.Invoke(() =>
+                {
+                    if (index > 2000) return;
+                    WriteToOutput("[HH:MM:SS] [Thread] [test]: " + RandomString());
+                    index++;
+                });
+            }
+
+            timer.Start();
+        }
+       
+        string RandomString(int length = 10) => new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
         #endregion
     }
 }

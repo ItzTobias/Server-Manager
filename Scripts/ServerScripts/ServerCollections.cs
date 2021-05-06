@@ -6,12 +6,14 @@ namespace Server_Manager.Scripts.ServerScripts
 {
     public static class ServerCollections
     {
-        public static Vanilla[] Vanilla { get; private set; } = new Vanilla[0];
-        public static Server[] Forge { get; private set; } = new Vanilla[0];
-        public static Server[] Fabric { get; private set; } = new Vanilla[0];
-        public static Server[] Bukkit { get; private set; } = new Vanilla[0];
+        public static Vanilla[] Vanilla { get; private set; } = Array.Empty<Vanilla>();
+        public static Server[] Forge { get; private set; } = Array.Empty<Vanilla>();
+        public static Server[] Fabric { get; private set; } = Array.Empty<Vanilla>();
+        public static Server[] Bukkit { get; private set; } = Array.Empty<Vanilla>();
 
-        public static EventHandler<CollectionUpdateEventArgs> onCollectionUpdate;
+        public static EventHandler<CollectionUpdateEventArgs> OnCollectionUpdate { get => onCollectionUpdate; set => onCollectionUpdate = value; }
+
+        private static EventHandler<CollectionUpdateEventArgs> onCollectionUpdate;
 
         public static void UpdateAll()
         {
@@ -31,19 +33,19 @@ namespace Server_Manager.Scripts.ServerScripts
 
             Vanilla = servers.ToArray();
 
-            onCollectionUpdate?.Invoke(typeof(ServerCollections), new CollectionUpdateEventArgs(CollectionType.Vanilla));
+            OnCollectionUpdate?.Invoke(typeof(ServerCollections), new CollectionUpdateEventArgs(CollectionType.Vanilla));
         }
         public static void UpdateForge()
         {
-            onCollectionUpdate?.Invoke(typeof(ServerCollections), new CollectionUpdateEventArgs(CollectionType.Forge));
+            OnCollectionUpdate?.Invoke(typeof(ServerCollections), new CollectionUpdateEventArgs(CollectionType.Forge));
         }
         public static void UpdateFabric()
         {
-            onCollectionUpdate?.Invoke(typeof(ServerCollections), new CollectionUpdateEventArgs(CollectionType.Fabric));
+            OnCollectionUpdate?.Invoke(typeof(ServerCollections), new CollectionUpdateEventArgs(CollectionType.Fabric));
         }
         public static void UpdateBukkit()
         {
-            onCollectionUpdate?.Invoke(typeof(ServerCollections), new CollectionUpdateEventArgs(CollectionType.Bukkit));
+            OnCollectionUpdate?.Invoke(typeof(ServerCollections), new CollectionUpdateEventArgs(CollectionType.Bukkit));
         }
     }
 }

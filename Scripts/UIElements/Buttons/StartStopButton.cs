@@ -43,7 +43,7 @@ namespace Server_Manager.Scripts.UIElements.Buttons
                     IsEnabled = true;
 
                     //Update Visuals
-                    Background = Colors.redBrush;
+                    Background = App.redBrush;
                     status.Text = "Stop";
                     break;
                 case State.stopping:
@@ -57,7 +57,7 @@ namespace Server_Manager.Scripts.UIElements.Buttons
                     IsEnabled = true;
 
                     //Update Visuals
-                    Background = Colors.greenBrush;
+                    Background = App.greenBrush;
                     status.Text = "Start";
                     break;
                 default:
@@ -70,10 +70,10 @@ namespace Server_Manager.Scripts.UIElements.Buttons
             switch (Server.State)
             {
                 case State.started:
-                    Background = Colors.redHoverBrush;
+                    Background = App.redHoverBrush;
                     break;
                 case State.stopped:
-                    Background = Colors.greenHoverBrush;
+                    Background = App.greenHoverBrush;
                     break;
                 default:
                     break;
@@ -84,10 +84,10 @@ namespace Server_Manager.Scripts.UIElements.Buttons
             switch (Server.State)
             {
                 case State.started:
-                    Background = Colors.redBrush;
+                    Background = App.redBrush;
                     break;
                 case State.stopped:
-                    Background = Colors.greenBrush;
+                    Background = App.greenBrush;
                     break;
                 default:
                     break;

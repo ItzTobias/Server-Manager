@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -17,8 +17,7 @@ namespace Server_Manager.Viewmodels
     public partial class ServerInfo : UserControl
     {
         public Server server;
-        string lastLine = "";
-        int repeatCount = 0;
+        string lastCommand = "";
 
         public ServerInfo() => InitializeComponent();
 
@@ -35,60 +34,34 @@ namespace Server_Manager.Viewmodels
             //Load Properties
             server.UpdateProperties();
             ServerProperties.ItemsSource = server.properties;
-        }
 
-        public void OnDeactivate()
-        {
-            server.stateChange -= OnServerStart;
-        }
+            //Assign ItemsControl of Console
+            CommandLine.PreviewKeyDown += CommandLineKeyDown;
+            ConsoleItemsControl.ItemsSource = ConsoleLine.Lines;
 
-        void OnServerStart(object sender, EventArgs e)
-        {
-            server.Process.OutputDataReceived += (object sender, DataReceivedEventArgs args) =>
+            /*server.InitRandom(10, false); -----TESTING-----
+
+            Timer timer = new Timer
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    bool scrollToEnd = ConsoleScrollViewer.VerticalOffset == ConsoleScrollViewer.ScrollableHeight;
-
-                    BlockCollection blocks = ConsoleTextBlock.Document.Blocks;
-                    string value = args.Data;
-
-                    FlowDocument flowDocument = new FlowDocument();
-                    Paragraph paragraph = new Paragraph();
-                    InlineCollection inlines = paragraph.Inlines;
-
-                    if (blocks.Count == 0)
-                    {
-                        inlines.Add(value);
-                        lastLine = value;
-                    }
-                    else if (value == lastLine)
-                    {
-                        repeatCount++;
-                        if (repeatCount == 1) ((Paragraph)blocks.LastBlock).Inlines.Add("(2)");
-                        //else this.value.Replace(repeatCount.ToString(), (repeatCount + 1).ToString(), this.value.Length - 2, 1);
-                    }
-                    else
-                    {
-                        inlines.Add('\n' + value);
-                        repeatCount = 0;
-                        lastLine = value;
-                    }
-
-                    flowDocument.Blocks.Add(paragraph);
-                    ConsoleTextBlock.Document = flowDocument;
-
-                    if (scrollToEnd) ConsoleScrollViewer.ScrollToEnd();
-                });
-
+                Interval = 1000
             };
+            timer.Elapsed += delegate
+            {
+                Trace.WriteLine(ConsoleLine.Lines.Count);
+            };
+            timer.Start();*/
         }
 
-
+        void SendCommand()
+        {
+            lastCommand = CommandLine.Text;
+            server.WriteLine(CommandLine.Text);
+            CommandLine.Clear();
+        }
 
         #region ButtonEvents
-        void OnBackClick(object sender, EventArgs args) => MainWindow.GetMainWindow.OpenMenu();
-        void OnSaveClick(object sender, EventArgs args)
+        void OnBackClick(object sender, EventArgs e) => MainWindow.GetMainWindow.OpenMenu();
+        void OnSaveClick(object sender, EventArgs e)
         {
             //Save Name
             string newName = ServerName.Text;
@@ -110,8 +83,8 @@ namespace Server_Manager.Viewmodels
 
             server.SaveProperties();
         }
-        void SelectAllText(object sender, EventArgs args) => ((TextBox)sender).SelectAll();
-        void OnChangeServerIconClick(object sender, EventArgs args)
+        void SelectAllText(object sender, EventArgs e) => ((TextBox)sender).SelectAll();
+        void OnChangeServerIconClick(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog
             {
@@ -127,14 +100,14 @@ namespace Server_Manager.Viewmodels
             server.ChangeIcon(dialog.FileName);
             UpdateIcon();
         }
-        void OnDeleteIcon(object sender, EventArgs args)
+        void OnDeleteIcon(object sender, EventArgs e)
         {
             server.ChangeIcon(null);
 
             UpdateIcon();
         }
-        void OpenServerDirectory(object sender, EventArgs args) => Process.Start("explorer.exe", server.ServerDirectory);
-        void DeleteServer(object sender, EventArgs args)
+        void OpenServerDirectory(object sender, EventArgs e) => Process.Start("explorer.exe", server.ServerDirectory);
+        void DeleteServer(object sender, EventArgs e)
         {
             try 
             { 
@@ -142,7 +115,7 @@ namespace Server_Manager.Viewmodels
                 Directory.Delete(server.ServerDirectory, true);
                 MainWindow.GetMainWindow.OpenMenu();
             }
-            catch  (Exception e) { Trace.WriteLine(e.Message); }
+            catch  (Exception ex) { Trace.WriteLine(ex.Message); }
         }
         #endregion
 
@@ -159,6 +132,35 @@ namespace Server_Manager.Viewmodels
                 ChangeServerIcon.Background = new ImageBrush(image);
             }
             else ChangeServerIcon.Background = new ImageBrush(serverIcon);
+        }
+
+        void ConsoleLineAdded(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (ConsoleScrollViewer.VerticalOffset <= 1f) ConsoleScrollViewer.ScrollToEnd();
+        }
+
+        void ClearConsoleOutput(object sender, RoutedEventArgs e) => ConsoleLine.Lines.Clear();
+
+        void ToggleTimeVisibilityOn(object sender, RoutedEventArgs e) => ConsoleLine.SetColumn(0, ColumnAction.Show);
+        void ToggleThreadVisibilityOn(object sender, RoutedEventArgs e) => ConsoleLine.SetColumn(1, ColumnAction.Show);
+        void ToggleTimeVisibilityOff(object sender, RoutedEventArgs e) => ConsoleLine.SetColumn(0, ColumnAction.Hide);
+        void ToggleThreadVisibilityOff(object sender, RoutedEventArgs e) => ConsoleLine.SetColumn(1, ColumnAction.Hide);
+
+        void SendCommand(object sender, RoutedEventArgs e) => SendCommand();
+        private void CommandLineKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Return:
+                    SendCommand();
+                    break;
+                case Key.Up:
+                    Trace.WriteLine("ArrowUp");
+                    CommandLine.Text = lastCommand;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
