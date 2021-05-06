@@ -64,7 +64,7 @@ namespace Server_Manager.Scripts.ServerScripts
         public Process Process { get; protected set; }
         int processID = -1;
         public readonly StartArgs StartArgs = new StartArgs();
-
+        bool hasDone = false;
         string lastMessage;
 
         public virtual void Start()
@@ -88,6 +88,7 @@ namespace Server_Manager.Scripts.ServerScripts
             State = State.starting;
             Process.Start();
 
+            hasDone = false;
             processID = Process.Id;
             Process.BeginOutputReadLine();
 
@@ -103,15 +104,19 @@ namespace Server_Manager.Scripts.ServerScripts
         }
 
         void OnOutputDataReceived(object sender, DataReceivedEventArgs args) => Application.Current?.Dispatcher.Invoke(() => WriteToOutput(args.Data));
-
         void WriteToOutput(string data)
         {
             if (string.IsNullOrEmpty(data)) return;
 
             //Trace.WriteLine(data);
-            if (data.Contains("] [Server thread/INFO]: Done (")) Application.Current.Dispatcher.Invoke(() => State = State.started);
 
             if (data == lastMessage && ConsoleLine.Lines.Count > 0) ConsoleLine.IncreaseDupeCount();
+            else if (!hasDone && data.Contains("] [Server thread/INFO]: Done ("))
+            {
+                hasDone = true;
+                Application.Current.Dispatcher.Invoke(() => State = State.started);
+                ConsoleLine.Add(data, MessageType.green);
+            }
             else ConsoleLine.Add(data);
 
             lastMessage = data;

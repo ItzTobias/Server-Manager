@@ -97,11 +97,7 @@ namespace Server_Manager.Scripts.ServerScripts
             Data = format.ToString();
         }
 
-        public static void Add(string data)
-        {
-            if (data.Contains("] [Server thread/INFO]: Done (")) Add(data, MessageType.green);
-            else Add(data, MessageType.normal);
-        }
+        public static void Add(string data) => Add(data, MessageType.normal);
         public static void Add(string data, MessageType type) => Lines.Add(type switch
             {
                 MessageType.highlighted => new ConsoleLine(data, App.whiteBrush),
