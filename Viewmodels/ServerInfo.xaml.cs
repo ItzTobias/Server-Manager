@@ -17,9 +17,14 @@ namespace Server_Manager.Viewmodels
     public partial class ServerInfo : UserControl
     {
         public Server server;
-        string lastCommand = "";
+        readonly CommandInputManager commandInputManager = new CommandInputManager();
 
-        public ServerInfo() => InitializeComponent();
+        public ServerInfo()
+        {
+            InitializeComponent();
+
+            CommandLine.PreviewKeyDown += CommandLineKeyDown;
+        }
 
         public void OnActivate()
         {
@@ -36,26 +41,25 @@ namespace Server_Manager.Viewmodels
             ServerProperties.ItemsSource = server.properties;
 
             //Assign ItemsControl of Console
-            CommandLine.PreviewKeyDown += CommandLineKeyDown;
             ConsoleItemsControl.ItemsSource = ConsoleLine.Lines;
 
-            /*server.InitRandom(10, false); -----TESTING-----
-
-            Timer timer = new Timer
-            {
-                Interval = 1000
-            };
-            timer.Elapsed += delegate
-            {
-                Trace.WriteLine(ConsoleLine.Lines.Count);
-            };
-            timer.Start();*/
+            //server.InitRandom(10, false);
+            /*
+        Timer timer = new Timer
+        {
+            Interval = 1000
+        };
+        timer.Elapsed += delegate
+        {
+            Trace.WriteLine(ConsoleLine.Lines.Count);
+        };
+        timer.Start();*/
         }
 
         void SendCommand()
         {
-            lastCommand = CommandLine.Text;
-            server.WriteLine(CommandLine.Text);
+            commandInputManager.NewCommand();
+            server.WriteLine(commandInputManager.GetCurrentCommand());
             CommandLine.Clear();
         }
 
@@ -109,13 +113,13 @@ namespace Server_Manager.Viewmodels
         void OpenServerDirectory(object sender, EventArgs e) => Process.Start("explorer.exe", server.ServerDirectory);
         void DeleteServer(object sender, EventArgs e)
         {
-            try 
-            { 
+            try
+            {
                 Menu.VanillaServers.RemoveAt(server.arrayIndex);
                 Directory.Delete(server.ServerDirectory, true);
                 MainWindow.GetMainWindow.OpenMenu();
             }
-            catch  (Exception ex) { Trace.WriteLine(ex.Message); }
+            catch (Exception ex) { Trace.WriteLine(ex.Message); }
         }
         #endregion
 
@@ -147,7 +151,7 @@ namespace Server_Manager.Viewmodels
         void ToggleThreadVisibilityOff(object sender, RoutedEventArgs e) => ConsoleLine.SetColumn(1, ColumnAction.Hide);
 
         void SendCommand(object sender, RoutedEventArgs e) => SendCommand();
-        private void CommandLineKeyDown(object sender, KeyEventArgs e)
+        void CommandLineKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
@@ -155,12 +159,24 @@ namespace Server_Manager.Viewmodels
                     SendCommand();
                     break;
                 case Key.Up:
-                    Trace.WriteLine("ArrowUp");
-                    CommandLine.Text = lastCommand;
+                    commandInputManager.GoBack();
+                    SetCommandLineInputText();
+                    break;
+                case Key.Down:
+                    commandInputManager.GoForward();
+                    SetCommandLineInputText();
                     break;
                 default:
                     break;
             }
         }
+
+        void SetCommandLineInputText()
+        {
+            CommandLine.Text = commandInputManager.GetCurrentCommand();
+            CommandLine.CaretIndex = CommandLine.Text.Length;
+        }
+
+        void CommandLine_TextChanged(object sender, TextChangedEventArgs e) => commandInputManager.EditCurrent(CommandLine.Text);
     }
 }

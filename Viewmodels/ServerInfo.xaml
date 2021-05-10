@@ -675,7 +675,8 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBox Style="{StaticResource BlackTextBox}" 
-                                     x:Name="CommandLine"/>
+                                     x:Name="CommandLine"
+                                     TextChanged="CommandLine_TextChanged"/>
                             <Button Grid.Column="2"
                                     Style="{StaticResource SendButton}" 
                                     Click="SendCommand"/>

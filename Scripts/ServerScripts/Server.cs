@@ -241,14 +241,14 @@ namespace Server_Manager.Scripts.ServerScripts
                     Application.Current?.Dispatcher.Invoke(() => WriteToOutput("[HH:MM:SS] [Thread]: TestMessage"));
             else
             {
-                //string[] strings = new string[200000];
-                //for (int i = 0; i < strings.Length; i++) strings[i] = "[HH:MM:SS] [Thread]: " + RandomString();
+                string[] strings = new string[99999];
+                for (int i = 0; i < strings.Length; i++) strings[i] = "[HH:MM:SS] [Thread]: " + RandomString();
 
                 int index = 0;
                 timer.Elapsed += (object sender, ElapsedEventArgs args) => Application.Current?.Dispatcher.Invoke(() =>
                 {
                     if (index > 2000) return;
-                    WriteToOutput("[HH:MM:SS] [Thread] [test]: " + RandomString());
+                    WriteToOutput(strings[index]);
                     index++;
                 });
             }
