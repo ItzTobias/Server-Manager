@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management;
+using System.Timers;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Linq;
-using System.Timers;
 
 namespace Server_Manager.Scripts.ServerScripts
 {
