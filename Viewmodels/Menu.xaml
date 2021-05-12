@@ -5,59 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:e="clr-namespace:Server_Manager.Scripts.UIElements.Buttons"
              mc:Ignorable="d"
-             FontFamily="{StaticResource NotoSans}">
+             FontFamily="{StaticResource NotoSans}"
+             xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
     <UserControl.Resources>
-        <Style x:Key="MenuButtonWithText"
-               TargetType="{x:Type Button}">
-            <Setter Property="Foreground"
-                    Value="{StaticResource FontColor}" />
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontFamily"
-                    Value="{StaticResource NotoSans}" />
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="0"
-                                Background="{StaticResource Gray}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              Margin="{TemplateBinding Padding}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="true">
-                                <Setter Property="TextBlock.Foreground"
-                                        Value="White" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled"
-                                     Value="False">
-                                <Setter Property="FontWeight"
-                                        Value="SemiBold" />
-                                <Setter Property="TextBlock.Foreground"
-                                        Value="White" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="GreenRectangle"
-               TargetType="{x:Type Rectangle}">
-            <Setter Property="Width"
-                    Value="20" />
-            <Setter Property="Height"
-                    Value="3" />
-            <Setter Property="Fill"
-                    Value="{StaticResource Green}" />
-            <Setter Property="SnapsToDevicePixels"
-                    Value="True" />
-        </Style>
-
         <Style x:Key="MenuGearButton"
                TargetType="{x:Type Button}">
             <Setter Property="Background">
@@ -221,75 +172,37 @@
             </Track>
         </ControlTemplate>
 
-        <!--Unused-->
-        <Style x:Key="Scrollbar_Arrow_Up"
-               TargetType="{x:Type RepeatButton}">
-            <Setter Property="Focusable"
-                    Value="False" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="Command"
-                    Value="ScrollBar.LineUpCommand" />
-            <Setter Property="Background">
-                <Setter.Value>
-                    <ImageBrush ImageSource="Images/Scrollbar/up.png" />
-                </Setter.Value>
-            </Setter>
+        <Style x:Key="ComboBoxToggleButton"
+               TargetType="{x:Type ToggleButton}">
+            <Setter Property="Foreground"
+                    Value="{StaticResource FontColor}" />
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type RepeatButton}">
-                        <Border x:Name="border"
-                                BorderBrush="White"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Background="{TemplateBinding Background}" />
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border x:Name="templateRoot"
+                                Background="{StaticResource Light Gray}"
+                                BorderThickness="1"
+                                BorderBrush="{StaticResource Gray Hover}">
+                            <Border HorizontalAlignment="Right"
+                                    Width="25"
+                                    Margin="0, 0, 0, 2">
+                                <Image x:Name="arrow"
+                                       Source="Images/Arrows/arrow_down.png"
+                                       Width="12.5"
+                                       Height="12.5"/>
+                            </Border>
+                        </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
                                      Value="true">
+                                <Setter Property="Source"
+                                        TargetName="arrow"
+                                        Value="Images/Arrows/arrow_down_hover.png" />
                                 <Setter Property="Background"
-                                        TargetName="border">
-                                    <Setter.Value>
-                                        <ImageBrush ImageSource="Images/Scrollbar/up_hover.png" />
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="BorderThickness"
-                                        Value="1" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="Scrollbar_Arrow_Down"
-               TargetType="{x:Type RepeatButton}">
-            <Setter Property="Focusable"
-                    Value="False" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="Command"
-                    Value="ScrollBar.LineDownCommand" />
-            <Setter Property="Background">
-                <Setter.Value>
-                    <ImageBrush ImageSource="Images/Scrollbar/down.png" />
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type RepeatButton}">
-                        <Border x:Name="border"
-                                BorderBrush="White"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Background="{TemplateBinding Background}" />
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
-                                <Setter Property="Background"
-                                        TargetName="border">
-                                    <Setter.Value>
-                                        <ImageBrush ImageSource="Images/Scrollbar/down_hover.png" />
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="BorderThickness"
-                                        Value="1" />
+                                        TargetName="templateRoot"
+                                        Value="{StaticResource Gray Hover}" />
+                                <Setter Property="Foreground"
+                                        Value="White" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -297,96 +210,151 @@
             </Setter>
         </Style>
 
+        <Style x:Key="ServerComboBox"
+               TargetType="{x:Type ComboBox}">
+            <Setter Property="Background"
+                    Value="{StaticResource Light Gray}" />
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource Gray Hover}" />
+            <Setter Property="Foreground"
+                    Value="{StaticResource FontColor}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid x:Name="templateRoot"
+                              SnapsToDevicePixels="true">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
+                                                  Width="0" />
+                            </Grid.ColumnDefinitions>
+                            <Popup x:Name="PART_Popup"
+                                   AllowsTransparency="true"
+                                   Grid.ColumnSpan="2"
+                                   IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Placement="Bottom">
+
+                                <Border x:Name="dropDownBorder"
+                                        Background="{StaticResource Light Gray}"
+                                        BorderThickness="1"
+                                        BorderBrush="{StaticResource Gray Hover}"
+                                        MinWidth="{Binding ActualWidth, ElementName=templateRoot}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <ScrollViewer x:Name="DropDownScrollViewer">
+                                        <Grid x:Name="grid"
+                                              RenderOptions.ClearTypeHint="Enabled">
+                                            <Canvas x:Name="canvas"
+                                                    HorizontalAlignment="Left"
+                                                    Height="0"
+                                                    VerticalAlignment="Top"
+                                                    Width="0">
+                                                <Rectangle x:Name="opaqueRect"
+                                                           Fill="{Binding Background, ElementName=dropDownBorder}"
+                                                           Height="{Binding ActualHeight, ElementName=dropDownBorder}"
+                                                           Width="{Binding ActualWidth, ElementName=dropDownBorder}" />
+                                            </Canvas>
+                                            <ItemsPresenter x:Name="ItemsPresenter" />
+                                        </Grid>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                            <ToggleButton x:Name="toggleButton"
+                                          Grid.ColumnSpan="2"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Style="{StaticResource ComboBoxToggleButton}" />
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              IsHitTestVisible="false"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="Center"
+                                              TextBlock.FontWeight="SemiBold"
+                                              TextBlock.Foreground="{Binding Foreground, ElementName=toggleButton}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems"
+                                     Value="false">
+                                <Setter Property="Height"
+                                        TargetName="dropDownBorder"
+                                        Value="95" />
+                            </Trigger>
+                            <Trigger Property="ScrollViewer.CanContentScroll"
+                                     SourceName="DropDownScrollViewer"
+                                     Value="false">
+                                <Setter Property="Canvas.Top"
+                                        TargetName="opaqueRect"
+                                        Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}" />
+                                <Setter Property="Canvas.Left"
+                                        TargetName="opaqueRect"
+                                        Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="45" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0"
+              Background="{StaticResource Gray}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition Width="35" />
-                <ColumnDefinition Width="35" />
+                <ColumnDefinition Width="45" />
+                <ColumnDefinition Width="45" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0"
-                    Style="{StaticResource MenuButtonWithText}"
-                    x:Name="TopMenu_Button_Vanilla"
-                    Click="OnClick_Vanilla">
-                <DockPanel Height="35"
-                           VerticalAlignment="Center">
-                    <Rectangle Style="{StaticResource GreenRectangle}"
-                               x:Name="TopMenu_GreenBox_Vanilla"
-                               Visibility="Hidden"
-                               DockPanel.Dock="Bottom"
-                               Height="4" />
-                    <TextBlock Text="Vanilla"
-                               Margin="0, 5, 0, 0"
-                               DockPanel.Dock="Bottom"
-                               FontSize="17.5" />
-                </DockPanel>
-            </Button>
+            <ComboBox Style="{DynamicResource ServerComboBox}"
+                      Width="150"
+                      Margin="9"
+                      HorizontalAlignment="Left"
+                      x:Name="ServerTypesComboBox"
+                      SelectionChanged="ServerTypesComboBox_Selected">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ComboBoxItem}">
+                        <Setter Property="Background"
+                                Value="{StaticResource Light Gray}" />
+                        <Setter Property="Foreground"
+                                Value="{StaticResource FontColor}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                    <Border x:Name="Border"
+                                            Padding="5"
+                                            Background="{TemplateBinding Background}"
+                                            Height="27">
+                                        <ContentPresenter VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="{StaticResource Dark Gray}" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="{StaticResource Gray Hover}" />
+                                            <Setter Property="Foreground"
+                                                    Value="White" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
             <Button Grid.Column="1"
-                    Style="{StaticResource MenuButtonWithText}"
-                    x:Name="TopMenu_Button_Forge"
-                    Click="OnClick_Forge">
-                <DockPanel Height="35"
-                           VerticalAlignment="Center">
-                    <Rectangle Style="{StaticResource GreenRectangle}"
-                               x:Name="TopMenu_GreenBox_Forge"
-                               Visibility="Hidden"
-                               DockPanel.Dock="Bottom"
-                               Height="4" />
-                    <TextBlock Text="Forge"
-                               Margin="0, 5, 0, 0"
-                               DockPanel.Dock="Bottom"
-                               FontSize="17.5" />
-                </DockPanel>
-            </Button>
-            <Button Grid.Column="2"
-                    Style="{StaticResource MenuButtonWithText}"
-                    x:Name="TopMenu_Button_Fabric"
-                    Click="OnClick_Fabric">
-                <DockPanel Height="35"
-                           VerticalAlignment="Center">
-                    <Rectangle Style="{StaticResource GreenRectangle}"
-                               x:Name="TopMenu_GreenBox_Fabric"
-                               Visibility="Hidden"
-                               DockPanel.Dock="Bottom"
-                               Height="4" />
-                    <TextBlock Text="Fabric"
-                               Margin="0, 5, 0, 0"
-                               DockPanel.Dock="Bottom"
-                               FontSize="17.5" />
-                </DockPanel>
-            </Button>
-            <Button Grid.Column="3"
-                    Style="{StaticResource MenuButtonWithText}"
-                    x:Name="TopMenu_Button_Bukkit"
-                    Click="OnClick_Bukkit">
-                <DockPanel Height="35"
-                           VerticalAlignment="Center">
-                    <Rectangle Style="{StaticResource GreenRectangle}"
-                               x:Name="TopMenu_GreenBox_Bukkit"
-                               Visibility="Hidden"
-                               DockPanel.Dock="Bottom"
-                               Height="4" />
-                    <TextBlock Text="Bukkit"
-                               Margin="0, 5, 0, 0"
-                               DockPanel.Dock="Bottom"
-                               FontSize="17.5" />
-                </DockPanel>
-            </Button>
-            <Button Grid.Column="4"
                     Style="{StaticResource MenuPlusButton}"
                     x:Name="TopMenu_Button_AddServer" />
-            <Button Grid.Column="5"
+            <Button Grid.Column="2"
                     Style="{StaticResource MenuGearButton}"
                     x:Name="TopMenu_Button_Settings" />
         </Grid>

@@ -44,8 +44,9 @@ namespace Server_Manager.Viewmodels
 
             ServerCollections.OnCollectionUpdate += OnCollectionUpdate;
             ServerCollections.UpdateAll();
-
-            OnClick_Vanilla(this, null);
+            
+            ServerTypesComboBox.ItemsSource = new ServerType[4] { ServerType.Vanilla, ServerType.Forge, ServerType.Fabric, ServerType .Bukkit};
+            ServerTypesComboBox.SelectedIndex = 0;
         }
 
         void OnCollectionUpdate(object sender, CollectionUpdateEventArgs args)
@@ -77,56 +78,9 @@ namespace Server_Manager.Viewmodels
             MainWindow.GetMainWindow.OpenInfo(server);
         }
 
-        #region TopMenu Tab Functions
-        void OnClick_Vanilla(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Vanilla);
-        void OnClick_Forge(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Forge);
-        void OnClick_Fabric(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Fabric);
-        void OnClick_Bukkit(object sender, RoutedEventArgs e) => ChangeTab(ServerType.Bukkit);
-
-        void ChangeTab(ServerType newServerType)
+        void ServerTypesComboBox_Selected(object sender, RoutedEventArgs e)
         {
-            switch (SelectedServerType)
-            {
-                case ServerType.Vanilla:
-                    TopMenu_GreenBox_Vanilla.Visibility = Visibility.Hidden;
-                    TopMenu_Button_Vanilla.IsEnabled = true;
-                    break;
-                case ServerType.Forge:
-                    TopMenu_GreenBox_Forge.Visibility = Visibility.Hidden;
-                    TopMenu_Button_Forge.IsEnabled = true;
-                    break;
-                case ServerType.Fabric:
-                    TopMenu_GreenBox_Fabric.Visibility = Visibility.Hidden;
-                    TopMenu_Button_Fabric.IsEnabled = true;
-                    break;
-                case ServerType.Bukkit:
-                    TopMenu_GreenBox_Bukkit.Visibility = Visibility.Hidden;
-                    TopMenu_Button_Bukkit.IsEnabled = true;
-                    break;
-            }
-
-            SelectedServerType = newServerType;
-
-            switch (SelectedServerType)
-            {
-                case ServerType.Vanilla:
-                    TopMenu_GreenBox_Vanilla.Visibility = Visibility.Visible;
-                    TopMenu_Button_Vanilla.IsEnabled = false;
-                    break;
-                case ServerType.Forge:
-                    TopMenu_GreenBox_Forge.Visibility = Visibility.Visible;
-                    TopMenu_Button_Forge.IsEnabled = false;
-                    break;
-                case ServerType.Fabric:
-                    TopMenu_GreenBox_Fabric.Visibility = Visibility.Visible;
-                    TopMenu_Button_Fabric.IsEnabled = false;
-                    break;
-                case ServerType.Bukkit:
-                    TopMenu_GreenBox_Bukkit.Visibility = Visibility.Visible;
-                    TopMenu_Button_Bukkit.IsEnabled = false;
-                    break;
-            }
+            SelectedServerType = (ServerType)((ComboBox)sender).SelectedItem;
         }
-        #endregion
     }
 }

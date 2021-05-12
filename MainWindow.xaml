@@ -5,11 +5,12 @@
         x:Class="Server_Manager.MainWindow"
         mc:Ignorable="d"
         Title="Server Manager"
-        Height="493"
-        MinHeight="284"
-        Width="878"
+        Height="498"
+        MinHeight="294"
+        Width="853"
         MinWidth="648"
-        Background="{StaticResource Light Gray}">
+        Background="{StaticResource Light Gray}"
+        SnapsToDevicePixels="True">
 
     <ContentControl Content="{Binding}" />
 </Window>
