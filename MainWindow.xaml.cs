@@ -10,8 +10,8 @@ namespace Server_Manager
     public partial class MainWindow : Window
     {
         public static MainWindow GetMainWindow { get; private set; }
-        public readonly Menu menu = new Menu();
-        public readonly ServerInfo info = new ServerInfo();
+        public readonly Menu menu = new();
+        public readonly ServerInfo info = new();
 
         public static bool WindowsTerminalExists { get; private set; } = true;
 
@@ -20,8 +20,14 @@ namespace Server_Manager
             InitializeComponent();
 
             FindWindowsTerminal(30);
-            if (WindowsTerminalExists) Trace.WriteLine("Windows terminal found");
-            else Trace.WriteLine("Windows terminal not found");
+            if (WindowsTerminalExists)
+            {
+                Trace.WriteLine("Windows terminal found");
+            }
+            else
+            {
+                Trace.WriteLine("Windows terminal not found");
+            }
 
             GetMainWindow = this;
             DataContext = menu;
@@ -29,9 +35,9 @@ namespace Server_Manager
             ServerCollections.UpdateAll();
         }
 
-        static void FindWindowsTerminal(int trys)
+        private static void FindWindowsTerminal(int trys)
         {
-            using Process proc = new Process()
+            using Process proc = new()
             {
                 StartInfo = new ProcessStartInfo("wt.exe")
                 {
@@ -54,12 +60,18 @@ namespace Server_Manager
                         return;
                     }
 
-                    if (i == trys - 1) WindowsTerminalExists = false;
+                    if (i == trys - 1)
+                    {
+                        WindowsTerminalExists = false;
+                    }
                 }
             }
         }
 
-        public void OpenMenu() => DataContext = menu;
+        public void OpenMenu()
+        {
+            DataContext = menu;
+        }
 
         public void OpenInfo(Server server)
         {

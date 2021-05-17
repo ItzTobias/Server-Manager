@@ -4,14 +4,25 @@ namespace Server_Manager.Scripts.ServerScripts
 {
     public class CommandInputManager
     {
-        int index = 1;
-        readonly List<string> commands = new List<string>();
-        bool canEdit = true;
+        private int index = 1;
+        private readonly List<string> commands = new();
+        private bool canEdit = true;
 
-        public CommandInputManager() => NewCommand();
+        public CommandInputManager()
+        {
+            NewCommand();
+        }
 
-        public string GetCurrentCommand() => commands[^index];
-        public void NewCommand() => commands.Add("");
+        public string GetCurrentCommand()
+        {
+            return commands[^index];
+        }
+
+        public void NewCommand()
+        {
+            commands.Add("");
+        }
+
         public void EditCurrent(string command)
         {
             if (canEdit)
@@ -24,13 +35,27 @@ namespace Server_Manager.Scripts.ServerScripts
         }
         public void GoBack()
         {
-            if (index < commands.Count) index++;
-            if (index != 1) canEdit = false;
+            if (index < commands.Count)
+            {
+                index++;
+            }
+
+            if (index != 1)
+            {
+                canEdit = false;
+            }
         }
         public void GoForward()
         {
-            if (index > 1) index--;
-            if (index != 1) canEdit = false;
+            if (index > 1)
+            {
+                index--;
+            }
+
+            if (index != 1)
+            {
+                canEdit = false;
+            }
         }
     }
 }

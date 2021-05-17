@@ -6,6 +6,9 @@ namespace Server_Manager.Scripts.ServerScripts
     {
         public CollectionType collectionType;
 
-        public CollectionUpdateEventArgs(CollectionType collectionType) => this.collectionType = collectionType;
+        public CollectionUpdateEventArgs(CollectionType collectionType)
+        {
+            this.collectionType = collectionType;
+        }
     }
 }

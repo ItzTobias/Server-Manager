@@ -2,7 +2,7 @@
 {
     public class NameValuePair
     {
-        string name;
+        private string name;
         public string Name
         {
             get
@@ -24,6 +24,9 @@
             Value = value;
         }
 
-        public string GetNameUnformatted() => name;
+        public string GetNameUnformatted()
+        {
+            return name;
+        }
     }
 }

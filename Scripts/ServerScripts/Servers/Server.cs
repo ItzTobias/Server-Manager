@@ -16,14 +16,17 @@ namespace Server_Manager.Scripts.ServerScripts
         public string Name { get; protected set; }
         public abstract string ParentDirectory { get; }
         public virtual string JarName { get; } = "server.jar";
-        public string ServerDirectory { get => Path.Combine(ParentDirectory, Name); }
-        string PropertiesPath { get => Path.Combine(ServerDirectory, "server.properties"); }
-        string IconPath { get => Path.Combine(ServerDirectory, "server-icon.png"); }
+        public string ServerDirectory => Path.Combine(ParentDirectory, Name);
+        private string PropertiesPath => Path.Combine(ServerDirectory, "server.properties");
+        private string IconPath => Path.Combine(ServerDirectory, "server-icon.png");
 
         public void ChangeName(string name)
         {
             string newDir = Path.Combine(ParentDirectory, name);
-            if (Directory.Exists(newDir)) return;
+            if (Directory.Exists(newDir))
+            {
+                return;
+            }
 
             Directory.Move(ServerDirectory, newDir);
 
@@ -33,8 +36,7 @@ namespace Server_Manager.Scripts.ServerScripts
         #endregion
 
         public readonly int arrayIndex;
-
-        State state = State.stopped;
+        private State state = State.stopped;
         public State State
         {
             get => state;
@@ -62,14 +64,18 @@ namespace Server_Manager.Scripts.ServerScripts
 
         #region Process
         public Process Process { get; protected set; }
-        int processID = -1;
-        public readonly StartArgs StartArgs = new StartArgs();
-        bool hasDone = false;
-        string lastMessage;
+
+        private int processID = -1;
+        public readonly StartArgs StartArgs = new();
+        private bool hasDone = false;
+        private string lastMessage;
 
         public virtual void Start()
         {
-            if (State != State.stopped) return;
+            if (State != State.stopped)
+            {
+                return;
+            }
 
             Process = new Process
             {
@@ -80,7 +86,7 @@ namespace Server_Manager.Scripts.ServerScripts
                     RedirectStandardOutput = true,
                     UseShellExecute = false
                 },
- 
+
                 EnableRaisingEvents = true
             };
             Process.Exited += OnProcessExited;
@@ -96,53 +102,74 @@ namespace Server_Manager.Scripts.ServerScripts
         }
         public virtual void Stop()
         {
-            if (State != State.started) return;
+            if (State != State.started)
+            {
+                return;
+            }
 
             State = State.stopping;
 
             Process.StandardInput.WriteLine("stop");
         }
 
-        void OnOutputDataReceived(object sender, DataReceivedEventArgs args) => Application.Current?.Dispatcher.Invoke(() => WriteToOutput(args.Data));
-        void WriteToOutput(string data)
+        private void OnOutputDataReceived(object sender, DataReceivedEventArgs args)
         {
-            if (string.IsNullOrEmpty(data)) return;
+            Application.Current?.Dispatcher.Invoke(() => WriteToOutput(args.Data));
+        }
+
+        private void WriteToOutput(string data)
+        {
+            if (string.IsNullOrEmpty(data))
+            {
+                return;
+            }
 
             //Trace.WriteLine(data);
 
-            if (data == lastMessage && ConsoleLine.Lines.Count > 0) ConsoleLine.IncreaseDupeCount();
+            if (data == lastMessage && ConsoleLine.Lines.Count > 0)
+            {
+                ConsoleLine.IncreaseDupeCount();
+            }
             else if (!hasDone && data.Contains("] [Server thread/INFO]: Done ("))
             {
                 hasDone = true;
                 Application.Current.Dispatcher.Invoke(() => State = State.started);
                 ConsoleLine.Add(data, MessageType.green);
             }
-            else ConsoleLine.Add(data);
+            else
+            {
+                ConsoleLine.Add(data);
+            }
 
             lastMessage = data;
         }
 
         public void WriteLine(string data)
         {
-            if (state != State.started) return;
+            if (state != State.started)
+            {
+                return;
+            }
 
             Process.StandardInput.WriteLine(data);
             ConsoleLine.Add(data, MessageType.highlighted);
         }
 
-        void OnProcessExited(object sender, EventArgs args)
+        private void OnProcessExited(object sender, EventArgs args)
         {
             Process.Dispose();
             Process = null;
             Application.Current?.Dispatcher.Invoke(() => State = State.stopped);
         }
 
-        void OnApplicationExit(object sender, EventArgs args)
+        private void OnApplicationExit(object sender, EventArgs args)
         {
-            if (processID == -1) return;
+            if (processID == -1)
+            {
+                return;
+            }
 
-            ManagementObjectSearcher processSearcher = new ManagementObjectSearcher
-            ("Select * From Win32_Process Where ParentProcessID=" + processID);
+            ManagementObjectSearcher processSearcher = new("Select * From Win32_Process Where ParentProcessID=" + processID);
             ManagementObjectCollection processCollection = processSearcher.Get();
 
             foreach (ManagementObject mo in processCollection)
@@ -161,26 +188,37 @@ namespace Server_Manager.Scripts.ServerScripts
         #endregion
 
         #region Properties
-        public List<NameValuePair> properties = new List<NameValuePair>();
+        public List<NameValuePair> properties = new();
 
         public void UpdateProperties()
         {
-            if (!File.Exists(PropertiesPath)) return;
+            if (!File.Exists(PropertiesPath))
+            {
+                return;
+            }
+
             string[] lines = File.ReadAllLines(PropertiesPath);
 
             properties.Clear();
             foreach (var property in lines)
             {
                 string[] nameProperty = property.Split('=');
-                if (nameProperty.Length != 2) continue;
+                if (nameProperty.Length != 2)
+                {
+                    continue;
+                }
+
                 properties.Add(new NameValuePair(nameProperty[0], nameProperty[1]));
             }
         }
         public void SaveProperties()
         {
-            List<string> props = new List<string>();
+            List<string> props = new();
 
-            foreach (var property in properties) props.Add(property.GetNameUnformatted() + '=' + property.Value);
+            foreach (var property in properties)
+            {
+                props.Add(property.GetNameUnformatted() + '=' + property.Value);
+            }
 
             File.WriteAllLines(PropertiesPath, props);
 
@@ -192,9 +230,12 @@ namespace Server_Manager.Scripts.ServerScripts
         {
             get
             {
-                if (!File.Exists(IconPath)) return null;
+                if (!File.Exists(IconPath))
+                {
+                    return null;
+                }
 
-                BitmapImage image = new BitmapImage();
+                BitmapImage image = new();
                 image.BeginInit();
                 image.CacheOption = BitmapCacheOption.OnLoad;
                 image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
@@ -205,10 +246,10 @@ namespace Server_Manager.Scripts.ServerScripts
             }
             set
             {
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                PngBitmapEncoder encoder = new();
                 encoder.Frames.Add(BitmapFrame.Create(value));
 
-                using FileStream stream = new FileStream(IconPath, FileMode.Create);
+                using FileStream stream = new(IconPath, FileMode.Create);
                 encoder.Save(stream);
             }
         }
@@ -220,34 +261,49 @@ namespace Server_Manager.Scripts.ServerScripts
                 File.Delete(IconPath);
                 return;
             }
-            else if (!File.Exists(path)) return;
+            else if (!File.Exists(path))
+            {
+                return;
+            }
 
-            if (File.Exists(IconPath)) File.Delete(IconPath);
+            if (File.Exists(IconPath))
+            {
+                File.Delete(IconPath);
+            }
 
             File.Copy(path, IconPath);
         }
         #endregion
 
         #region Testing
-        readonly Random random = new Random();
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        private readonly Random random = new();
+        private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         public void InitRandom(double interval, bool repeatMessage)
         {
-            Timer timer = new Timer { Interval = interval };
+            Timer timer = new() { Interval = interval };
 
             if (repeatMessage)
+            {
                 timer.Elapsed += (object sender, ElapsedEventArgs args) =>
                     Application.Current?.Dispatcher.Invoke(() => WriteToOutput("[HH:MM:SS] [Thread]: TestMessage"));
+            }
             else
             {
                 string[] strings = new string[99999];
-                for (int i = 0; i < strings.Length; i++) strings[i] = "[HH:MM:SS] [Thread]: " + RandomString();
+                for (int i = 0; i < strings.Length; i++)
+                {
+                    strings[i] = "[HH:MM:SS] [Thread]: " + RandomString();
+                }
 
                 int index = 0;
                 timer.Elapsed += (object sender, ElapsedEventArgs args) => Application.Current?.Dispatcher.Invoke(() =>
                 {
-                    if (index > 2000) return;
+                    if (index > 2000)
+                    {
+                        return;
+                    }
+
                     WriteToOutput(strings[index]);
                     index++;
                 });
@@ -255,8 +311,11 @@ namespace Server_Manager.Scripts.ServerScripts
 
             timer.Start();
         }
-       
-        string RandomString(int length = 10) => new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
+
+        private string RandomString(int length = 10)
+        {
+            return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
         #endregion
     }
 }

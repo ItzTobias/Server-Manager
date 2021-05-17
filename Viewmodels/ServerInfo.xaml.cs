@@ -17,7 +17,7 @@ namespace Server_Manager.Viewmodels
     public partial class ServerInfo : UserControl
     {
         public Server server;
-        readonly CommandInputManager commandInputManager = new CommandInputManager();
+        private readonly CommandInputManager commandInputManager = new();
 
         public ServerInfo()
         {
@@ -56,7 +56,7 @@ namespace Server_Manager.Viewmodels
         timer.Start();*/
         }
 
-        void SendCommand()
+        private void SendCommand()
         {
             commandInputManager.NewCommand();
             server.WriteLine(commandInputManager.GetCurrentCommand());
@@ -64,21 +64,30 @@ namespace Server_Manager.Viewmodels
         }
 
         #region ButtonEvents
-        void OnBackClick(object sender, EventArgs e) => MainWindow.GetMainWindow.OpenMenu();
-        void OnSaveClick(object sender, EventArgs e)
+        private void OnBackClick(object sender, EventArgs e)
+        {
+            MainWindow.GetMainWindow.OpenMenu();
+        }
+
+        private void OnSaveClick(object sender, EventArgs e)
         {
             //Save Name
             string newName = ServerName.Text;
 
             if (server.Name != newName)
+            {
                 server.ChangeName(newName);
+            }
 
             //Save Properties
             for (int i = 0; i < ServerProperties.Items.Count; i++)
             {
                 var container = ServerProperties.ItemContainerGenerator.ContainerFromIndex(i);
 
-                if (container == null) continue;
+                if (container == null)
+                {
+                    continue;
+                }
 
                 var nameValuePair = (NameValuePair)container.GetValue(ContentProperty);
 
@@ -87,10 +96,15 @@ namespace Server_Manager.Viewmodels
 
             server.SaveProperties();
         }
-        void SelectAllText(object sender, EventArgs e) => ((TextBox)sender).SelectAll();
-        void OnChangeServerIconClick(object sender, EventArgs e)
+
+        private void SelectAllText(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog
+            ((TextBox)sender).SelectAll();
+        }
+
+        private void OnChangeServerIconClick(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new()
             {
                 Filter = "PNG-Images (.png)|*.png",
                 DefaultExt = ".png",
@@ -99,19 +113,28 @@ namespace Server_Manager.Viewmodels
 
             bool? result = dialog.ShowDialog();
 
-            if (result != true || dialog.FileName == string.Empty) return;
+            if (result != true || dialog.FileName == string.Empty)
+            {
+                return;
+            }
 
             server.ChangeIcon(dialog.FileName);
             UpdateIcon();
         }
-        void OnDeleteIcon(object sender, EventArgs e)
+
+        private void OnDeleteIcon(object sender, EventArgs e)
         {
             server.ChangeIcon(null);
 
             UpdateIcon();
         }
-        void OpenServerDirectory(object sender, EventArgs e) => Process.Start("explorer.exe", server.ServerDirectory);
-        void DeleteServer(object sender, EventArgs e)
+
+        private void OpenServerDirectory(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", server.ServerDirectory);
+        }
+
+        private void DeleteServer(object sender, EventArgs e)
         {
             try
             {
@@ -123,35 +146,63 @@ namespace Server_Manager.Viewmodels
         }
         #endregion
 
-        void UpdateIcon()
+        private void UpdateIcon()
         {
             BitmapImage serverIcon = server.Icon;
             if (serverIcon == null)
             {
-                BitmapImage image = new BitmapImage();
+                BitmapImage image = new();
                 image.BeginInit();
                 image.CacheOption = BitmapCacheOption.OnLoad;
                 image.UriSource = new Uri("pack://application:,,,/Viewmodels/Images/ServerInfoButtonIcons/default_server.png");
                 image.EndInit();
                 ChangeServerIcon.Background = new ImageBrush(image);
             }
-            else ChangeServerIcon.Background = new ImageBrush(serverIcon);
+            else
+            {
+                ChangeServerIcon.Background = new ImageBrush(serverIcon);
+            }
         }
 
-        void ConsoleLineAdded(object sender, DependencyPropertyChangedEventArgs e)
+        private void ConsoleLineAdded(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (ConsoleScrollViewer.VerticalOffset <= 1f) ConsoleScrollViewer.ScrollToEnd();
+            if (ConsoleScrollViewer.VerticalOffset <= 1f)
+            {
+                ConsoleScrollViewer.ScrollToEnd();
+            }
         }
 
-        void ClearConsoleOutput(object sender, RoutedEventArgs e) => ConsoleLine.Lines.Clear();
+        private void ClearConsoleOutput(object sender, RoutedEventArgs e)
+        {
+            ConsoleLine.Lines.Clear();
+        }
 
-        void ToggleTimeVisibilityOn(object sender, RoutedEventArgs e) => ConsoleLine.SetColumn(0, ColumnAction.Show);
-        void ToggleThreadVisibilityOn(object sender, RoutedEventArgs e) => ConsoleLine.SetColumn(1, ColumnAction.Show);
-        void ToggleTimeVisibilityOff(object sender, RoutedEventArgs e) => ConsoleLine.SetColumn(0, ColumnAction.Hide);
-        void ToggleThreadVisibilityOff(object sender, RoutedEventArgs e) => ConsoleLine.SetColumn(1, ColumnAction.Hide);
+        private void ToggleTimeVisibilityOn(object sender, RoutedEventArgs e)
+        {
+            ConsoleLine.SetColumn(0, ColumnAction.Show);
+        }
 
-        void SendCommand(object sender, RoutedEventArgs e) => SendCommand();
-        void CommandLineKeyDown(object sender, KeyEventArgs e)
+        private void ToggleThreadVisibilityOn(object sender, RoutedEventArgs e)
+        {
+            ConsoleLine.SetColumn(1, ColumnAction.Show);
+        }
+
+        private void ToggleTimeVisibilityOff(object sender, RoutedEventArgs e)
+        {
+            ConsoleLine.SetColumn(0, ColumnAction.Hide);
+        }
+
+        private void ToggleThreadVisibilityOff(object sender, RoutedEventArgs e)
+        {
+            ConsoleLine.SetColumn(1, ColumnAction.Hide);
+        }
+
+        private void SendCommand(object sender, RoutedEventArgs e)
+        {
+            SendCommand();
+        }
+
+        private void CommandLineKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
@@ -171,12 +222,15 @@ namespace Server_Manager.Viewmodels
             }
         }
 
-        void SetCommandLineInputText()
+        private void SetCommandLineInputText()
         {
             CommandLine.Text = commandInputManager.GetCurrentCommand();
             CommandLine.CaretIndex = CommandLine.Text.Length;
         }
 
-        void CommandLine_TextChanged(object sender, TextChangedEventArgs e) => commandInputManager.EditCurrent(CommandLine.Text);
+        private void CommandLine_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            commandInputManager.EditCurrent(CommandLine.Text);
+        }
     }
 }

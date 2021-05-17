@@ -6,7 +6,7 @@ namespace Server_Manager.Scripts.ServerScripts
 {
     public class Vanilla : Server
     {
-        public override string ParentDirectory { get => Path.Combine(Settings.Default.SERVERS_PATH, "Vanilla"); }
+        public override string ParentDirectory => Path.Combine(Settings.Default.SERVERS_PATH, "Vanilla");
 
         public Vanilla(string name, int arrayIndex) : base(name, arrayIndex) { }
 

@@ -8,7 +8,11 @@
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Platforms>AnyCPU;x64</Platforms>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Colors.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\NotoSans-hinted\NotoSans-Black.ttf" />
     <Resource Include="Fonts\NotoSans-hinted\NotoSans-BlackItalic.ttf" />
@@ -30,9 +34,6 @@
     <Resource Include="Fonts\NotoSans-hinted\NotoSans-ThinItalic.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\Backgrounds\end_portal.png" />
-    <Resource Include="Viewmodels\Images\Backgrounds\village.png" />
-    <Resource Include="Viewmodels\Images\circle.png" />
     <Resource Include="Viewmodels\Images\TopMenu\gear_white.png" />
     <Resource Include="Viewmodels\Images\none.png" />
     <Resource Include="Viewmodels\Images\outline.png" />
@@ -47,13 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Viewmodels\Images\TopMenu\plus_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Colors.txt" />
-    <Resource Include="Viewmodels\Images\Scrollbar\down.png" />
-    <Resource Include="Viewmodels\Images\Scrollbar\down_hover.png" />
-    <Resource Include="Viewmodels\Images\Scrollbar\up_hover.png" />
-    <Resource Include="Viewmodels\Images\Scrollbar\up.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\NotoSans-hinted\LICENSE_OFL.txt" />
@@ -101,6 +95,10 @@
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 </Project>

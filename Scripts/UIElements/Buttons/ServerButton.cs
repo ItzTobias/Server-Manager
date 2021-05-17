@@ -14,8 +14,8 @@ namespace Server_Manager.Scripts.UIElements.Buttons
 
         public Server Server
         {
-            get { return (Server)GetValue(ServerProperty); }
-            set { SetValue(ServerProperty, value); }
+            get => (Server)GetValue(ServerProperty);
+            set => SetValue(ServerProperty, value);
         }
 
         public ServerButton() : base() { }

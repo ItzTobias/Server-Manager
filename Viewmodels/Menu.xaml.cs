@@ -13,7 +13,7 @@ namespace Server_Manager.Viewmodels
     /// </summary>
     public partial class Menu : UserControl
     {
-        ServerType selectedServerType = ServerType.Vanilla;
+        private ServerType selectedServerType = ServerType.Vanilla;
         public ServerType SelectedServerType
         {
             get => selectedServerType;
@@ -44,12 +44,12 @@ namespace Server_Manager.Viewmodels
 
             ServerCollections.OnCollectionUpdate += OnCollectionUpdate;
             ServerCollections.UpdateAll();
-            
-            ServerTypesComboBox.ItemsSource = new ServerType[4] { ServerType.Vanilla, ServerType.Forge, ServerType.Fabric, ServerType .Bukkit};
+
+            ServerTypesComboBox.ItemsSource = new ServerType[4] { ServerType.Vanilla, ServerType.Forge, ServerType.Fabric, ServerType.Bukkit };
             ServerTypesComboBox.SelectedIndex = 0;
         }
 
-        void OnCollectionUpdate(object sender, CollectionUpdateEventArgs args)
+        private void OnCollectionUpdate(object sender, CollectionUpdateEventArgs args)
         {
             switch (args.collectionType)
             {
@@ -78,7 +78,7 @@ namespace Server_Manager.Viewmodels
             MainWindow.GetMainWindow.OpenInfo(server);
         }
 
-        void ServerTypesComboBox_Selected(object sender, RoutedEventArgs e)
+        private void ServerTypesComboBox_Selected(object sender, RoutedEventArgs e)
         {
             SelectedServerType = (ServerType)((ComboBox)sender).SelectedItem;
         }

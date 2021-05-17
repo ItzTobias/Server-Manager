@@ -24,12 +24,14 @@ namespace Server_Manager.Scripts.ServerScripts
         }
         public static void UpdateVanilla()
         {
-            List<Vanilla> servers = new List<Vanilla>();
+            List<Vanilla> servers = new();
 
             string[] vanillaServers = Directory.GetDirectories(new Vanilla("", -1).ParentDirectory);
 
             for (int i = 0; i < vanillaServers.Length; i++)
+            {
                 servers.Add(new Vanilla(Path.GetFileName(vanillaServers[i]), i));
+            }
 
             Vanilla = servers.ToArray();
 
