@@ -1,6 +1,6 @@
 ﻿namespace Server_Manager.Scripts.ServerScripts
 {
-    public enum State
+    public enum State_old
     {
         starting,
         started,

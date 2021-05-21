@@ -4,13 +4,13 @@ using System.Windows.Controls;
 
 namespace Server_Manager.Scripts.UIElements.Buttons
 {
-    public class ServerButton : Button
+    public class ServerButton_old : Button
     {
         public static readonly DependencyProperty ServerProperty =
             DependencyProperty.Register(
             "Server",
             typeof(Server),
-            typeof(ServerButton));
+            typeof(ServerButton_old));
 
         public Server Server
         {
@@ -18,6 +18,6 @@ namespace Server_Manager.Scripts.UIElements.Buttons
             set => SetValue(ServerProperty, value);
         }
 
-        public ServerButton() : base() { }
+        public ServerButton_old() : base() { }
     }
 }

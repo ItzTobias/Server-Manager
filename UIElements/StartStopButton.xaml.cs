@@ -1,42 +1,64 @@
-﻿using Server_Manager.Scripts.ServerScripts;
+﻿using ServerManagerFramework;
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Server_Manager.Scripts.UIElements.Buttons
+namespace Server_Manager.UIElements
 {
-    public class StartStopButton : ServerButton
+    /// <summary>
+    /// Interaction logic for StartStopButton.xaml
+    /// </summary>
+    public partial class StartStopButton : Button
     {
-        private TextBlock status;
+        public static readonly DependencyProperty IServerProperty =
+            DependencyProperty.Register(
+                "IServer",
+                typeof(IServer),
+                typeof(StartStopButton));
+
+        public IServer IServer
+        {
+            get
+            {
+                return (IServer)GetValue(IServerProperty);
+            }
+            set
+            {
+                SetValue(IServerProperty, value);
+            }
+        }
+
         private static readonly SolidColorBrush greenLoadingBackground = new(new Color() { R = 0, G = 107, B = 53, A = 255 });
         private static readonly SolidColorBrush redLoadingBackground = new(new Color() { R = 188, G = 45, B = 0, A = 255 });
 
         public StartStopButton() : base()
         {
+            InitializeComponent();
+
             MouseEnter += OnMouseEnter;
             MouseLeave += OnMouseLeave;
             Click += SwitchState;
+
             Loaded += delegate
             {
-                status = (TextBlock)Content;
-
-                if (Server != null)
+                if (IServer != null)
                 {
-                    Server.stateChange += OnStateChange;
+                    IServer.StateChanged += OnStateChanged;
                 }
 
-                OnStateChange(Server, EventArgs.Empty);
+                OnStateChanged(this, new StateChangedEventArgs(State.stopped));
             };
         }
 
-        private void OnStateChange(object sender, EventArgs args)
+        private void OnStateChanged(object sender, StateChangedEventArgs e)
         {
-            if (status == null || Server == null || Server != (Server)sender)
+            if (IServer == null)
             {
                 return;
             }
 
-            switch (Server.State)
+            switch (IServer.State)
             {
                 case State.starting:
                     IsEnabled = false;
@@ -73,7 +95,7 @@ namespace Server_Manager.Scripts.UIElements.Buttons
 
         private void OnMouseEnter(object o, EventArgs e)
         {
-            switch (Server.State)
+            switch (IServer.State)
             {
                 case State.started:
                     Background = App.redHoverBrush;
@@ -88,7 +110,7 @@ namespace Server_Manager.Scripts.UIElements.Buttons
 
         private void OnMouseLeave(object o, EventArgs e)
         {
-            switch (Server.State)
+            switch (IServer.State)
             {
                 case State.started:
                     Background = App.redBrush;
@@ -103,13 +125,13 @@ namespace Server_Manager.Scripts.UIElements.Buttons
 
         private void SwitchState(object o, EventArgs e)
         {
-            switch (Server.State)
+            switch (IServer.State)
             {
                 case State.started:
-                    Server.Stop();
+                    IServer.Stop();
                     break;
                 case State.stopped:
-                    Server.Start();
+                    IServer.Start();
                     break;
                 default:
                     break;

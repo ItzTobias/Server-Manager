@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server_Manager.Properties;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -26,7 +27,7 @@ namespace Server_Manager.Scripts.ServerScripts
         {
             List<Vanilla> servers = new();
 
-            string[] vanillaServers = Directory.GetDirectories(new Vanilla("", -1).ParentDirectory);
+            string[] vanillaServers = Directory.GetDirectories(Settings.Default.SERVERS_PATH);
 
             for (int i = 0; i < vanillaServers.Length; i++)
             {

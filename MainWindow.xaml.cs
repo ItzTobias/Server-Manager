@@ -1,5 +1,6 @@
-﻿using Server_Manager.Scripts.ServerScripts;
-using Server_Manager.Viewmodels;
+﻿using Server_Manager.Scripts.Initialization;
+using Server_Manager.Scripts.ServerScripts;
+using Server_Manager.UIElements;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -10,14 +11,19 @@ namespace Server_Manager
     public partial class MainWindow : Window
     {
         public static MainWindow GetMainWindow { get; private set; }
-        public readonly Menu menu = new();
-        public readonly ServerInfo info = new();
+        public Menu Menu { get; }
+        public ServerInfo Info { get; }
 
         public static bool WindowsTerminalExists { get; private set; } = true;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Initializer.Initialize();
+
+            Menu = new Menu();
+            //Info = new ServerInfo();
 
             FindWindowsTerminal(30);
             if (WindowsTerminalExists)
@@ -30,7 +36,7 @@ namespace Server_Manager
             }
 
             GetMainWindow = this;
-            DataContext = menu;
+            DataContext = Menu;
 
             ServerCollections.UpdateAll();
         }
@@ -70,14 +76,19 @@ namespace Server_Manager
 
         public void OpenMenu()
         {
-            DataContext = menu;
+            DataContext = Menu;
         }
 
         public void OpenInfo(Server server)
         {
-            DataContext = info;
-            info.server = server;
-            info.OnActivate();
+            DataContext = Info;
+            Info.server = server;
+            Info.OnActivate();
+        }
+
+        public void Minimize()
+        {
+            WindowState = WindowState.Minimized;
         }
     }
 }

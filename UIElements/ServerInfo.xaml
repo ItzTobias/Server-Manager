@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Server_Manager.Viewmodels.ServerInfo"
+﻿<UserControl x:Class="Server_Manager.UIElements.ServerInfo"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -259,7 +259,7 @@
                TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="Images/ServerInfoButtonIcons/default_server.png" />
+                    <ImageBrush ImageSource="Images/ServerInfo/default_server.png" />
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
@@ -288,7 +288,7 @@
                TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="Images/ServerInfoButtonIcons/delete_icon.png" />
+                    <ImageBrush ImageSource="Images/ServerInfo/delete_icon.png" />
                 </Setter.Value>
             </Setter>
             <Setter Property="BorderBrush"
@@ -309,7 +309,7 @@
                                      Value="True">
                                 <Setter Property="Background">
                                     <Setter.Value>
-                                        <ImageBrush ImageSource="Images/ServerInfoButtonIcons/delete_icon_hover.png" />
+                                        <ImageBrush ImageSource="Images/ServerInfo/delete_icon_hover.png" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -322,7 +322,7 @@
                TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush ImageSource="Images/ServerInfoButtonIcons/send.png" />
+                    <ImageBrush ImageSource="Images/ServerInfo/send.png" />
                 </Setter.Value>
             </Setter>
             <Setter Property="BorderBrush"
@@ -345,7 +345,7 @@
                                 <Setter Property="Background"
                                         TargetName="border">
                                     <Setter.Value>
-                                        <ImageBrush ImageSource="Images/ServerInfoButtonIcons/send_hover.png" />
+                                        <ImageBrush ImageSource="Images/ServerInfo/send_hover.png" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -714,17 +714,6 @@
                            FontWeight="Bold"
                            Text="Back" />
             </Button>
-
-            <e:StartStopButton Grid.Column="1"
-                               x:Name="StartStopButton"
-                               Style="{StaticResource StartStopButton}"
-                               Width="190"
-                               Height="30"
-                               Margin="5">
-                <TextBlock FontSize="13"
-                           TextAlignment="Center"
-                           FontWeight="Bold" />
-            </e:StartStopButton>
 
             <Button Grid.Column="2"
                     Width="100"

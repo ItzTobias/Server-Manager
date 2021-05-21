@@ -1,0 +1,33 @@
+﻿<Button x:Class="Server_Manager.UIElements.ServerButton"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Server_Manager.UIElements"
+        xmlns:buttons="clr-namespace:Server_Manager.Scripts.UIElements.Buttons"
+        mc:Ignorable="d"
+        Style="{StaticResource ServersButton}">
+
+    <Grid Width="200"
+          Height="200">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0"
+                   Text="{Binding ServerName, RelativeSource={RelativeSource AncestorType=Button}}"
+                   FontSize="13"
+                   Margin="5"
+                   Height="30"
+                   TextAlignment="Center"/>
+
+        <local:StartStopButton Grid.Row="2"
+                               IServer="{Binding IHasDirectory, RelativeSource={RelativeSource AncestorType=Button}}"
+                               x:Name="StartStopButton"
+                               Height="25"
+                               Margin="5"
+                               Visibility="hidden" />
+    </Grid>
+</Button>

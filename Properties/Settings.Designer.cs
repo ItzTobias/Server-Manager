@@ -25,7 +25,7 @@ namespace Server_Manager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\itzto\\AppData\\Roaming\\.minecraft\\Server-Manager\\Servers")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\itzto\\AppData\\Roaming\\Server-Manager\\Servers")]
         public string SERVERS_PATH {
             get {
                 return ((string)(this["SERVERS_PATH"]));
@@ -37,7 +37,7 @@ namespace Server_Manager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\itzto\\AppData\\Roaming\\.minecraft\\Server-Manager\\Backups")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\itzto\\AppData\\Roaming\\Server-Manager\\Backups")]
         public string BACKUPS_PATH {
             get {
                 return ((string)(this["BACKUPS_PATH"]));

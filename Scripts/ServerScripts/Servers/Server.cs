@@ -36,8 +36,8 @@ namespace Server_Manager.Scripts.ServerScripts
         #endregion
 
         public readonly int arrayIndex;
-        private State state = State.stopped;
-        public State State
+        private State_old state = State_old.stopped;
+        public State_old State
         {
             get => state;
             protected set
@@ -72,7 +72,7 @@ namespace Server_Manager.Scripts.ServerScripts
 
         public virtual void Start()
         {
-            if (State != State.stopped)
+            if (State != State_old.stopped)
             {
                 return;
             }
@@ -91,7 +91,7 @@ namespace Server_Manager.Scripts.ServerScripts
             };
             Process.Exited += OnProcessExited;
 
-            State = State.starting;
+            State = State_old.starting;
             Process.Start();
 
             hasDone = false;
@@ -102,12 +102,12 @@ namespace Server_Manager.Scripts.ServerScripts
         }
         public virtual void Stop()
         {
-            if (State != State.started)
+            if (State != State_old.started)
             {
                 return;
             }
 
-            State = State.stopping;
+            State = State_old.stopping;
 
             Process.StandardInput.WriteLine("stop");
         }
@@ -133,7 +133,7 @@ namespace Server_Manager.Scripts.ServerScripts
             else if (!hasDone && data.Contains("] [Server thread/INFO]: Done ("))
             {
                 hasDone = true;
-                Application.Current.Dispatcher.Invoke(() => State = State.started);
+                Application.Current.Dispatcher.Invoke(() => State = State_old.started);
                 ConsoleLine.Add(data, MessageType.green);
             }
             else
@@ -146,7 +146,7 @@ namespace Server_Manager.Scripts.ServerScripts
 
         public void WriteLine(string data)
         {
-            if (state != State.started)
+            if (state != State_old.started)
             {
                 return;
             }
@@ -159,7 +159,7 @@ namespace Server_Manager.Scripts.ServerScripts
         {
             Process.Dispose();
             Process = null;
-            Application.Current?.Dispatcher.Invoke(() => State = State.stopped);
+            Application.Current?.Dispatcher.Invoke(() => State = State_old.stopped);
         }
 
         private void OnApplicationExit(object sender, EventArgs args)

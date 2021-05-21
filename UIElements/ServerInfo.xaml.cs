@@ -9,7 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Server_Manager.Viewmodels
+namespace Server_Manager.UIElements
 {
     /// <summary>
     /// Interaktionslogik für ServerInfo.xaml
@@ -28,7 +28,7 @@ namespace Server_Manager.Viewmodels
 
         public void OnActivate()
         {
-            StartStopButton.Server = server;
+            //StartStopButton.Server = server;
 
             //Load Name
             ServerName.Text = server.Name;
@@ -138,7 +138,7 @@ namespace Server_Manager.Viewmodels
         {
             try
             {
-                Menu.VanillaServers.RemoveAt(server.arrayIndex);
+                //TODO: DOESNT WORK Menu.VanillaServers.RemoveAt(server.arrayIndex);
                 Directory.Delete(server.ServerDirectory, true);
                 MainWindow.GetMainWindow.OpenMenu();
             }

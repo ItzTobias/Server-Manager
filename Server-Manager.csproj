@@ -12,6 +12,18 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Colors.txt" />
+    <None Remove="UIElements\Images\Arrows\arrow_down.png" />
+    <None Remove="UIElements\Images\Arrows\arrow_down_hover.png" />
+    <None Remove="UIElements\Images\Arrows\arrow_up.png" />
+    <None Remove="UIElements\Images\Arrows\arrow_up_hover.png" />
+    <None Remove="UIElements\Images\Menu\close.png" />
+    <None Remove="UIElements\Images\Menu\close_hover.png" />
+    <None Remove="UIElements\Images\Menu\maximize.png" />
+    <None Remove="UIElements\Images\Menu\maximize_hover.png" />
+    <None Remove="UIElements\Images\Menu\minimize.png" />
+    <None Remove="UIElements\Images\Menu\minimize_hover.png" />
+    <None Remove="UIElements\Images\Menu\restore.png" />
+    <None Remove="UIElements\Images\Menu\restore_hover.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\NotoSans-hinted\NotoSans-Black.ttf" />
@@ -32,50 +44,52 @@
     <Resource Include="Fonts\NotoSans-hinted\NotoSans-SemiBoldItalic.ttf" />
     <Resource Include="Fonts\NotoSans-hinted\NotoSans-Thin.ttf" />
     <Resource Include="Fonts\NotoSans-hinted\NotoSans-ThinItalic.ttf" />
+    <Resource Include="UIElements\Images\Arrows\arrow_down.png" />
+    <Resource Include="UIElements\Images\Arrows\arrow_down_hover.png" />
+    <Resource Include="UIElements\Images\Arrows\arrow_up.png" />
+    <Resource Include="UIElements\Images\Arrows\arrow_up_hover.png" />
+    <Resource Include="UIElements\Images\Menu\close.png" />
+    <Resource Include="UIElements\Images\Menu\close_hover.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\TopMenu\gear_white.png" />
-    <Resource Include="Viewmodels\Images\none.png" />
-    <Resource Include="Viewmodels\Images\outline.png" />
-    <Resource Include="Viewmodels\Images\pixel.png" />
-    <Resource Include="Viewmodels\Images\X.png" />
+    <Resource Include="UIElements\Images\Menu\gear_hover.png" />
+    <Resource Include="UIElements\Images\Menu\maximize.png" />
+    <Resource Include="UIElements\Images\Menu\maximize_hover.png" />
+    <Resource Include="UIElements\Images\Menu\minimize.png" />
+    <Resource Include="UIElements\Images\Menu\minimize_hover.png" />
+    <Resource Include="UIElements\Images\Menu\restore.png" />
+    <Resource Include="UIElements\Images\Menu\restore_hover.png" />
+    <Resource Include="UIElements\Images\none.png" />
+    <Resource Include="UIElements\Images\outline.png" />
+    <Resource Include="UIElements\Images\pixel.png" />
+    <Resource Include="UIElements\Images\X.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\TopMenu\gear_gray.png" />
+    <Resource Include="UIElements\Images\Menu\gear.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\TopMenu\plus_gray.png" />
+    <Resource Include="UIElements\Images\Menu\plus.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\TopMenu\plus_white.png" />
+    <Resource Include="UIElements\Images\Menu\plus_hover.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\NotoSans-hinted\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\Arrows\arrow_down.png" />
+    <Resource Include="UIElements\Images\ServerInfo\default_server.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\Arrows\arrow_down_hover.png" />
+    <Resource Include="UIElements\Images\ServerInfo\send.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\Arrows\arrow_up.png" />
-    <Resource Include="Viewmodels\Images\Arrows\arrow_up_hover.png" />
+    <Resource Include="UIElements\Images\ServerInfo\delete_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\default_server.png" />
+    <Resource Include="UIElements\Images\ServerInfo\delete_icon_hover.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\send.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\delete_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\delete_icon_hover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Viewmodels\Images\ServerInfoButtonIcons\send_hover.png" />
+    <Resource Include="UIElements\Images\ServerInfo\send_hover.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
@@ -100,5 +114,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ServerManagerFramework">
+      <HintPath>..\..\..\AppData\Roaming\Server-Manager\ServerManagerFramework.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

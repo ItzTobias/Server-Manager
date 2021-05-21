@@ -5,12 +5,20 @@
         x:Class="Server_Manager.MainWindow"
         mc:Ignorable="d"
         Title="Server Manager"
-        Height="498"
-        MinHeight="294"
-        Width="853"
-        MinWidth="648"
+        Height="470"
+        MinHeight="259"
+        Width="858"
+        MinWidth="440"
         Background="{StaticResource Light Gray}"
-        SnapsToDevicePixels="True">
+        SnapsToDevicePixels="True"
+        WindowStyle="SingleBorderWindow"
+        BorderBrush="{StaticResource Light Gray}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      GlassFrameThickness="0"
+                      CornerRadius="0" />
+    </WindowChrome.WindowChrome>
 
     <ContentControl Content="{Binding}" />
 </Window>
