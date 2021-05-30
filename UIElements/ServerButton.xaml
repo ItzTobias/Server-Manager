@@ -5,8 +5,66 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Server_Manager.UIElements"
         xmlns:buttons="clr-namespace:Server_Manager.Scripts.UIElements.Buttons"
-        mc:Ignorable="d"
-        Style="{StaticResource ServersButton}">
+        mc:Ignorable="d">
+    <Button.Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Foreground"
+                    Value="{StaticResource FontColor}" />
+            <Setter Property="FontSize"
+                    Value="20" />
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderBrush="{StaticResource Gray Hover}"
+                                BorderThickness="1"
+                                Background="{StaticResource Light Gray}"
+                                x:Name="border">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="true">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -Light Gray}"
+                                                            To="{StaticResource -Gray Hover}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="border"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -Gray Hover}"
+                                                            To="{StaticResource -Light Gray}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="border"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Button.Style>
 
     <Grid Width="200"
           Height="200">

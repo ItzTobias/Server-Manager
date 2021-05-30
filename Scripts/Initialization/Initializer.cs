@@ -10,6 +10,7 @@ namespace Server_Manager.Scripts.Initialization
 {
     public static class Initializer
     {
+        public static event EventHandler Initialized;
         public static HasDirectoryList HasDirectoryList { get; } = new HasDirectoryList();
         public static void Initialize()
         {
@@ -21,11 +22,8 @@ namespace Server_Manager.Scripts.Initialization
         }
 
         #region Addons
-        private const string MAINADDONSPATH = @"\Server-Manager\.Addons";
-        private const string ADDONSPATH = @"\Server-Manager\Addons";
-
-        private static string MainAddonsPath => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + MAINADDONSPATH;
         private static string AddonsPath => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + ADDONSPATH;
+        private const string ADDONSPATH = @"\Server-Manager\Addons";
 
         private static readonly List<Assembly> addons = new();
 
@@ -35,7 +33,9 @@ namespace Server_Manager.Scripts.Initialization
 
             List<string> assemblyLocations = new();
 
-            foreach (string addonPath in GetAddonPaths())
+            string[] addonPaths = Directory.GetFiles(AddonsPath);
+
+            foreach (string addonPath in addonPaths)
             {
                 Assembly addonAssembly = Assembly.LoadFrom(addonPath);
 
@@ -46,34 +46,11 @@ namespace Server_Manager.Scripts.Initialization
 
                 assemblyLocations.Add(addonAssembly.Location);
 
-
-                addons.Add(addonAssembly);
-            }
-
-            foreach (string addonPath in GetMainAddonPaths())
-            {
-                Assembly addonAssembly = Assembly.LoadFrom(addonPath);
-
-                if (assemblyLocations.Contains(addonAssembly.Location))
-                {
-                    continue;
-                }
-
-                assemblyLocations.Add(addonAssembly.Location);
 
                 addons.Add(addonAssembly);
             }
 
             Trace.WriteLine("AddonsLoader: Loaded " + addons.Count + " addons.");
-        }
-
-        private static string[] GetAddonPaths()
-        {
-            return Directory.GetFiles(AddonsPath);
-        }
-        private static string[] GetMainAddonPaths()
-        {
-            return Directory.GetFiles(MainAddonsPath);
         }
         #endregion
 
@@ -183,6 +160,8 @@ namespace Server_Manager.Scripts.Initialization
                     goto noTypeName;
                 }
             }
+
+            Initialized?.Invoke(typeof(Initializer), EventArgs.Empty);
         }
 
         public static List<NameTypePair> InitializeComboBox()

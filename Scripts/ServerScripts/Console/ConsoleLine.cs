@@ -122,10 +122,10 @@ namespace Server_Manager.Scripts.ServerScripts
         {
             Lines.Add(type switch
             {
-                MessageType.highlighted => new ConsoleLine(data, App.whiteBrush),
-                MessageType.error => new ConsoleLine(data, App.redBrush),
-                MessageType.green => new ConsoleLine(data, App.greenBrush),
-                _ => new ConsoleLine(data, App.fontColorBrush),
+                MessageType.highlighted => new ConsoleLine(data, App.WhiteBrush),
+                MessageType.error => new ConsoleLine(data, App.RedBrush),
+                MessageType.green => new ConsoleLine(data, App.GreenBrush),
+                _ => new ConsoleLine(data, App.FontColorBrush),
             });
         }
 

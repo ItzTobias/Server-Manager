@@ -4,11 +4,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Server_Manager.UIElements"
-        mc:Ignorable="d"
-        Style="{StaticResource StartStopButton}">
+        mc:Ignorable="d" >
 
-    <TextBlock x:Name="status"
-               FontSize="13"
-               TextAlignment="Center"
-               FontWeight="Bold" />
+    <Button.Template>
+        <ControlTemplate TargetType="{x:Type Button}">
+            <Border BorderThickness="0"
+                    Background="{TemplateBinding Background}">
+                <ContentPresenter HorizontalAlignment="Stretch"
+                                  Margin="0"
+                                  VerticalAlignment="Stretch" />
+            </Border>
+        </ControlTemplate>
+    </Button.Template>
+
+    <Grid x:Name="Overlay">
+        <TextBlock x:Name="Status"
+                   FontSize="13"
+                   TextAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"
+                   Text="Start" />
+    </Grid>
 </Button>

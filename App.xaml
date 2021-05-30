@@ -7,11 +7,15 @@
     <Application.Resources>
         <FontFamily x:Key="NotoSans">/Fonts/NotoSans-hinted/#Noto Sans</FontFamily>
         <!--#region Colors-->
+        <Color x:Key="-Hover"></Color>
+        
         <Color x:Key="-Red">#d44410</Color>
         <Color x:Key="-Red Hover">#e7643a</Color>
-
+        <Color x:Key="-Stopping">#BC2D00</Color>
+        
         <Color x:Key="-Green">#008540</Color>
         <Color x:Key="-Green Hover">#0dd164</Color>
+        <Color x:Key="-Starting">#006B35</Color>
 
         <Color x:Key="-Input">#121212</Color>
         <Color x:Key="-InputHover">#0E0E0E</Color>
@@ -33,9 +37,11 @@
         <!--#region Brushes-->
         <Brush x:Key="Red">#d44410</Brush>
         <Brush x:Key="Red Hover">#e7643a</Brush>
-
+        <Brush x:Key="Stopping">#BC2D00</Brush>
+        
         <Brush x:Key="Green">#008540</Brush>
         <Brush x:Key="Green Hover">#0dd164</Brush>
+        <Brush x:Key="Starting">#006B35</Brush>
         
         <Brush x:Key="Input">#121212</Brush>
         <Brush x:Key="InputHover">#0E0E0E</Brush>
@@ -139,61 +145,6 @@
                                      Value="True">
                                 <Setter Property="Background"
                                         Value="{StaticResource Red Hover}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="StartStopButton"
-               TargetType="{x:Type Button}">
-            <Setter Property="Background"
-                    Value="{StaticResource Green}" />
-            <Setter Property="Foreground"
-                    Value="White" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="BorderBrush"
-                    Value="White" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              Margin="{TemplateBinding Padding}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="ServersButton"
-               TargetType="{x:Type Button}">
-            <Setter Property="Foreground"
-                    Value="White" />
-            <Setter Property="FontSize"
-                    Value="20" />
-            <Setter Property="FontWeight"
-                    Value="Bold" />
-            <Setter Property="Background"
-                    Value="Transparent" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderBrush="{StaticResource Gray Hover}"
-                                BorderThickness="1"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              Margin="{TemplateBinding Padding}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
-                                <Setter Property="Background"
-                                        Value="{StaticResource Gray Hover}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

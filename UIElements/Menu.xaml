@@ -10,56 +10,91 @@
              xmlns:uielements="clr-namespace:Server_Manager.UIElements">
 
     <UserControl.Resources>
-        <Style x:Key="SettingsButton"
+        <Style x:Key="AddServerButton"
                TargetType="{x:Type Button}">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <ImageBrush ImageSource="Images/Menu/gear.png" />
-                </Setter.Value>
-            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="border"
-                                BorderThickness="0"
-                                Background="{TemplateBinding Background}" />
+                                Background="{StaticResource Gray}">
+                            <Path Data="M 10,0 10,20 M 0,10 20,10"
+                                  Stroke="{StaticResource FontColor}"
+                                  StrokeThickness="2"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  x:Name="icon" />
+                        </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
                                      Value="true">
-                                <Setter Property="Background"
-                                        TargetName="border">
-                                    <Setter.Value>
-                                        <ImageBrush ImageSource="Images/Menu/gear_hover.png" />
-                                    </Setter.Value>
-                                </Setter>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="icon"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="icon"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="AddServerButton"
+        <Style x:Key="SettingsButton"
                TargetType="{x:Type Button}">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <ImageBrush ImageSource="Images/Menu/plus.png" />
-                </Setter.Value>
-            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="border"
-                                BorderThickness="0"
-                                Background="{TemplateBinding Background}" />
+                                Background="{StaticResource Gray}">
+                            <Path Data="M 9.9815938,0.99999499 A 9.4233496,9.0000742 0 0 0 7.9202348,1.2214791 2.8270035,2.7000205 0 0 1 8.1153288,2.205863 2.8270035,2.7000205 0 0 1 5.2883243,4.9058849 2.8270035,2.7000205 0 0 1 3.0797264,3.8898606 9.4233496,9.0000742 0 0 0 0.99996319,7.3299294 2.8270035,2.7000205 0 0 1 3.4036534,10.000068 a 2.8270035,2.7000205 0 0 1 -2.40185,2.668384 9.4233496,9.0000742 0 0 0 2.077923,3.440067 2.8270035,2.7000205 0 0 1 2.2085979,-1.014266 2.8270035,2.7000205 0 0 1 2.8270045,2.700021 2.8270035,2.7000205 0 0 1 -0.195094,0.984384 9.4233496,9.0000742 0 0 0 2.079763,0.221483 9.4233496,9.0000742 0 0 0 2.0797632,-0.22324 2.8270035,2.7000205 0 0 1 -0.195093,-0.982627 2.8270035,2.7000205 0 0 1 2.827006,-2.700021 2.8270035,2.7000205 0 0 1 2.206758,1.014266 9.4233496,9.0000742 0 0 0 2.079761,-3.43831 2.8270035,2.7000205 0 0 1 -2.401849,-2.670138 2.8270035,2.7000205 0 0 1 2.403689,-2.6701404 9.4233496,9.0000742 0 0 0 -2.077921,-3.4383103 2.8270035,2.7000205 0 0 1 -2.210438,1.0142665 2.8270035,2.7000205 0 0 1 -2.827006,-2.7000219 2.8270035,2.7000205 0 0 1 0.195092,-0.984384 9.4233496,9.0000742 0 0 0 -2.0797642,-0.22148401 9.4233496,9.0000742 0 0 0 -0.01844,-1.9e-6 z m 0.01841,5.85004901 a 3.2981706,3.1500241 0 0 1 3.298176,3.150027 3.2981706,3.1500241 0 0 1 -3.298174,3.150025 3.2981706,3.1500241 0 0 1 -3.2981729,-3.150025 3.2981706,3.1500241 0 0 1 3.2981789,-3.150027 z"
+                                  StrokeThickness="2"
+                                  StrokeLineJoin="Round"
+                                  Stroke="{StaticResource FontColor}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  x:Name="icon" />
+                        </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
                                      Value="true">
-                                <Setter Property="Background"
-                                        TargetName="border">
-                                    <Setter.Value>
-                                        <ImageBrush ImageSource="Images/Menu/plus_hover.png" />
-                                    </Setter.Value>
-                                </Setter>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="icon"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="icon"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -68,26 +103,45 @@
         </Style>
         <Style x:Key="MinimizeButton"
                TargetType="{x:Type Button}">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <ImageBrush ImageSource="Images/Menu/minimize.png" />
-                </Setter.Value>
-            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="border"
-                                BorderThickness="5"
-                                Background="{TemplateBinding Background}" />
+                                Background="{StaticResource Gray}">
+                            <Path Data="M 1,16 16,16"
+                                  Stroke="{StaticResource FontColor}"
+                                  StrokeThickness="2"
+                                  StrokeStartLineCap="Square"
+                                  StrokeEndLineCap="Square"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  x:Name="icon" />
+                        </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
                                      Value="true">
-                                <Setter Property="Background"
-                                        TargetName="border">
-                                    <Setter.Value>
-                                        <ImageBrush ImageSource="Images/Menu/minimize_hover.png" />
-                                    </Setter.Value>
-                                </Setter>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="icon"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="icon"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -96,26 +150,55 @@
         </Style>
         <Style x:Key="CloseButton"
                TargetType="{x:Type Button}">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <ImageBrush ImageSource="Images/Menu/close.png" />
-                </Setter.Value>
-            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="border"
-                                BorderThickness="5"
-                                Background="{TemplateBinding Background}" />
+                                Background="{StaticResource Gray}">
+                            <Path Data="M 1,1 16,16 M 1,16 16,1"
+                                  Stroke="{StaticResource FontColor}"
+                                  StrokeThickness="2"
+                                  StrokeStartLineCap="Triangle"
+                                  StrokeEndLineCap="Triangle"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  x:Name="icon" />
+                        </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
                                      Value="true">
-                                <Setter Property="Background"
-                                        TargetName="border">
-                                    <Setter.Value>
-                                        <ImageBrush ImageSource="Images/Menu/close_hover.png" />
-                                    </Setter.Value>
-                                </Setter>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="icon"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="{StaticResource -Gray}"
+                                                            To="{StaticResource -Red}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="border"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="icon"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="{StaticResource -Red}"
+                                                            To="{StaticResource -Gray}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="border"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -202,27 +285,61 @@
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                         <Border x:Name="templateRoot"
                                 Background="{StaticResource Light Gray}"
-                                BorderThickness="1"
+                                BorderThickness="2"
                                 BorderBrush="{StaticResource Gray Hover}">
                             <Border HorizontalAlignment="Right"
                                     Width="25">
-                                <Image x:Name="arrow"
-                                       Source="Images/Arrows/arrow_down.png"
-                                       Width="12.5"
-                                       Height="12.5"/>
+                                    <Path x:Name="arrow"
+                                          Data="M 7,10 12.5,15 18,10"
+                                          StrokeStartLineCap="Triangle"
+                                          StrokeEndLineCap="Triangle"
+                                          StrokeThickness="2"
+                                          Stroke="{StaticResource FontColor}" />
                             </Border>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
                                      Value="true">
-                                <Setter Property="Source"
-                                        TargetName="arrow"
-                                        Value="Images/Arrows/arrow_down_hover.png" />
-                                <Setter Property="Background"
-                                        TargetName="templateRoot"
-                                        Value="{StaticResource Gray Hover}" />
-                                <Setter Property="Foreground"
-                                        Value="White" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="arrow"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="{StaticResource -Gray}"
+                                                            To="{StaticResource -Gray Hover}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="templateRoot"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="arrow"
+                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="{StaticResource -Gray Hover}"
+                                                            To="{StaticResource -Gray}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetName="templateRoot"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -291,7 +408,7 @@
                                               VerticalAlignment="Center"
                                               TextBlock.FontWeight="SemiBold"
                                               TextBlock.FontSize="13"
-                                              TextBlock.Foreground="{Binding Foreground, ElementName=toggleButton}"/>
+                                              TextBlock.Foreground="{Binding Foreground, ElementName=toggleButton}" />
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="HasItems"
@@ -356,11 +473,77 @@
                                         </Trigger>
                                         <Trigger Property="IsMouseOver"
                                                  Value="True">
-                                            <Setter Property="Background"
-                                                    Value="{StaticResource Gray Hover}" />
-                                            <Setter Property="Foreground"
-                                                    Value="White" />
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation To="White"
+                                                                        Duration="0:0:0.1"
+                                                                        Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation To="{StaticResource -FontColor}"
+                                                                        Duration="0:0:0.1"
+                                                                        Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
                                         </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected"
+                                                           Value="True" />
+                                                <Condition Property="IsMouseOver"
+                                                           Value="True" />
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation To="{StaticResource -Gray}"
+                                                                        Duration="0:0:0.1"
+                                                                        Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiTrigger.EnterActions>
+                                            <MultiTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation To="{StaticResource -Dark Gray}"
+                                                                        Duration="0:0:0.1"
+                                                                        Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiTrigger.ExitActions>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected"
+                                                           Value="False" />
+                                                <Condition Property="IsMouseOver"
+                                                           Value="True" />
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation To="{StaticResource -Gray Hover}"
+                                                                        Duration="0:0:0.1"
+                                                                        Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiTrigger.EnterActions>
+                                            <MultiTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation To="{StaticResource -Light Gray}"
+                                                                        Duration="0:0:0.1"
+                                                                        Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiTrigger.ExitActions>
+                                        </MultiTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -368,29 +551,28 @@
                     </Style>
                 </ComboBox.ItemContainerStyle>
             </ComboBox>
+            <Button DockPanel.Dock="Left"
+                    Width="45"
+                    Style="{StaticResource AddServerButton}" />
+            <Button DockPanel.Dock="Left"
+                    Width="45"
+                    Style="{StaticResource SettingsButton}" />
 
             <Button DockPanel.Dock="Right"
-                    Margin="0, 0, 5, 0"
                     Width="45"
                     Height="45"
-                    Style="{StaticResource CloseButton}" 
+                    Style="{StaticResource CloseButton}"
                     Click="Close" />
             <uielements:MaximizeRestoreButton DockPanel.Dock="Right"
-                    Width="45"
-                    Height="45" />
+                                              Width="45"
+                                              Height="45"
+                                              x:Name="MaximizeRestoreButton" />
             <Button DockPanel.Dock="Right"
                     Width="45"
                     Height="45"
                     Style="{StaticResource MinimizeButton}"
-                    Click="Minimize" />
-            <Button DockPanel.Dock="Right"
-                    Margin="0, 0, 10, 0"
-                    Width="45"
-                    Style="{StaticResource SettingsButton}" />
-            <Button DockPanel.Dock="Right"
-                    Width="45"
-                    HorizontalAlignment="Right"
-                    Style="{StaticResource AddServerButton}" />
+                    Click="Minimize"
+                    HorizontalAlignment="Right" />
         </DockPanel>
 
         <ScrollViewer Grid.Row="1"
@@ -406,7 +588,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <uielements:ServerButton IHasDirectory="{Binding}"
-                                                 Margin="5, 5, 0, 0"/>
+                                                 Margin="5, 5, 0, 0" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

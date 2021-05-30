@@ -20,8 +20,6 @@ namespace Server_Manager
         {
             InitializeComponent();
 
-            Initializer.Initialize();
-
             Menu = new Menu();
             //Info = new ServerInfo();
 
@@ -35,10 +33,29 @@ namespace Server_Manager
                 Trace.WriteLine("Windows terminal not found");
             }
 
+            StateChanged += WindowStateChanged;
             GetMainWindow = this;
             DataContext = Menu;
 
-            ServerCollections.UpdateAll();
+            Loaded += (object sender, RoutedEventArgs e) =>
+            {
+                Initializer.Initialize();
+            };
+        }
+
+        private void WindowStateChanged(object sender, EventArgs e)
+        {
+            switch (WindowState)
+            {
+                case WindowState.Normal:
+                    BorderThickness = new Thickness(0);
+                    break;
+                case WindowState.Maximized:
+                    BorderThickness = new Thickness(5);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private static void FindWindowsTerminal(int trys)

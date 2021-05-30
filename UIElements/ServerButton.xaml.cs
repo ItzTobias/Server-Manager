@@ -1,5 +1,7 @@
 ﻿using ServerManagerFramework;
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,6 +61,80 @@ namespace Server_Manager.UIElements
                     StartStopButton.Visibility = Visibility.Visible;
                 }
             };
+        }
+
+        private void FilledDarkGreen(object sender, EventArgs e)
+        {
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+
+            Control element = sender as Control;
+
+            element.Background = App.StartingBrush;
+        }
+        private void FilledRed(object sender, EventArgs e)
+        {
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+
+            Control element = sender as Control;
+
+            element.Background = App.RedBrush;
+        }
+        private void FilledDarkRed(object sender, EventArgs e)
+        {
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+
+            Control element = sender as Control;
+
+            element.Background = App.StoppingBrush;
+        }
+        private void FilledGreen(object sender, EventArgs e)
+        {
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+            Trace.WriteLine("FFFFFFFFFFFFFFFFFFFFFFFFILLED");
+
+            Control element = sender as Control;
+
+            element.Background = App.GreenBrush;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Trace.WriteLine("Open Server UI");
         }
     }
 }

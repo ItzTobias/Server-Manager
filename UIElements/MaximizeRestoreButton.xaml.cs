@@ -16,35 +16,27 @@ namespace Server_Manager.UIElements
 
         public bool IsMaximizing
         {
-            get
-            {
-                return (bool)GetValue(IsMaximizingProperty);
-            }
-            set
-            {
-                SetValue(IsMaximizingProperty, value);
-            }
+            get => (bool)GetValue(IsMaximizingProperty);
+            set => SetValue(IsMaximizingProperty, value);
         }
 
         public MaximizeRestoreButton()
         {
             InitializeComponent();
-
-            Click += Maximize;
         }
 
-        public void Maximize(object sender, RoutedEventArgs e)
+        public void ChangeState(object sender, RoutedEventArgs e)
         {
-            switch (MainWindow.GetMainWindow.WindowState)
+            MainWindow mainWindow = MainWindow.GetMainWindow;
+
+            switch (mainWindow.WindowState)
             {
                 case WindowState.Normal:
-                    MainWindow.GetMainWindow.BorderThickness = new Thickness(5);
-                    MainWindow.GetMainWindow.WindowState = WindowState.Maximized;
+                    mainWindow.WindowState = WindowState.Maximized;
                     IsMaximizing = true;
                     break;
                 case WindowState.Maximized:
-                    MainWindow.GetMainWindow.BorderThickness = new Thickness(0);
-                    MainWindow.GetMainWindow.WindowState = WindowState.Normal;
+                    mainWindow.WindowState = WindowState.Normal;
                     IsMaximizing = false;
                     break;
                 default:
