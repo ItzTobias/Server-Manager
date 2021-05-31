@@ -1,40 +1,64 @@
 ﻿using ServerManagerFramework;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Server_Manager.Scripts.Initialization
 {
     //ComboBoxButtonAttribute in Initializer.InitializeComboBox()
     public class HasDirectoryList
     {
-        private List<IHasDirectory> ServerProcesses { get; } = new();
+        private Type currentFilter = typeof(IHasDirectory);
+        private readonly List<IHasDirectory> serverProcesses = new();
+        public ObservableCollection<IHasDirectory> ServerProcesses { get; private set; } = new();
 
         public void AddServer(IHasDirectory server)
         {
-            ServerProcesses.Add(server);
+            serverProcesses.Add(server);
+
+            if (server.GetType().IsAssignableTo(currentFilter))
+            {
+                Trace.WriteLine("t");
+                ServerProcesses.Add(server);
+            }
         }
         public void RemoveServer(IHasDirectory server)
         {
-            ServerProcesses.Remove(server);
+            serverProcesses.Remove(server); 
+            
+            if (currentFilter.Equals(server.GetType())) ServerProcesses.Remove(server);
         }
 
         public bool Contains(IHasDirectory server)
         {
-            return ServerProcesses.Contains(server);
+            return serverProcesses.Contains(server);
         }
 
-        public IHasDirectory[] GetServers<T>()
+        public void ResetFilter()
         {
-            return ServerProcesses.FindAll(t => t.GetType() == typeof(T)).ToArray();
-        }
-        public IHasDirectory[] GetServers(Type serverType)
-        {
-            return ServerProcesses.FindAll(t => t.GetType() == serverType).ToArray();
+            ServerProcesses.Clear();
+            serverProcesses.ForEach(ServerProcesses.Add);
+            currentFilter = typeof(IHasDirectory);
         }
 
-        public IHasDirectory[] GetServers()
+        public void Filter<T>()
         {
-            return ServerProcesses.ToArray();
+            List<IHasDirectory> filteredProcesses = serverProcesses.FindAll(t => t is T);
+
+            ServerProcesses.Clear();
+            filteredProcesses.ForEach(ServerProcesses.Add);
+
+            currentFilter = typeof(T);
+        }
+        public void Filter(Type serverType)
+        {
+            List<IHasDirectory> filteredProcesses = serverProcesses.FindAll(t => t.GetType() == serverType);
+
+            ServerProcesses.Clear();
+            filteredProcesses.ForEach(ServerProcesses.Add);
+
+            currentFilter = serverType;
         }
     }
 }

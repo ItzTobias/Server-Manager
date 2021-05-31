@@ -18,18 +18,16 @@
     <ApplicationIcon>alphaLogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="UIElements\Images\Arrows\**" />
-    <Compile Remove="UIElements\Images\Menu\**" />
-    <EmbeddedResource Remove="UIElements\Images\Arrows\**" />
-    <EmbeddedResource Remove="UIElements\Images\Menu\**" />
-    <None Remove="UIElements\Images\Arrows\**" />
-    <None Remove="UIElements\Images\Menu\**" />
+    <Compile Remove="_old\**" />
+    <EmbeddedResource Remove="_old\**" />
+    <None Remove="_old\**" />
+    <Page Remove="_old\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="D:\Pictures\alphaLogo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <Page Remove="UIElements\Images\Arrows\**" />
-    <Page Remove="UIElements\Images\Menu\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Colors.txt" />
@@ -56,21 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\NotoSans-hinted\LICENSE_OFL.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="UIElements\Images\ServerInfo\default_server.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="UIElements\Images\ServerInfo\send.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="UIElements\Images\ServerInfo\delete_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="UIElements\Images\ServerInfo\delete_icon_hover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="UIElements\Images\ServerInfo\send_hover.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />

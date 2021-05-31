@@ -1,5 +1,4 @@
 ﻿using Server_Manager.Scripts.Initialization;
-using Server_Manager.Scripts.ServerScripts;
 using Server_Manager.UIElements;
 using System;
 using System.ComponentModel;
@@ -12,7 +11,6 @@ namespace Server_Manager
     {
         public static MainWindow GetMainWindow { get; private set; }
         public Menu Menu { get; }
-        public ServerInfo Info { get; }
 
         public static bool WindowsTerminalExists { get; private set; } = true;
 
@@ -21,7 +19,6 @@ namespace Server_Manager
             InitializeComponent();
 
             Menu = new Menu();
-            //Info = new ServerInfo();
 
             //FindWindowsTerminal(30);
             //if (WindowsTerminalExists)
@@ -94,13 +91,6 @@ namespace Server_Manager
         public void OpenMenu()
         {
             DataContext = Menu;
-        }
-
-        public void OpenInfo(Server server)
-        {
-            DataContext = Info;
-            Info.server = server;
-            Info.OnActivate();
         }
 
         public void Minimize()

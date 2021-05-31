@@ -1,9 +1,9 @@
 ﻿using Server_Manager.Scripts;
 using Server_Manager.Scripts.Initialization;
-using Server_Manager.Scripts.ServerScripts;
-using Server_Manager.Scripts.UIElements.Buttons;
+using ServerManagerFramework;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,13 +25,20 @@ namespace Server_Manager.UIElements
                     ServerTypesComboBox.SelectedIndex = 0;
                     ServerTypesComboBox.ItemsSource = Initializer.InitializeComboBox();
                 };
+
+            ServersUI.ItemsSource = Initializer.HasDirectoryList.ServerProcesses;
         }
 
-        public void OpenServerInfo(object sender, RoutedEventArgs args)
+        public void AddServer(object sender, RoutedEventArgs args)
         {
-            Server server = ((ServerButton_old)sender).Server;
+            Guid g = Guid.NewGuid();
+            string GuidString = Convert.ToBase64String(g.ToByteArray());
+            GuidString = GuidString.Replace("=", "-");
+            GuidString = GuidString.Replace("+", "_");
 
-            MainWindow.GetMainWindow.OpenInfo(server);
+            string serverPath = Path.Combine(Initializer.ServersPath, GuidString);
+            Directory.CreateDirectory(serverPath);
+            Initializer.InitializeServer(new Tuple<string, Config>(Path.Combine(serverPath, "server-manager.prefs"), new Config()));
         }
 
         private void ServerTypesComboBox_Selected(object sender, RoutedEventArgs e)
@@ -43,11 +50,11 @@ namespace Server_Manager.UIElements
 
             if (serverType == null)
             {
-                ServersUI.ItemsSource = Initializer.HasDirectoryList.GetServers();
+                Initializer.HasDirectoryList.ResetFilter();
             }
             else
             {
-                ServersUI.ItemsSource = Initializer.HasDirectoryList.GetServers(serverType);
+                Initializer.HasDirectoryList.Filter(serverType);
             }
         }
         private void DragMove(object sender, MouseButtonEventArgs e)
