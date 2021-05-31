@@ -4,7 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:e="clr-namespace:Server_Manager.Scripts.UIElements.Buttons"
-             mc:Ignorable="d"
+             xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             mc:Ignorable="PresentationOptions"
              FontFamily="{StaticResource NotoSans}"
              xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
              xmlns:uielements="clr-namespace:Server_Manager.UIElements">
@@ -57,18 +58,32 @@
         </Style>
         <Style x:Key="SettingsButton"
                TargetType="{x:Type Button}">
+            <Style.Resources>
+                <PathGeometry x:Key="RotationPath"
+                              Figures="M 10,100 C 35,0 135,0 160,100 180,190 285,200 310,100" />
+            </Style.Resources>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="border"
                                 Background="{StaticResource Gray}">
-                            <Path Data="M 9.9815938,0.99999499 A 9.4233496,9.0000742 0 0 0 7.9202348,1.2214791 2.8270035,2.7000205 0 0 1 8.1153288,2.205863 2.8270035,2.7000205 0 0 1 5.2883243,4.9058849 2.8270035,2.7000205 0 0 1 3.0797264,3.8898606 9.4233496,9.0000742 0 0 0 0.99996319,7.3299294 2.8270035,2.7000205 0 0 1 3.4036534,10.000068 a 2.8270035,2.7000205 0 0 1 -2.40185,2.668384 9.4233496,9.0000742 0 0 0 2.077923,3.440067 2.8270035,2.7000205 0 0 1 2.2085979,-1.014266 2.8270035,2.7000205 0 0 1 2.8270045,2.700021 2.8270035,2.7000205 0 0 1 -0.195094,0.984384 9.4233496,9.0000742 0 0 0 2.079763,0.221483 9.4233496,9.0000742 0 0 0 2.0797632,-0.22324 2.8270035,2.7000205 0 0 1 -0.195093,-0.982627 2.8270035,2.7000205 0 0 1 2.827006,-2.700021 2.8270035,2.7000205 0 0 1 2.206758,1.014266 9.4233496,9.0000742 0 0 0 2.079761,-3.43831 2.8270035,2.7000205 0 0 1 -2.401849,-2.670138 2.8270035,2.7000205 0 0 1 2.403689,-2.6701404 9.4233496,9.0000742 0 0 0 -2.077921,-3.4383103 2.8270035,2.7000205 0 0 1 -2.210438,1.0142665 2.8270035,2.7000205 0 0 1 -2.827006,-2.7000219 2.8270035,2.7000205 0 0 1 0.195092,-0.984384 9.4233496,9.0000742 0 0 0 -2.0797642,-0.22148401 9.4233496,9.0000742 0 0 0 -0.01844,-1.9e-6 z m 0.01841,5.85004901 a 3.2981706,3.1500241 0 0 1 3.298176,3.150027 3.2981706,3.1500241 0 0 1 -3.298174,3.150025 3.2981706,3.1500241 0 0 1 -3.2981729,-3.150025 3.2981706,3.1500241 0 0 1 3.2981789,-3.150027 z"
+                            <Path Data="M 10,1 A 9.4,9 0 0 0 7.9,1.2 2.8,2.7 0 0 1 8.1,2.2 2.8,2.7 0 0 1 5.3,4.9 2.8,2.7 0 0 1 3,3.9 9.4,9 0 0 0 1,7.3 2.8,2.7 0 0 1 3.4,10 a 2.8,2.7 0 0 1 -2.4,2.7 9.4,9 0 0 0 2,3.4 2.8,2.7 0 0 1 2.2,-1 2.8,2.7 0 0 1 2.8,2.7 2.8,2.7 0 0 1 -0.2,1 9.4,9 0 0 0 2,0.2 9.4,9 0 0 0 2,-0.2 2.8,2.7 0 0 1 -0.2,-1 2.8,2.7 0 0 1 2.8,-2.7 2.8,2.7 0 0 1 2.2,1 9.4,9 0 0 0 2,-3.4 2.8,2.7 0 0 1 -2.4,-2.7 2.8,2.7 0 0 1 2.4,-2.7 9.4,9 0 0 0 -2,-3.4 2.8,2.7 0 0 1 -2.2,1 2.8,2 0 0 1 -2.8,-2.7 2.8,2.7 0 0 1 0.2,-1 9.4,9 0 0 0 -2,-0.2 9.4,9 0 0 0 0, 1 z m 0,5.9 a 3.3,3.2 0 0 1 3.3,3.2 3.3,3.2 0 0 1 -3.3,3.2 3.3,3.2 0 0 1 -3.3,-3.2 3.3,3.2 0 0 1 3.3,-3.2 z"
                                   StrokeThickness="2"
                                   StrokeLineJoin="Round"
                                   Stroke="{StaticResource FontColor}"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  x:Name="icon" />
+                                  x:Name="icon"
+                                  RenderTransformOrigin=".5, .5">
+
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1.025" 
+                                                        ScaleY="1.025"/>
+                                        <RotateTransform x:Name="rotation" />
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
@@ -81,6 +96,11 @@
                                                             Duration="0:0:0.1"
                                                             Storyboard.TargetName="icon"
                                                             Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                            <DoubleAnimation Storyboard.TargetName="rotation"
+                                                             Storyboard.TargetProperty="Angle"
+                                                             Duration="0:0:0.1"
+                                                             From="0"
+                                                             To="45" />
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.EnterActions>
@@ -92,6 +112,11 @@
                                                             Duration="0:0:0.1"
                                                             Storyboard.TargetName="icon"
                                                             Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
+                                            <DoubleAnimation Storyboard.TargetName="rotation"
+                                                             Storyboard.TargetProperty="Angle"
+                                                             Duration="0:0:0.1"
+                                                             From="45"
+                                                             To="0" />
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.ExitActions>

@@ -27,7 +27,7 @@ namespace Server_Manager.Scripts.ServerScripts
         {
             List<Vanilla> servers = new();
 
-            string[] vanillaServers = Directory.GetDirectories(Settings.Default.SERVERS_PATH);
+            string[] vanillaServers = Directory.GetDirectories("SERVERS_PATH");
 
             for (int i = 0; i < vanillaServers.Length; i++)
             {

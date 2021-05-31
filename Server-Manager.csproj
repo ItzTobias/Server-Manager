@@ -7,8 +7,15 @@
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>AnyCPU;x64;x86</Platforms>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Authors>Tobias</Authors>
+    <PackageProjectUrl>https://github.com/ItzTobias/Server-Manager</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ItzTobias/Server-Manager</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageIcon>alphaLogo.png</PackageIcon>
+    <PackageIconUrl />
+    <ApplicationIcon>alphaLogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="UIElements\Images\Arrows\**" />
@@ -17,6 +24,10 @@
     <EmbeddedResource Remove="UIElements\Images\Menu\**" />
     <None Remove="UIElements\Images\Arrows\**" />
     <None Remove="UIElements\Images\Menu\**" />
+    <None Include="D:\Pictures\alphaLogo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <Page Remove="UIElements\Images\Arrows\**" />
     <Page Remove="UIElements\Images\Menu\**" />
   </ItemGroup>
@@ -69,17 +80,6 @@
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <None Include="LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

@@ -23,15 +23,15 @@ namespace Server_Manager
             Menu = new Menu();
             //Info = new ServerInfo();
 
-            FindWindowsTerminal(30);
-            if (WindowsTerminalExists)
-            {
-                Trace.WriteLine("Windows terminal found");
-            }
-            else
-            {
-                Trace.WriteLine("Windows terminal not found");
-            }
+            //FindWindowsTerminal(30);
+            //if (WindowsTerminalExists)
+            //{
+            //    Trace.WriteLine("Windows terminal found");
+            //}
+            //else
+            //{
+            //    Trace.WriteLine("Windows terminal not found");
+            //}
 
             StateChanged += WindowStateChanged;
             GetMainWindow = this;

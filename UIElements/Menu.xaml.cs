@@ -83,7 +83,7 @@ namespace Server_Manager.UIElements
                 {
                     finalXPosition = screenWidth - mainWindow.ActualWidth;
 
-                    if (mousePosition.X < mainWindow.Left + halfWindowWidth)
+                    if (mousePosition.X < halfWindowWidth + finalXPosition)
                     {
                         finalXPosition = mousePosition.X - halfWindowWidth;
                     }

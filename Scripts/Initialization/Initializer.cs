@@ -10,15 +10,32 @@ namespace Server_Manager.Scripts.Initialization
 {
     public static class Initializer
     {
+        private static string ManagerPath => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + MANAGERPATH;
+        private const string MANAGERPATH = @"\Server-Manager";
+
         public static event EventHandler Initialized;
         public static HasDirectoryList HasDirectoryList { get; } = new HasDirectoryList();
         public static void Initialize()
         {
+            FindOrCreateFolders();
+
             LoadAllAddons();
 
             List<Tuple<string, Config>> serverConfigs = InitializeConfigFiles();
 
             InitializeServers(serverConfigs);
+        }
+
+        private static void FindOrCreateFolders()
+        {
+            if (!Directory.Exists(ManagerPath))
+            {
+                Trace.WriteLine("No server manager folder found. Creating new one ...");
+
+                Directory.CreateDirectory(ManagerPath);
+                Directory.CreateDirectory(ManagerPath + @"\Addons");
+                Directory.CreateDirectory(ManagerPath + @"\Servers");
+            }
         }
 
         #region Addons
@@ -55,6 +72,8 @@ namespace Server_Manager.Scripts.Initialization
         #endregion
 
         #region Config
+        private static string ServersPath => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + SERVERSPATH;
+        private const string SERVERSPATH = @"\Server-Manager\Servers";
         private const string CONFIGFILENAMES = "server-manager.prefs";
         private static string DefaultConfig => "type=" + nameof(HasDirectory);
 
@@ -87,7 +106,7 @@ namespace Server_Manager.Scripts.Initialization
         {
             List<FileInfo> configFileInfos = new();
 
-            string[] serverDirectories = Directory.GetDirectories(Settings.Default.SERVERS_PATH);
+            string[] serverDirectories = Directory.GetDirectories(ServersPath);
             foreach (string directory in serverDirectories)
             {
                 string configFilePath = Path.Combine(directory, CONFIGFILENAMES);
