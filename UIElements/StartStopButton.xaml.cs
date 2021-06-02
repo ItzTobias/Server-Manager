@@ -1,7 +1,6 @@
 ﻿using ServerManagerFramework;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,14 +22,8 @@ namespace Server_Manager.UIElements
 
         public IServer IServer
         {
-            get
-            {
-                return (IServer)GetValue(IServerProperty);
-            }
-            set
-            {
-                SetValue(IServerProperty, value);
-            }
+            get => (IServer)GetValue(IServerProperty);
+            set => SetValue(IServerProperty, value);
         }
 
         public static readonly DependencyProperty StateProperty =
@@ -47,7 +40,10 @@ namespace Server_Manager.UIElements
             get => (State)GetValue(StateProperty);
             set
             {
-                if (State == value) return;
+                if (State == value)
+                {
+                    return;
+                }
 
                 SetValue(StateProperty, value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(State)));
@@ -106,7 +102,7 @@ namespace Server_Manager.UIElements
             Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.FontColor, shortDuration));
             Overlay.Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.Transparent, shortDuration));
         }
-        
+
         private void StartStopButton_StateChanged(object sender, StateChangedEventArgs e)
         {
             State = e.serverState;

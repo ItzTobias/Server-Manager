@@ -2,12 +2,10 @@
 using Server_Manager.Scripts.Initialization;
 using ServerManagerFramework;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Server_Manager.UIElements
 {
@@ -20,7 +18,7 @@ namespace Server_Manager.UIElements
         {
             InitializeComponent();
 
-            Initializer.Initialized += (object sender, EventArgs e) =>
+            Initializer.AddonsLoaded += (object sender, EventArgs e) =>
                 {
                     ServerTypesComboBox.SelectedIndex = 0;
                     ServerTypesComboBox.ItemsSource = Initializer.InitializeComboBox();
@@ -38,7 +36,8 @@ namespace Server_Manager.UIElements
 
             string serverPath = Path.Combine(Initializer.ServersPath, GuidString);
             Directory.CreateDirectory(serverPath);
-            Initializer.InitializeServer(new Tuple<string, Config>(Path.Combine(serverPath, "server-manager.prefs"), new Config()));
+
+            _ = Initializer.InitializeServer(serverPath);
         }
 
         private void ServerTypesComboBox_Selected(object sender, RoutedEventArgs e)

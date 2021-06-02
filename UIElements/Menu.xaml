@@ -395,7 +395,8 @@
                                    AllowsTransparency="true"
                                    Grid.ColumnSpan="2"
                                    IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Placement="Bottom">
+                                   Placement="Bottom"
+                                   PopupAnimation="Slide">
 
                                 <Border x:Name="dropDownBorder"
                                         Background="{StaticResource Light Gray}"
@@ -468,7 +469,7 @@
                    MouseLeftButtonDown="DragMove"
                    Background="{StaticResource Gray}" >
 
-            <ComboBox DockPanel.Dock="Left" 
+            <ComboBox DockPanel.Dock="Left"
                       Style="{DynamicResource ServerComboBox}"
                       Width="150"
                       Margin="9"
@@ -487,7 +488,7 @@
                                             Padding="5"
                                             Background="{TemplateBinding Background}"
                                             Height="27">
-                                        <ContentPresenter VerticalAlignment="Center" />
+                                        <ContentPresenter VerticalAlignment="Center"/>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected"

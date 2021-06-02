@@ -36,7 +36,7 @@ namespace Server_Manager
 
             Loaded += (object sender, RoutedEventArgs e) =>
             {
-                Initializer.Initialize();
+                _ = Initializer.Initialize();
             };
         }
 

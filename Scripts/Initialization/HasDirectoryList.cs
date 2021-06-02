@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Server_Manager.Scripts.Initialization
 {
@@ -19,15 +21,18 @@ namespace Server_Manager.Scripts.Initialization
 
             if (server.GetType().IsAssignableTo(currentFilter))
             {
-                Trace.WriteLine("t");
                 ServerProcesses.Add(server);
             }
         }
+
         public void RemoveServer(IHasDirectory server)
         {
-            serverProcesses.Remove(server); 
-            
-            if (currentFilter.Equals(server.GetType())) ServerProcesses.Remove(server);
+            serverProcesses.Remove(server);
+
+            if (currentFilter.Equals(server.GetType()))
+            {
+                ServerProcesses.Remove(server);
+            }
         }
 
         public bool Contains(IHasDirectory server)
@@ -51,6 +56,7 @@ namespace Server_Manager.Scripts.Initialization
 
             currentFilter = typeof(T);
         }
+
         public void Filter(Type serverType)
         {
             List<IHasDirectory> filteredProcesses = serverProcesses.FindAll(t => t.GetType() == serverType);

@@ -1,5 +1,4 @@
-﻿using Server_Manager.Properties;
-using ServerManagerFramework;
+﻿using ServerManagerFramework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,17 +29,21 @@ namespace Server_Manager.Scripts.Initialization
 
         public static HasDirectoryList HasDirectoryList { get; } = new HasDirectoryList();
 
-        public static event EventHandler Initialized;
+        public static event EventHandler AddonsLoaded;
 
-        public static async void Initialize()
+        public static async Task Initialize()
         {
             FindOrCreateFoldersAndFiles();
 
             LoadAllAddons();
 
-            List<Tuple<string, Config>> serverConfigs = await InitializeConfigFiles();
-
-            InitializeServers(serverConfigs);
+            //Initialize Servers
+            List<Task> initializeServerTasks = new();
+            foreach (string path in Directory.EnumerateDirectories(ServersPath))
+            {
+                initializeServerTasks.Add(InitializeServer(path));
+            }
+            await Task.WhenAll(initializeServerTasks);
         }
 
         private static void FindOrCreateFoldersAndFiles()
@@ -62,7 +65,6 @@ namespace Server_Manager.Scripts.Initialization
             File.Copy(xmlSourceFilePath, xmlDestinationFilePath, true);
         }
 
-        #region Addons
         private static void LoadAllAddons()
         {
             Trace.WriteLine($"AddonsLoader: Loading addons.");
@@ -87,125 +89,78 @@ namespace Server_Manager.Scripts.Initialization
             }
 
             Trace.WriteLine("AddonsLoader: Loaded " + addons.Count + " addons.");
+
+            AddonsLoaded?.Invoke(typeof(Initializer), EventArgs.Empty);
         }
-        #endregion
 
-        #region Config
-        private static async Task<List<Tuple<string, Config>>> InitializeConfigFiles()
+        public static async Task InitializeServer(string path)
         {
-            Trace.WriteLine($"ConfigLoader: Loading server configs.");
+            //Load Config File
+            string configFilePath = Path.Combine(path, CONFIGFILENAMES);
 
-            FileInfo[] configFiles = await GetConfigFiles();
-            List<Tuple<string, Config>> serverConfigs = new();
-
-            foreach (FileInfo configFileInfo in configFiles)
+            if (!File.Exists(configFilePath))
             {
-                if (!configFileInfo.Exists)
+                await File.WriteAllTextAsync(configFilePath, DefaultConfig);
+            }
+
+            string configFileContent = await File.ReadAllTextAsync(configFilePath);
+            Config config = new(configFileContent);
+
+
+            //Initialize Server
+            IHasDirectory hasDirectory = new HasDirectory(path);
+
+            string serverTypeName = config.FindValue("type");
+
+            if (serverTypeName == null)
+            {
+                await File.WriteAllTextAsync(configFilePath, DefaultConfig);
+                serverTypeName = nameof(HasDirectory);
+            }
+
+            if (serverTypeName != nameof(HasDirectory))
+            {
+                bool typeFound = false;
+
+                foreach (Assembly addon in addons)
                 {
-                    InitializeConfigFile(configFileInfo.FullName);
-                }
+                    Type serverType = addon.GetType(serverTypeName);
 
-                string path = configFileInfo.FullName;
-                Config config = LoadConfig(configFileInfo);
-
-                serverConfigs.Add(new Tuple<string, Config>(path, config));
-            }
-
-            Trace.WriteLine($"ConfigLoader: Loaded {serverConfigs.Count} server configs.");
-
-            return serverConfigs;
-        }
-
-        private static async Task<FileInfo[]> GetConfigFiles()
-        {
-            List<FileInfo> configFileInfos = new();
-
-            string[] serverDirectories = Directory.GetDirectories(ServersPath);
-            foreach (string directory in serverDirectories)
-            {
-                string configFilePath = Path.Combine(directory, CONFIGFILENAMES);
-                configFileInfos.Add(new FileInfo(configFilePath));
-            }
-
-            return configFileInfos.ToArray();
-        }
-
-        private static void InitializeConfigFile(string path)
-        {
-            File.WriteAllText(path, DefaultConfig);
-        }
-
-        private static Config LoadConfig(FileInfo configFileInfo)
-        {
-            string filePath = configFileInfo.FullName;
-
-            string text = File.ReadAllText(filePath);
-
-            return new Config(text);
-        }
-        #endregion
-
-        #region Server Initialization
-        private static void InitializeServers(List<Tuple<string, Config>> serverConfigs)
-        {
-            Trace.WriteLine($"ServerInitializer: Initializing servers.");
-
-            foreach (Tuple<string, Config> config in serverConfigs)
-            {
-                InitializeServer(config);
-            }
-
-            Initialized?.Invoke(typeof(Initializer), EventArgs.Empty);
-        }
-        public static void InitializeServer(Tuple<string, Config> serverConfig)
-        {
-            string typeName = serverConfig.Item2.FindValue("type");
-
-            if (typeName == null)
-            {
-                InitializeConfigFile(serverConfig.Item1);
-                typeName = nameof(HasDirectory);
-            }
-
-            string directoryPath = Path.GetDirectoryName(serverConfig.Item1);
-
-            if (typeName == nameof(HasDirectory))
-            {
-                HasDirectoryList.AddServer(new HasDirectory(directoryPath));
-                return;
-            }
-
-            bool typeFound = false;
-            foreach (Assembly addon in addons)
-            {
-                Type serverType = addon.GetType(typeName);
-
-                if (serverType == null)
-                {
-                    continue;
-                }
-                else
-                {
-                    if (serverType.IsAssignableTo(typeof(IHasDirectory)))
+                    if (serverType == null)
                     {
-                        IHasDirectory hasDirectory = Activator.CreateInstance(serverType, directoryPath) as IHasDirectory;
+                        continue;
+                    }
+                    else
+                    {
+                        if (!serverType.IsAssignableTo(typeof(IHasDirectory)))
+                        {
+                            continue;
+                        }
 
-                        HasDirectoryList.AddServer(hasDirectory);
+                        ConstructorInfo serverTypeConstructor = serverType.GetConstructor(new Type[1] { typeof(string) });
+
+                        if (serverTypeConstructor == null)
+                        {
+                            continue;
+                        }
+
+                        hasDirectory = serverTypeConstructor.Invoke(new object[1] { path }) as IHasDirectory;
+
                         typeFound = true;
 
                         break;
                     }
                 }
+
+                if (!typeFound)
+                {
+                    Trace.WriteLine("No type for " + Path.GetFileName(path) + " found");
+
+                    hasDirectory = new HasDirectory(path);
+                }
             }
 
-            if (!typeFound)
-            {
-                typeName = null;
-
-                Trace.WriteLine("No type for " + Path.GetFileName(directoryPath) + " found");
-                IHasDirectory hasDirectory = new HasDirectory(directoryPath);
-                HasDirectoryList.AddServer(hasDirectory);
-            }
+            HasDirectoryList.AddServer(hasDirectory);
         }
 
         public static List<NameTypePair> InitializeComboBox()
@@ -244,6 +199,5 @@ namespace Server_Manager.Scripts.Initialization
             Trace.WriteLine($"ComboBoxInitializer: Initialized {comboBoxTypes.Count} buttons.");
             return comboBoxTypes;
         }
-        #endregion
     }
 }

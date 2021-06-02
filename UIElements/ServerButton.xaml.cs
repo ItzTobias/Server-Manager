@@ -1,5 +1,4 @@
 ﻿using ServerManagerFramework;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -21,14 +20,8 @@ namespace Server_Manager.UIElements
 
         public IHasDirectory IHasDirectory
         {
-            get
-            {
-                return (IHasDirectory)GetValue(IHasDirectoryProperty);
-            }
-            set
-            {
-                SetValue(IHasDirectoryProperty, value);
-            }
+            get => (IHasDirectory)GetValue(IHasDirectoryProperty);
+            set => SetValue(IHasDirectoryProperty, value);
         }
 
         private string serverName;
@@ -37,10 +30,7 @@ namespace Server_Manager.UIElements
 
         public string ServerName
         {
-            get
-            {
-                return serverName;
-            }
+            get => serverName;
             set
             {
                 serverName = value;
