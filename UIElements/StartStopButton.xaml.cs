@@ -105,7 +105,7 @@ namespace Server_Manager.UIElements
 
         private void StartStopButton_StateChanged(object sender, StateChangedEventArgs e)
         {
-            State = e.serverState;
+            State = e.ServerState;
 
             switch (State)
             {

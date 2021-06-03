@@ -108,9 +108,9 @@ namespace Server_Manager.Scripts.Initialization
 
 
             //Initialize Server
-            IHasDirectory hasDirectory = new HasDirectory(path);
+            IHasDirectory hasDirectory = new HasDirectory();
 
-            string serverTypeName = config.FindValue("type");
+            string serverTypeName = config.GetValue("type");
 
             if (serverTypeName == null)
             {
@@ -137,14 +137,14 @@ namespace Server_Manager.Scripts.Initialization
                             continue;
                         }
 
-                        ConstructorInfo serverTypeConstructor = serverType.GetConstructor(new Type[1] { typeof(string) });
+                        ConstructorInfo serverTypeConstructor = serverType.GetConstructor(Array.Empty<Type>());
 
                         if (serverTypeConstructor == null)
                         {
                             continue;
                         }
 
-                        hasDirectory = serverTypeConstructor.Invoke(new object[1] { path }) as IHasDirectory;
+                        hasDirectory = serverTypeConstructor.Invoke(Array.Empty<object>()) as IHasDirectory;
 
                         typeFound = true;
 
@@ -156,9 +156,12 @@ namespace Server_Manager.Scripts.Initialization
                 {
                     Trace.WriteLine("No type for " + Path.GetFileName(path) + " found");
 
-                    hasDirectory = new HasDirectory(path);
+                    hasDirectory = new HasDirectory();
                 }
             }
+
+            PropertyInfo directoryProperty = typeof(IHasDirectory).GetProperty("Directory");
+            directoryProperty.SetValue(hasDirectory, path);
 
             HasDirectoryList.AddServer(hasDirectory);
         }
@@ -184,13 +187,18 @@ namespace Server_Manager.Scripts.Initialization
                     }
                     else
                     {
-                        if (comboBoxButtonAttribute.useDefault)
+                        if (!serverType.IsAssignableTo(typeof(IHasDirectory)))
+                        {
+                            continue;
+                        }
+
+                        if (comboBoxButtonAttribute.ClassName == null)
                         {
                             comboBoxTypes.Add(new NameTypePair(serverType.Name, serverType));
                         }
                         else
                         {
-                            comboBoxTypes.Add(new NameTypePair(comboBoxButtonAttribute.className, serverType));
+                            comboBoxTypes.Add(new NameTypePair(comboBoxButtonAttribute.ClassName, serverType));
                         }
                     }
                 }
