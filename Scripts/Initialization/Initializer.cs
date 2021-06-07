@@ -218,6 +218,17 @@ namespace Server_Manager.Scripts.Initialization
                                 errorItem.ErrorMessage += " | An error occured while installing. \nDownload manually: " + requiredItem.DownloadURL;
                             }
                         }
+                        void Succeeded()
+                        {
+                            errorItem.ButtonVisibility = Visibility.Hidden;
+                            errorItem.ErrorMessage = errorReason switch
+                            {
+                                ErrorReason.missing => $"Installed {requiredItem.ItemName} successfully",
+                                ErrorReason.tooOld => $"Updated {requiredItem.ItemName} successfully",
+                                ErrorReason.tooNew => $"Downgraded {requiredItem.ItemName} successfully",
+                                _ => $"Installed {requiredItem.ItemName} successfully"
+                            };
+                        }
 
                         try
                         {
@@ -225,7 +236,7 @@ namespace Server_Manager.Scripts.Initialization
                             using HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse;
                             using Stream responseStream = response.GetResponseStream();
 
-                            string fileName = response.Headers["Content-Disposition"]?.Split(new string[] { "=" }, StringSplitOptions.None)[1] ?? null;
+                            string fileName = response.Headers["Content-Disposition"]?.Split(new string[] { "=" }, StringSplitOptions.None)[1];
 
                             if (fileName == null)
                             {
@@ -250,10 +261,14 @@ namespace Server_Manager.Scripts.Initialization
                         catch
                         {
                             Failed();
-
                             return;
                         }
 
+                        if (requiredItem.ItemType == ItemType.Addon)
+                        {
+                            Succeeded();
+                            return;
+                        }
 
                         Process installer = new()
                         {
@@ -273,14 +288,7 @@ namespace Server_Manager.Scripts.Initialization
                             }
                             else
                             {
-                                errorItem.ButtonVisibility = Visibility.Hidden;
-                                errorItem.ErrorMessage = errorReason switch
-                                {
-                                    ErrorReason.missing => $"Installed {requiredItem.ItemName} successfully",
-                                    ErrorReason.tooOld => $"Updated {requiredItem.ItemName} successfully",
-                                    ErrorReason.tooNew => $"Downgraded {requiredItem.ItemName} successfully",
-                                    _ => $"Installed {requiredItem.ItemName} successfully"
-                                };
+                                Succeeded();
                             }
                         }
                         installer.Exited += delegate
