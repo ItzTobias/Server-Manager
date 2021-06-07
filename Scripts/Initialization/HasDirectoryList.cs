@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.CompilerServices;
 
 namespace Server_Manager.Scripts.Initialization
 {

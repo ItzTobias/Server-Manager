@@ -67,16 +67,15 @@
             <Setter Property="Background"
                     Value="{StaticResource Green}" />
             <Setter Property="Foreground"
-                    Value="White" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="BorderBrush"
-                    Value="White" />
+                    Value="{StaticResource FontColor}" />
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="FontFamily"
+                    Value="{StaticResource NotoSans}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
+                        <Border BorderThickness="0"
                                 Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               Margin="{TemplateBinding Padding}"
@@ -85,8 +84,34 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
                                      Value="True">
-                                <Setter Property="Background"
-                                        Value="{StaticResource Green Hover}" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -Green}"
+                                                            To="{StaticResource -Green Hover}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -Green Hover}"
+                                                            To="{StaticResource -Green}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -96,14 +121,18 @@
         <Style x:Key="GrayButton"
                TargetType="{x:Type Button}">
             <Setter Property="Foreground"
-                    Value="White" />
+                    Value="{StaticResource FontColor}" />
             <Setter Property="Background"
-                    Value="Transparent" />
+                    Value="{StaticResource Gray}" />
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="FontFamily"
+                    Value="{StaticResource NotoSans}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderThickness="1"
-                                BorderBrush="{StaticResource Brightness3}"
+                        <Border BorderThickness="2"
+                                BorderBrush="{StaticResource Gray Hover}"
                                 Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               Margin="{TemplateBinding Padding}"
@@ -112,8 +141,34 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
                                      Value="True">
-                                <Setter Property="Background"
-                                        Value="{StaticResource Brightness2}" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -Gray}"
+                                                            To="{StaticResource -Gray Hover}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -Gray Hover}"
+                                                            To="{StaticResource -Gray}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -125,16 +180,15 @@
             <Setter Property="Background"
                     Value="{StaticResource Red}" />
             <Setter Property="Foreground"
-                    Value="White" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="BorderBrush"
-                    Value="White" />
+                    Value="{StaticResource FontColor}" />
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="FontFamily"
+                    Value="{StaticResource NotoSans}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
+                        <Border BorderThickness="0"
                                 Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               Margin="{TemplateBinding Padding}"
@@ -143,8 +197,34 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
                                      Value="True">
-                                <Setter Property="Background"
-                                        Value="{StaticResource Red Hover}" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -Red}"
+                                                            To="{StaticResource -Red Hover}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="{StaticResource -FontColor}"
+                                                            To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource -Red Hover}"
+                                                            To="{StaticResource -Red}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

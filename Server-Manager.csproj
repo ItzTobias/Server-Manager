@@ -17,6 +17,9 @@
     <PackageIconUrl />
     <ApplicationIcon>alphaLogo.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="_old\**" />
     <EmbeddedResource Remove="_old\**" />
