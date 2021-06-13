@@ -1,15 +1,14 @@
 ﻿using Server_Manager.Scripts;
-using Server_Manager.Scripts.Initialization;
 using Server_Manager.UIElements;
+using Server_Manager.Views;
+using ServerManagerFramework;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
+using System.Windows.Media.Animation;
 
 namespace Server_Manager
 {
@@ -19,18 +18,14 @@ namespace Server_Manager
 
         private readonly TextBlock errorHeader = new()
         {
-            HorizontalAlignment = HorizontalAlignment.Left,
-            VerticalAlignment = VerticalAlignment.Center,
-            FontSize = 18,
-            Margin = new Thickness(15, 0, 15, 0),
-            Foreground = App.RedBrush,
-            FontWeight = FontWeights.Bold
+            Style = Application.Current.Resources["Header"] as Style,
+            Foreground = SMR.RedBrush
         };
         private bool isDisplayingErrorMessage;
-        private object oldControl;
+        private FrameworkElement oldControl;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public object CurrentControl { get; private set; }
+        public FrameworkElement CurrentControl { get; private set; }
 
         public static MainWindow GetMainWindow { get; private set; }
 
@@ -41,10 +36,12 @@ namespace Server_Manager
             StateChanged += WindowStateChanged;
             GetMainWindow = this;
             DockPanel.SetDock(errorHeader, Dock.Left);
+            SettingsButton.Click += delegate
+            {
+                _ = ChangeCurrentControl(new Settings());
+            };
 
-            ChangeCurrentControl(new ServerList());
-
-            Loaded += Initializer.Initialize;
+            _ = ChangeCurrentControl(new ServerList());
 
             /*
             FindWindowsTerminal(30);
@@ -59,15 +56,24 @@ namespace Server_Manager
             */
         }
 
-        public void ChangeCurrentControl(object newControl)
+        public async Task ChangeCurrentControl(FrameworkElement newControl)
         {
             if (isDisplayingErrorMessage)
             {
                 return;
             }
 
-            TopMenuItemPanel.Children.RemoveRange(4, TopMenuItemPanel.Children.Count - 1);
+            TimeSpan animationTime = new(0, 0, 0, 0, 100);
 
+            for (int i = 4; i < TopMenuItemPanel.Children.Count; i++)
+            {
+                TopMenuItemPanel.Children[i].BeginAnimation(OpacityProperty, new DoubleAnimation(0, animationTime));
+            }
+            CurrentControl?.BeginAnimation(OpacityProperty, new DoubleAnimation(0, animationTime));
+
+            await Task.Delay(animationTime);
+
+            TopMenuItemPanel.Children.RemoveRange(4, TopMenuItemPanel.Children.Count - 1);
             CurrentControl = newControl;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentControl)));
 
@@ -83,7 +89,9 @@ namespace Server_Manager
                 item.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Left);
                 TopMenuItemPanel.Children.Add(item);
                 DockPanel.SetDock(item, Dock.Left);
+                item.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, animationTime));
             }
+            CurrentControl.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, animationTime));
         }
         public void ShowErrorMessage(ErrorMessage message)
         {
@@ -114,7 +122,7 @@ namespace Server_Manager
             }
             isDisplayingErrorMessage = false;
 
-            ChangeCurrentControl(oldControl);
+            _ = ChangeCurrentControl(oldControl);
             oldControl = null;
 
             SettingsButton.IsEnabled = true;

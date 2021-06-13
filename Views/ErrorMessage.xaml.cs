@@ -1,12 +1,10 @@
 ﻿using Server_Manager.Scripts;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Server_Manager.UIElements
+namespace Server_Manager.Views
 {
     /// <summary>
     /// Interaction logic for ErrorWindow.xaml

@@ -1,11 +1,11 @@
-﻿<Grid x:Class="Server_Manager.UIElements.ErrorMessage"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Server_Manager.UIElements"
-             mc:Ignorable="d" 
-             Background="{StaticResource Light Gray}">
+﻿<Grid x:Class="Server_Manager.Views.ErrorMessage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Server_Manager.Views"
+      mc:Ignorable="d"
+      Background="{StaticResource Light Gray}">
 
     <Grid.Resources>
         <Style x:Key="Scrollbar_Thumb"
@@ -80,7 +80,7 @@
     
     <Grid.RowDefinitions>
         <RowDefinition Height="4" />
-        <RowDefinition />
+        <RowDefinition Height="*"/>
         <RowDefinition Height="45" />
     </Grid.RowDefinitions>
 

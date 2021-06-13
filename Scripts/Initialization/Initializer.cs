@@ -1,17 +1,14 @@
 ﻿using Microsoft.Win32;
-using Server_Manager.UIElements;
+using Server_Manager.Views;
 using ServerManagerFramework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -19,15 +16,7 @@ namespace Server_Manager.Scripts.Initialization
 {
     public static class Initializer
     {
-        #region Path Variables
-        private const string MANAGERPATH = @"\Server-Manager";
-        public static string ManagerPath => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + MANAGERPATH;
-
-        private const string SERVERSPATH = @"\Servers";
-        public static string ServersPath => ManagerPath + SERVERSPATH;
-        private const string ADDONSPATH = @"\Addons";
-        public static string AddonsPath => ManagerPath + ADDONSPATH;
-        #endregion
+        public static string AddonsPath => GlobalConfig.ManagerPath + @"\Addons";
 
         private const string FRAMEWORKFILENAME = "ServerManagerFramework";
 
@@ -39,7 +28,7 @@ namespace Server_Manager.Scripts.Initialization
         public static HasDirectoryList HasDirectoryList { get; } = new();
         public static ObservableCollection<NameTypePair> ComboBoxItems { get; } = new();
 
-        public static void Initialize(object sender, RoutedEventArgs e)
+        public static void Initialize()
         {
             FindOrCreateFoldersAndFiles();
 
@@ -49,18 +38,18 @@ namespace Server_Manager.Scripts.Initialization
         private static void FindOrCreateFoldersAndFiles()
         {
             Directory.CreateDirectory(AddonsPath);
-            Directory.CreateDirectory(ServersPath);
-            Directory.CreateDirectory(ManagerPath + @"\Backups");
+            Directory.CreateDirectory(GlobalConfig.ServersPath);
+            Directory.CreateDirectory(GlobalConfig.BackupsPath);
 
             string dllName = FRAMEWORKFILENAME + ".dll";
-            string dllSourceFilePath = Path.Combine(App.AppDirectory, dllName);
-            string dllDestinationFilePath = Path.Combine(ManagerPath, dllName);
+            string dllSourceFilePath = Path.Combine(SMR.AppDirectory, dllName);
+            string dllDestinationFilePath = Path.Combine(GlobalConfig.ManagerPath, dllName);
 
             File.Copy(dllSourceFilePath, dllDestinationFilePath, true);
 
             string xmlName = FRAMEWORKFILENAME + ".xml";
-            string xmlSourceFilePath = Path.Combine(App.AppDirectory, xmlName);
-            string xmlDestinationFilePath = Path.Combine(ManagerPath, xmlName);
+            string xmlSourceFilePath = Path.Combine(SMR.AppDirectory, xmlName);
+            string xmlDestinationFilePath = Path.Combine(GlobalConfig.ManagerPath, xmlName);
 
             File.Copy(xmlSourceFilePath, xmlDestinationFilePath, true);
         }
@@ -102,7 +91,7 @@ namespace Server_Manager.Scripts.Initialization
             {
                 bool errorThrown = false;
 
-                foreach (var requiredItem in addon.GetCustomAttributes<RequireAttribute>())
+                foreach (RequireAttribute requiredItem in addon.GetCustomAttributes<RequireAttribute>())
                 {
                     Version itemVersion = null;
                     switch (requiredItem.ItemType)
@@ -459,7 +448,7 @@ namespace Server_Manager.Scripts.Initialization
                 }
             }
 
-            PropertyInfo directoryProperty = typeof(IHasDirectory).GetProperty("Directory");
+            PropertyInfo directoryProperty = typeof(IHasDirectory).GetProperty(nameof(IHasDirectory.Directory));
             directoryProperty.SetValue(hasDirectory, path);
 
             HasDirectoryList.AddServer(hasDirectory);
@@ -469,7 +458,7 @@ namespace Server_Manager.Scripts.Initialization
         {
             //Initialize Servers
             List<Task> initializeServerTasks = new();
-            foreach (string path in Directory.EnumerateDirectories(ServersPath))
+            foreach (string path in Directory.EnumerateDirectories(GlobalConfig.ServersPath))
             {
                 initializeServerTasks.Add(InitializeServer(path));
             }

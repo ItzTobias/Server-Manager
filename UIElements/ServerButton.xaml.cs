@@ -1,6 +1,6 @@
-﻿using ServerManagerFramework;
+﻿using Server_Manager.Views;
+using ServerManagerFramework;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +10,7 @@ namespace Server_Manager.UIElements
     /// <summary>
     /// Interaction logic for ServerButton.xaml
     /// </summary>
-    public partial class ServerButton : Button, INotifyPropertyChanged
+    public partial class ServerButton : Canvas, INotifyPropertyChanged
     {
         public static readonly DependencyProperty IHasDirectoryProperty =
                 DependencyProperty.Register(
@@ -52,9 +52,10 @@ namespace Server_Manager.UIElements
                 }
             };
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void Click(object sender, RoutedEventArgs e)
         {
-            Trace.WriteLine("Open Server UI");
+            _ = MainWindow.GetMainWindow.ChangeCurrentControl(new ServerInfo(IHasDirectory));
         }
     }
 }

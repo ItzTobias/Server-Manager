@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -11,7 +6,7 @@ namespace Server_Manager.Scripts
 {
     public class ErrorItem : INotifyPropertyChanged
     {
-        public string ErrorMessage 
+        public string ErrorMessage
         {
             get => EErrorMessage;
             set
@@ -20,7 +15,7 @@ namespace Server_Manager.Scripts
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EErrorMessage)));
             }
         }
-        public Visibility ButtonVisibility 
+        public Visibility ButtonVisibility
         {
             get => BButtonVisibility;
             set
@@ -29,7 +24,7 @@ namespace Server_Manager.Scripts
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BButtonVisibility)));
             }
         }
-        public ICommand ButtonClickAction 
+        public ICommand ButtonClickAction
         {
             get => BButtonClickAction;
             set
@@ -38,7 +33,7 @@ namespace Server_Manager.Scripts
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BButtonClickAction)));
             }
         }
-        public string ButtonText 
+        public string ButtonText
         {
             get => BButtonText;
             set
@@ -47,7 +42,7 @@ namespace Server_Manager.Scripts
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BButtonText)));
             }
         }
-        public Style ButtonStyle 
+        public Style ButtonStyle
         {
             get => BButtonStyle;
             set
@@ -56,7 +51,7 @@ namespace Server_Manager.Scripts
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BButtonStyle)));
             }
         }
-        public bool ButtonEnabled 
+        public bool ButtonEnabled
         {
             get => BButtonEnabled;
             set

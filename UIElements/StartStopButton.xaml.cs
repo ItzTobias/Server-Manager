@@ -80,27 +80,28 @@ namespace Server_Manager.UIElements
                 {
                     IServer.StateChanged += (object sender, StateChangedEventArgs e) => StartStopButton_StateChanged(sender, e);
 
-                    SetValue(StateProperty, State.stopped);
+                    State = IServer.State;
+                    SilentStateUpdate();
                 }
             };
 
             MouseEnter += StartStopButton_MouseEnter;
             MouseLeave += StartStopButton_MouseLeave;
 
-            Foreground = App.FontColorBrush;
-            Background = App.GreenBrush;
-            Overlay.Background = App.TransparentBrush;
+            Foreground = SMR.FontColorBrush;
+            Background = SMR.GreenBrush;
+            Overlay.Background = SMR.TransparentBrush;
         }
 
         private void StartStopButton_MouseEnter(object sender, MouseEventArgs e)
         {
-            Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.White, shortDuration));
-            Overlay.Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.Hover, shortDuration));
+            Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.White, shortDuration));
+            Overlay.Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Hover, shortDuration));
         }
         private void StartStopButton_MouseLeave(object sender, MouseEventArgs e)
         {
-            Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.FontColor, shortDuration));
-            Overlay.Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.Transparent, shortDuration));
+            Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.FontColor, shortDuration));
+            Overlay.Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Transparent, shortDuration));
         }
 
         private void StartStopButton_StateChanged(object sender, StateChangedEventArgs e)
@@ -112,22 +113,49 @@ namespace Server_Manager.UIElements
                 case State.starting:
                     IsEnabled = false;
                     Status.Text = "Starting";
-                    Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.Starting, longDuration));
+                    Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Starting, longDuration));
                     break;
                 case State.started:
                     IsEnabled = true;
                     Status.Text = "Stop";
-                    Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.Red, longDuration));
+                    Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Red, longDuration));
                     break;
                 case State.stopping:
                     IsEnabled = false;
                     Status.Text = "Stopping";
-                    Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.Stopping, longDuration));
+                    Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Stopping, longDuration));
                     break;
                 case State.stopped:
                     IsEnabled = true;
                     Status.Text = "Start";
-                    Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(App.Green, longDuration));
+                    Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Green, longDuration));
+                    break;
+            }
+        }
+
+        private void SilentStateUpdate()
+        {
+            switch (State)
+            {
+                case State.starting:
+                    IsEnabled = false;
+                    Status.Text = "Starting";
+                    Background = SMR.StartingBrush;
+                    break;
+                case State.started:
+                    IsEnabled = true;
+                    Status.Text = "Stop";
+                    Background = SMR.RedBrush;
+                    break;
+                case State.stopping:
+                    IsEnabled = false;
+                    Status.Text = "Stopping";
+                    Background = SMR.StoppingBrush;
+                    break;
+                case State.stopped:
+                    IsEnabled = true;
+                    Status.Text = "Start";
+                    Background = SMR.GreenBrush;
                     break;
             }
         }

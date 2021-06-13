@@ -90,8 +90,8 @@
 
                                 <Path.RenderTransform>
                                     <TransformGroup>
-                                        <ScaleTransform ScaleX="1.025"
-                                                        ScaleY="1.025" />
+                                        <ScaleTransform ScaleX="1.03"
+                                                        ScaleY="1.03" />
                                         <RotateTransform x:Name="rotation" />
                                     </TransformGroup>
                                 </Path.RenderTransform>

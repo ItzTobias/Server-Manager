@@ -60,10 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.220602">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0-preview.4.21253.7" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE">
@@ -75,5 +72,8 @@
     <Reference Include="ServerManagerFramework">
       <HintPath>..\..\..\AppData\Roaming\Server-Manager\ServerManagerFramework.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="_old\" />
   </ItemGroup>
 </Project>
