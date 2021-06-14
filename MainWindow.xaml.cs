@@ -1,9 +1,11 @@
 ﻿using Server_Manager.Scripts;
+using Server_Manager.Scripts.Initialization;
 using Server_Manager.UIElements;
 using Server_Manager.Views;
 using ServerManagerFramework;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,6 +33,8 @@ namespace Server_Manager
 
         public MainWindow()
         {
+            GlobalConfig.Load();
+            
             InitializeComponent();
 
             StateChanged += WindowStateChanged;
@@ -41,7 +45,18 @@ namespace Server_Manager
                 _ = ChangeCurrentControl(new Settings());
             };
 
-            _ = ChangeCurrentControl(new ServerList());
+            CurrentControl = new ServerList();
+
+            IHasTopMenuItems topMenuItems = CurrentControl as IHasTopMenuItems;
+
+            foreach (UIElement item in topMenuItems.Items)
+            {
+                item.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Left);
+                TopMenuItemPanel.Children.Add(item);
+                DockPanel.SetDock(item, Dock.Left);
+            }
+
+            Initializer.Initialize();
 
             /*
             FindWindowsTerminal(30);

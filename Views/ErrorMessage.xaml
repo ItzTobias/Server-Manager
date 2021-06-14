@@ -5,91 +5,21 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Server_Manager.Views"
       mc:Ignorable="d"
-      Background="{StaticResource Light Gray}">
+      d:DesignHeight="450"
+      d:DesignWidth="800">
 
     <Grid.Resources>
-        <Style x:Key="Scrollbar_Thumb"
-               TargetType="{x:Type Thumb}">
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="Background"
-                    Value="{StaticResource Brightness2}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Border x:Name="border"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="White"
-                                Background="{TemplateBinding Background}" />
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
-                                <Setter Property="Background"
-                                        Value="{StaticResource ScrollBarThumbHover}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style TargetType="ScrollBar">
-            <Style.Triggers>
-                <Trigger Property="Orientation"
-                         Value="Vertical">
-                    <Setter Property="Template"
-                            Value="{DynamicResource MainScrollBar}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="ScrollbarFreeSpaceButton"
-               TargetType="{x:Type RepeatButton}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type RepeatButton}">
-                        <Border x:Name="border"
-                                BorderThickness="0"
-                                Background="{StaticResource Light Gray}" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <ControlTemplate x:Key="MainScrollBar"
-                         TargetType="{x:Type ScrollBar}">
-            <Track Name="PART_Track"
-                   IsDirectionReversed="True">
-                <Track.DecreaseRepeatButton>
-                    <RepeatButton Style="{StaticResource ScrollbarFreeSpaceButton}"
-                                  Command="ScrollBar.PageUpCommand"
-                                  Width="8"
-                                  HorizontalAlignment="Right" />
-                </Track.DecreaseRepeatButton>
-                <Track.Thumb>
-                    <Thumb Style="{StaticResource Scrollbar_Thumb}"
-                           Width="8"
-                           HorizontalAlignment="Right" />
-                </Track.Thumb>
-                <Track.IncreaseRepeatButton>
-                    <RepeatButton Style="{StaticResource ScrollbarFreeSpaceButton}"
-                                  Command="ScrollBar.PageDownCommand"
-                                  Width="8"
-                                  HorizontalAlignment="Right" />
-                </Track.IncreaseRepeatButton>
-            </Track>
-        </ControlTemplate>
+        <ResourceDictionary Source="/ServerManagerFramework;component/SMR.xaml" />
+        
+
     </Grid.Resources>
-    
+
     <Grid.RowDefinitions>
-        <RowDefinition Height="4" />
-        <RowDefinition Height="*"/>
+        <RowDefinition Height="*" />
         <RowDefinition Height="45" />
     </Grid.RowDefinitions>
 
-    <Rectangle Grid.Row="0"
-               Margin="7, 3, 7, 0"
-               Height="1"
-               Stroke="{StaticResource Gray}" />
-
-    <ItemsControl Grid.Row="1"
+    <ItemsControl Grid.Row="0"
                   x:Name="_ListBox">
 
         <ItemsControl.ItemTemplate>
@@ -118,7 +48,7 @@
         </ItemsControl.ItemTemplate>
     </ItemsControl>
     
-    <Grid Grid.Row="2">
+    <Grid Grid.Row="1">
         <Button x:Name="_GreenButton"
                 Width="132"
                 Height="31"

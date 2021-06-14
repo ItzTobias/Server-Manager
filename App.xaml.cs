@@ -9,10 +9,5 @@ namespace Server_Manager
     /// </summary>
     public partial class App : Application
     {
-        public App()
-        {
-            GlobalConfig.Load();
-            Initializer.Initialize();
-        }
     }
 }
