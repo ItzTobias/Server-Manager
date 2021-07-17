@@ -239,6 +239,85 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="OpenFolder"
+               TargetType="Button">
+            <Setter Property="Background"
+                    Value="{StaticResource Input}" />
+            <Setter Property="Foreground"
+                    Value="{StaticResource FontColor}" />
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource Input}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Background="{TemplateBinding Background}" >
+                            <Path Focusable="false"
+                                  Stroke="{TemplateBinding Foreground}"
+                                  StrokeThickness="2"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Data="M -1,0 6,0 6,3 18,3 18,15, 0,15, 0,0 M -1,3 6,3"
+                                  Margin="5" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                                            To="{StaticResource -InputHover}"
+                                                            Duration="0:0:0.1" />
+                                            <ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                                            To="White"
+                                                            Duration="0:0:0.1" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                                            To="{StaticResource -Input}"
+                                                            Duration="0:0:0.1" />
+                                            <ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                                            To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                                            To="White"
+                                                            Duration="0:0:0.1" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                                            To="{StaticResource -Input}"
+                                                            Duration="0:0:0.1" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Grid.Resources>
 
     <Grid.RowDefinitions>
@@ -253,18 +332,61 @@
                        FontWeight="Bold"
                        Text="SERVERS PATH"
                        Margin="0, 0, 0, 3" />
-            <TextBox Style="{StaticResource BlackTextBox}"
-                     Text="{Binding ServersPath, RelativeSource={RelativeSource AncestorType=Grid}}"
-                     Margin="0, 0, 0, 16" />
+
+            <Grid Margin="0, 0, 0, 16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="35" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Margin="0, 0, 5, 0"
+                        Style="{StaticResource OpenFolder}"
+                        Height="30"
+                        Width="30"
+                        Grid.Column="0"
+                        Click="PickServersFolder" />
+
+                <TextBox Style="{StaticResource BlackTextBox}"
+                         Text="{Binding ServersPath, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}"
+                         Grid.Column="1" />
+
+            </Grid>
 
             <TextBlock Foreground="White"
                        FontSize="11"
                        FontWeight="Bold"
                        Text="BACKUPS PATH"
                        Margin="0, 0, 0, 3" />
-            <TextBox Style="{StaticResource BlackTextBox}"
-                     Text="{Binding BackupsPath, RelativeSource={RelativeSource AncestorType=Grid}}"
-                     Margin="0, 0, 0, 16" />
+            
+            <Grid Margin="0, 0, 0, 16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="35" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Button Margin="0, 0, 5, 0"
+                        Style="{StaticResource OpenFolder}"
+                        Height="30"
+                        Width="30"
+                        Grid.Column="0"
+                        Click="PickBackupsFolder" />
+                
+                <TextBox Style="{StaticResource BlackTextBox}"
+                         Text="{Binding BackupsPath, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}"
+                         Grid.Column="1" />
+
+            </Grid>
+
+            <Button Style="{StaticResource RoundGrayButton}"
+                    Height="30"
+                    Margin="0, 0, 0, 16"
+                    Click="OpenServerManagerFolder">
+                <TextBlock FontSize="13"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           Text="Open Server-Manager folder" />
+            </Button>
         </StackPanel>
     </ScrollViewer>
 

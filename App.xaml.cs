@@ -1,6 +1,4 @@
-﻿using Server_Manager.Scripts.Initialization;
-using ServerManagerFramework;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Server_Manager
 {

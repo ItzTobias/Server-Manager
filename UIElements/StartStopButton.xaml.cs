@@ -1,4 +1,5 @@
 ﻿using ServerManagerFramework;
+using ServerManagerFramework.Servers;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -63,13 +64,17 @@ namespace Server_Manager.UIElements
             {
                 switch (IServer.State)
                 {
+                    case State.starting:
+                        IServer.DestroyProcess();
+                        break;
                     case State.started:
                         IServer.Stop();
                         break;
+                    case State.stopping:
+                        IServer.DestroyProcess();
+                        break;
                     case State.stopped:
                         IServer.Start();
-                        break;
-                    default:
                         break;
                 }
             };
@@ -111,22 +116,18 @@ namespace Server_Manager.UIElements
             switch (State)
             {
                 case State.starting:
-                    IsEnabled = false;
                     Status.Text = "Starting";
                     Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Starting, longDuration));
                     break;
                 case State.started:
-                    IsEnabled = true;
                     Status.Text = "Stop";
                     Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Red, longDuration));
                     break;
                 case State.stopping:
-                    IsEnabled = false;
                     Status.Text = "Stopping";
                     Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Stopping, longDuration));
                     break;
                 case State.stopped:
-                    IsEnabled = true;
                     Status.Text = "Start";
                     Background.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(SMR.Green, longDuration));
                     break;

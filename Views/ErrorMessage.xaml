@@ -10,8 +10,6 @@
 
     <Grid.Resources>
         <ResourceDictionary Source="/ServerManagerFramework;component/SMR.xaml" />
-        
-
     </Grid.Resources>
 
     <Grid.RowDefinitions>
@@ -49,25 +47,22 @@
     </ItemsControl>
     
     <Grid Grid.Row="1">
-        <Button x:Name="_GreenButton"
+        <Button x:Name="Button3"
                 Width="132"
                 Height="31"
                 Margin="7, 0"
                 Visibility="Hidden"
-                Style="{StaticResource GreenButton}"
                 HorizontalAlignment="Left" />
-        <Button x:Name="_GrayButton"
+        <Button x:Name="Button2"
+                Width="132"
+                Height="31"
+                Margin="7, 0"
+                Visibility="Hidden" />
+        <Button x:Name="Button1"
                 Width="132"
                 Height="31"
                 Margin="7, 0"
                 Visibility="Hidden"
-                Style="{StaticResource GrayButton}" />
-        <Button x:Name="_RedButton"
-                Width="132"
-                Height="31"
-                Margin="7, 0"
-                Visibility="Hidden"
-                HorizontalAlignment="Right"
-                Style="{StaticResource RedButton}" />
+                HorizontalAlignment="Right" />
     </Grid>
 </Grid>

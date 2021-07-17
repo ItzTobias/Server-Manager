@@ -3,9 +3,9 @@ using Server_Manager.Scripts.Initialization;
 using Server_Manager.UIElements;
 using Server_Manager.Views;
 using ServerManagerFramework;
+using ServerManagerFramework.Config;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,8 +16,6 @@ namespace Server_Manager
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        //private List<UserControl>
-
         private readonly TextBlock errorHeader = new()
         {
             Style = Application.Current.Resources["Header"] as Style,
@@ -34,7 +32,7 @@ namespace Server_Manager
         public MainWindow()
         {
             GlobalConfig.Load();
-            
+
             InitializeComponent();
 
             StateChanged += WindowStateChanged;
@@ -57,24 +55,15 @@ namespace Server_Manager
             }
 
             Initializer.Initialize();
-
-            /*
-            FindWindowsTerminal(30);
-            if (WindowsTerminalExists)
-            {
-                Trace.WriteLine("Windows terminal found");
-            }
-            else
-            {
-                Trace.WriteLine("Windows terminal not found");
-            }
-            */
         }
 
+        //Control actions
         public async Task ChangeCurrentControl(FrameworkElement newControl)
         {
             if (isDisplayingErrorMessage)
             {
+                oldControl = newControl;
+
                 return;
             }
 
@@ -108,13 +97,24 @@ namespace Server_Manager
             }
             CurrentControl.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, animationTime));
         }
-        public void ShowErrorMessage(ErrorMessage message)
+        public async Task ShowErrorMessage(ErrorMessage message)
         {
             if (isDisplayingErrorMessage)
             {
                 return;
             }
             isDisplayingErrorMessage = true;
+
+            TimeSpan animationTime = new(0, 0, 0, 0, 100);
+
+            for (int i = 4; i < TopMenuItemPanel.Children.Count; i++)
+            {
+                TopMenuItemPanel.Children[i].BeginAnimation(OpacityProperty, new DoubleAnimation(0, animationTime));
+            }
+            CurrentControl?.BeginAnimation(OpacityProperty, new DoubleAnimation(0, animationTime));
+            SettingsButton.BeginAnimation(OpacityProperty, new DoubleAnimation(0, animationTime));
+
+            await Task.Delay(animationTime);
 
             oldControl = CurrentControl;
             CurrentControl = message;
@@ -126,8 +126,12 @@ namespace Server_Manager
 
             TopMenuItemPanel.Children.Add(errorHeader);
 
-            SettingsButton.IsEnabled = false;
             SettingsButton.Visibility = Visibility.Hidden;
+
+            message.Initialize();
+
+            errorHeader.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, animationTime));
+            CurrentControl.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, animationTime));
         }
         public void HideErrorMessage()
         {
@@ -140,10 +144,12 @@ namespace Server_Manager
             _ = ChangeCurrentControl(oldControl);
             oldControl = null;
 
-            SettingsButton.IsEnabled = true;
             SettingsButton.Visibility = Visibility.Visible;
+
+            SettingsButton.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, new TimeSpan(0, 0, 0, 0, 100)));
         }
 
+        //Window actions
         private void WindowStateChanged(object sender, EventArgs e)
         {
             switch (WindowState)
@@ -210,40 +216,5 @@ namespace Server_Manager
         {
             WindowState = WindowState.Minimized;
         }
-
-        /*
-        private static void FindWindowsTerminal(int trys)
-        {
-            using Process proc = new()
-            {
-                StartInfo = new ProcessStartInfo("wt.exe")
-                {
-                    CreateNoWindow = true
-                }
-            };
-
-            for (int i = 0; i < trys; i++)
-            {
-                try
-                {
-                    proc.Start();
-                    proc.Kill();
-                }
-                catch (Exception e)
-                {
-                    if (e.GetType() == typeof(Win32Exception))
-                    {
-                        WindowsTerminalExists = false;
-                        return;
-                    }
-
-                    if (i == trys - 1)
-                    {
-                        WindowsTerminalExists = false;
-                    }
-                }
-            }
-        }
-        */
     }
 }

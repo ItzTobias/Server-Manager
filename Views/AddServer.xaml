@@ -1,119 +1,13 @@
-﻿<ScrollViewer x:Class="Server_Manager.Views.ServerList"
+﻿<Grid x:Class="Server_Manager.Views.AddServer"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:local="clr-namespace:Server_Manager.Views"
-              xmlns:uielements="clr-namespace:Server_Manager.UIElements"
-              mc:Ignorable="d"
-              SnapsToDevicePixels="True"
-              Margin="0, 0, 5, 5">
-    <ScrollViewer.Resources>
-        <Style x:Key="AddServerButton"
-               TargetType="{x:Type Button}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border"
-                                Background="{StaticResource Gray}">
-                            <Path Data="M 10,0 10,20 M 0,10 20,10"
-                                  Stroke="{StaticResource FontColor}"
-                                  StrokeThickness="2"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  x:Name="icon" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="true">
-                                <Trigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation From="{StaticResource -FontColor}"
-                                                            To="White"
-                                                            Duration="0:0:0.1"
-                                                            Storyboard.TargetName="icon"
-                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation From="White"
-                                                            To="{StaticResource -FontColor}"
-                                                            Duration="0:0:0.1"
-                                                            Storyboard.TargetName="icon"
-                                                            Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.ExitActions>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="ReloadButton"
-               TargetType="{x:Type Button}">
-            <Style.Resources>
-                <PathGeometry x:Key="RotationPath"
-                              Figures="M 10,100 C 35,0 135,0 160,100 180,190 285,200 310,100" />
-            </Style.Resources>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border"
-                                Background="{StaticResource Gray}">
-                            <Path Data="m4.9884 15.794c-0.81561-0.73624-1.404-1.6189-1.7895-2.5667-1.0226-2.5138-0.54374-5.5035 1.4527-7.5657l1.8422 1.8467c0.10144 0.10169 0.28404 0.028472 0.30839-0.12203l1.0063-6.6017c0.016232-0.10983-0.077098-0.20338-0.18666-0.18711l-6.5898 1.0088c-0.15014 0.024406-0.22318 0.20745-0.12173 0.30914l1.8463 1.8508c-3.0474 3.1239-3.5668 7.8098-1.5663 11.471 0.60055 1.1023 1.4324 2.1111 2.4915 2.9571 1.8016 1.4359 4.0172 2.1233 6.2165 2.0785l0.41389-2.7131c-1.895 0.1627-3.8427-0.42303-5.3238-1.7653zm12.254 1.6311c3.0474-3.1239 3.5668-7.8098 1.5663-11.471-0.60055-1.1023-1.4324-2.1111-2.4915-2.9571-1.8016-1.4359-4.0172-2.1233-6.2165-2.0785l-0.41389 2.7131c1.8909-0.1627 3.8427 0.42303 5.3238 1.7653 0.81561 0.73624 1.404 1.6189 1.7895 2.5667 1.0226 2.5138 0.54374 5.5035-1.4527 7.5657l-1.8422-1.8467c-0.10144-0.10169-0.28404-0.02847-0.30839 0.12203l-1.0063 6.6017c-0.01623 0.10983 0.0771 0.20338 0.18666 0.18711l6.5898-1.0088c0.15014-0.0244 0.21912-0.20745 0.12173-0.30914z"
-                                  Fill="{StaticResource FontColor}"
-                                  StrokeThickness="2"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  x:Name="icon"
-                                  RenderTransformOrigin=".5, .5">
-                                <Path.RenderTransform>
-                                    <RotateTransform x:Name="rotation" />
-                                </Path.RenderTransform>
-                            </Path>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="true">
-                                <Trigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation From="{StaticResource -FontColor}"
-                                                            To="White"
-                                                            Duration="0:0:0.1"
-                                                            Storyboard.TargetName="icon"
-                                                            Storyboard.TargetProperty="Fill.(SolidColorBrush.Color)" />
-                                            <DoubleAnimation Storyboard.TargetName="rotation"
-                                                             Storyboard.TargetProperty="Angle"
-                                                             Duration="0:0:0.3"
-                                                             From="0"
-                                                             To="180" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation From="White"
-                                                            To="{StaticResource -FontColor}"
-                                                            Duration="0:0:0.1"
-                                                            Storyboard.TargetName="icon"
-                                                            Storyboard.TargetProperty="Fill.(SolidColorBrush.Color)" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.ExitActions>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+      xmlns:uielements="clr-namespace:Server_Manager.UIElements"
+      mc:Ignorable="d"
+              SnapsToDevicePixels="True">
+    <Grid.Resources>
         <Style x:Key="Scrollbar_Thumb"
                TargetType="{x:Type Thumb}">
             <Setter Property="BorderThickness"
@@ -439,20 +333,133 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </ScrollViewer.Resources>
 
-    <ItemsControl x:Name="ServersUI">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <WrapPanel />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
+        <Style x:Key="BlackTextBox"
+               TargetType="{x:Type TextBox}">
+            <Setter Property="Background"
+                    Value="{StaticResource Input}" />
+            <Setter Property="Foreground"
+                    Value="{StaticResource FontColor}" />
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource Input}" />
 
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <uielements:ServerButton IHasDirectory="{Binding}"
-                                         Margin="5, 5, 0, 0" />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
-</ScrollViewer>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Background="{TemplateBinding Background}"
+                                Height="30">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="false"
+                                          VerticalAlignment="Center"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          Margin="5" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="true">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="{StaticResource -InputHover}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="{StaticResource -Input}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                            <ColorAnimation To="{StaticResource -FontColor}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused"
+                                     Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="White"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="{StaticResource -Input}"
+                                                            Duration="0:0:0.1"
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Grid.Resources>
+    
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="48" />
+    </Grid.RowDefinitions>
+
+    <ScrollViewer Grid.Row="0"
+                  Margin="0, 0, 5, 5">
+        <StackPanel Margin="16, 16, 0, 16"
+                    x:Name="items">
+            <TextBlock Foreground="White"
+                       FontSize="11"
+                       FontWeight="Bold"
+                       Text="NAME"
+                       Margin="0, 0, 0, 3" />
+
+            <uielements:ServerNameTextBox Margin="0, 0, 0, 16" 
+                                          Style="{StaticResource BlackTextBox}"
+                                          x:Name="ServerName" />
+        </StackPanel>
+    </ScrollViewer>
+
+    <Grid Grid.Row="1"
+          Background="{StaticResource Gray}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="146" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="146" />
+        </Grid.ColumnDefinitions>
+
+        <Button Click="OnBackClick"
+                Width="132"
+                Height="31"
+                Margin="7, 0"
+                Style="{StaticResource GrayButton}"
+                HorizontalAlignment="Left"
+                Grid.Column="0"
+                Content="Back" />
+
+        <Button Click="OnAddClick"
+                Width="132"
+                Height="31"
+                Margin="7, 0"
+                HorizontalAlignment="Right"
+                Style="{StaticResource GreenButton}"
+                Grid.Column="2"
+                Content="Add" />
+    </Grid>
+</Grid>

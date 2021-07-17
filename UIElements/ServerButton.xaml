@@ -80,10 +80,31 @@
                    TextAlignment="Center" />
     </Button>
 
+    <TextBlock x:Name="InstallComment"
+               Visibility="Collapsed"
+               FontSize="12"
+               FontWeight="SemiBold"
+               Canvas.Bottom="20"
+               Height="30"
+               Canvas.Left="5"
+               Width="190"
+               TextAlignment="Center" 
+               Foreground="{StaticResource FontColor}" />
+    <ProgressBar x:Name="InstallProgress"
+                 Visibility="Collapsed"
+                 Width="190"
+                 Height="25"
+                 Canvas.Bottom="5"
+                 Canvas.Left="5"
+                 Foreground="{StaticResource Green}"
+                 Background="{StaticResource Gray}"
+                 BorderThickness="0">
+    </ProgressBar>
+
     <local:StartStopButton Grid.Row="2"
                            IServer="{Binding IHasDirectory, RelativeSource={RelativeSource AncestorType=Canvas}}"
                            x:Name="StartStopButton"
-                           Visibility="hidden"
+                           Visibility="Collapsed"
                            Width="190"
                            Height="25"
                            Canvas.Bottom="5"

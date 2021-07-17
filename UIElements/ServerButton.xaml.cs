@@ -1,5 +1,5 @@
 ﻿using Server_Manager.Views;
-using ServerManagerFramework;
+using ServerManagerFramework.Servers;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -50,7 +50,40 @@ namespace Server_Manager.UIElements
                 {
                     StartStopButton.Visibility = Visibility.Visible;
                 }
+
+                if (IHasDirectory is InstallingServer installingServer)
+                {
+                    IsEnabled = false;
+                    InstallComment.Visibility = Visibility.Visible;
+
+                    TextChanged(this, installingServer.Text);
+                    PercentageChanged(this, installingServer.Percentage);
+
+                    installingServer.TextChanged += TextChanged;
+                    installingServer.PercentageChanged += PercentageChanged;
+                }
             };
+        }
+
+        private void TextChanged(object sender, string text)
+        {
+            InstallComment.Text = text;
+        }
+
+        private void PercentageChanged(object sender, double percentage)
+        {
+            if (percentage < 0)
+            {
+                InstallProgress.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            if (InstallProgress.Visibility != Visibility.Visible)
+            {
+                InstallProgress.Visibility = Visibility.Visible;
+            }
+
+            InstallProgress.Value = percentage;
         }
 
         private void Click(object sender, RoutedEventArgs e)

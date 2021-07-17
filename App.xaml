@@ -6,6 +6,22 @@
              xmlns:smr="clr-namespace:ServerManagerFramework;assembly=ServerManagerFramework"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="/ServerManagerFramework;component/SMR.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/ServerManagerFramework;component/SMR.xaml" />
+
+                <ResourceDictionary>
+                    <Style TargetType="ToolTip"
+                           BasedOn="{StaticResource {x:Type ToolTip}}">
+                        <Setter Property="Background"
+                                Value="{StaticResource Brightness1}" />
+                        <Setter Property="Foreground"
+                                Value="{StaticResource FontColor}" />
+                        <Setter Property="BorderThickness"
+                                Value="0" />
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

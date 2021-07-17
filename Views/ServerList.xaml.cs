@@ -1,8 +1,6 @@
 ﻿using Server_Manager.Scripts;
 using Server_Manager.Scripts.Initialization;
-using ServerManagerFramework;
 using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,18 +11,22 @@ namespace Server_Manager.Views
     /// </summary>
     public partial class ServerList : ScrollViewer, IHasTopMenuItems
     {
-        public UIElement[] Items { get; } = new UIElement[1]
+        public UIElement[] Items { get; } = new UIElement[3]
         {
             new ComboBox()
             {
                 Width = 150,
                 Margin = new Thickness(9),
                 SelectedIndex = 0
-            }//,
-            //new Button()
-            //{
-            //    Width = 45
-            //}
+            },
+            new Button()
+            {
+                Width = 45
+            },
+            new Button()
+            {
+                Width = 45
+            }
         };
 
 
@@ -40,25 +42,27 @@ namespace Server_Manager.Views
             comboBox.SelectionChanged += ComboBoxSelected;
             comboBox.ItemsSource = Initializer.ComboBoxItems;
 
-            //Button button = Items[1] as Button;
+            Button addServerButton = Items[1] as Button;
 
-            //button.Style = Resources["AddServerButton"] as Style;
-            //button.Click += AddServer;
+            addServerButton.Style = Resources["AddServerButton"] as Style;
+            addServerButton.Click += AddServer;
 
-            ServersUI.ItemsSource = Initializer.HasDirectoryList.ServerProcesses;
+            Button reloadButton = Items[2] as Button;
+
+            reloadButton.Style = Resources["ReloadButton"] as Style;
+            reloadButton.Click += Reload;
+
+            ServersUI.ItemsSource = Initializer.HasDirectoryList.Servers;
         }
 
         public void AddServer(object sender, RoutedEventArgs args)
         {
-            Guid g = Guid.NewGuid();
-            string GuidString = Convert.ToBase64String(g.ToByteArray());
-            GuidString = GuidString.Replace("=", "-");
-            GuidString = GuidString.Replace("+", "_");
+            _ = MainWindow.GetMainWindow.ChangeCurrentControl(new AddServer());
+        }
 
-            string serverPath = Path.Combine(GlobalConfig.ServersPath, GuidString);
-            Directory.CreateDirectory(serverPath);
-
-            _ = Initializer.InitializeServer(serverPath);
+        public void Reload(object sender, RoutedEventArgs args)
+        {
+            _ = Initializer.InitializeServers();
         }
 
         private void ComboBoxSelected(object sender, RoutedEventArgs e)
@@ -69,14 +73,7 @@ namespace Server_Manager.Views
 
             Type serverType = serverNameType.Type;
 
-            if (serverType == null)
-            {
-                Initializer.HasDirectoryList.ResetFilter();
-            }
-            else
-            {
-                Initializer.HasDirectoryList.Filter(serverType);
-            }
+            Initializer.HasDirectoryList.Filter(serverType);
         }
     }
 }

@@ -1,6 +1,10 @@
 ﻿using Microsoft.Win32;
 using Server_Manager.Views;
 using ServerManagerFramework;
+using ServerManagerFramework.Addons;
+using ServerManagerFramework.Config;
+using ServerManagerFramework.Installing;
+using ServerManagerFramework.Servers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,17 +26,39 @@ namespace Server_Manager.Scripts.Initialization
 
         private static readonly List<Assembly> addons = new();
 
-        private const string CONFIGFILENAMES = "server-manager.prefs";
+        public const string CONFIGFILENAME = "server-manager.config";
+        public const string DONTLOADFILENAME = "dont-load.lock";
+
         private static string DefaultConfig => "type=" + nameof(HasDirectory);
 
-        public static HasDirectoryList HasDirectoryList { get; } = new();
+        public static HasDirectoryList HasDirectoryList { get; private set; } = new();
         public static ObservableCollection<NameTypePair> ComboBoxItems { get; } = new();
+        public static Dictionary<string, Installable> Installables { get; private set; }
 
         public static void Initialize()
         {
             FindOrCreateFoldersAndFiles();
 
+#pragma warning disable 1998
+            static async IAsyncEnumerable<Progress> installDefaultServer(string path)
+            {
+                yield return new Progress();
+            }
+#pragma warning restore
+
+            Installable installable = new(Array.Empty<UIElement>(), typeof(HasDirectory), installDefaultServer);
+
+            ServerManagerFramework.Installing.Installables.SetInstallable("Default", installable);
+
             LoadAllAddons();
+
+            LoadInstallables();
+        }
+
+        private static void LoadInstallables()
+        {
+            FieldInfo installablesField = typeof(Installables).GetField("installables", BindingFlags.NonPublic | BindingFlags.Static);
+            Installables = installablesField.GetValue(null) as Dictionary<string, Installable>;
         }
 
         private static void FindOrCreateFoldersAndFiles()
@@ -86,6 +112,7 @@ namespace Server_Manager.Scripts.Initialization
             List<ErrorItem> errorList = new();
             Style buttonStyle = Application.Current.Resources["GreenButton"] as Style;
             Style downloadingButtonStyle = Application.Current.Resources["GrayButton"] as Style;
+            List<MethodInfo> methodsToExecute = new();
 
             foreach (Assembly addon in allAddons)
             {
@@ -300,18 +327,58 @@ namespace Server_Manager.Scripts.Initialization
                 {
                     addons.Add(addon);
                 }
+
+                Type entryPoint = (from type
+                                  in addon.GetTypes()
+                                   where type.IsAbstract && type.IsSealed && type.Name == "EntryPoint"
+                                   select type).FirstOrDefault();
+
+                if (entryPoint == null)
+                {
+                    continue;
+                }
+
+                MethodInfo addonLoaded = entryPoint.GetMethod("AddonLoaded");
+                if (addonLoaded != null
+                    && addonLoaded.IsStatic
+                    && addonLoaded.GetParameters().Length == 0
+                    && !addonLoaded.IsGenericMethod
+                    && !addonLoaded.IsAbstract)
+                {
+                    addonLoaded.Invoke(null, null);
+                }
+
+                MethodInfo addonsLoaded = entryPoint.GetMethod("AddonsLoaded");
+                if (addonsLoaded != null
+                    && addonsLoaded.IsStatic
+                    && addonsLoaded.GetParameters().Length == 0
+                    && !addonsLoaded.IsGenericMethod
+                    && !addonsLoaded.IsAbstract)
+                {
+                    methodsToExecute.Add(addonsLoaded);
+                }
             }
 
             Trace.WriteLine("AddonsLoader: Loaded " + addons.Count + " addons.");
 
+            void Finish()
+            {
+                foreach (MethodInfo method in methodsToExecute)
+                {
+                    method.Invoke(null, null);
+                }
+
+                AddonsLoaded();
+            }
+
             if (errorList.Count == 0)
             {
-                AddonsLoaded();
+                Finish();
                 return;
             }
             else
             {
-                MainWindow.GetMainWindow.ShowErrorMessage(new ErrorMessage()
+                _ = MainWindow.GetMainWindow.ShowErrorMessage(new ErrorMessage()
                 {
                     Text = "There were errors while loading some addons",
                     ErrorItems = errorList,
@@ -323,7 +390,7 @@ namespace Server_Manager.Scripts.Initialization
                     GrayButton = new Tuple<string, RoutedEventHandler>("Run anyways", delegate
                     {
                         MainWindow.GetMainWindow.HideErrorMessage();
-                        AddonsLoaded();
+                        Finish();
                     }),
                     RedButton = new Tuple<string, RoutedEventHandler>("Quit", delegate
                     {
@@ -384,7 +451,7 @@ namespace Server_Manager.Scripts.Initialization
         public static async Task InitializeServer(string path)
         {
             //Load Config File
-            string configFilePath = Path.Combine(path, CONFIGFILENAMES);
+            string configFilePath = Path.Combine(path, CONFIGFILENAME);
 
             if (!File.Exists(configFilePath))
             {
@@ -393,7 +460,6 @@ namespace Server_Manager.Scripts.Initialization
 
             string configFileContent = await File.ReadAllTextAsync(configFilePath);
             Config config = new(configFileContent);
-
 
             //Initialize Server
             IHasDirectory hasDirectory = new HasDirectory();
@@ -408,8 +474,6 @@ namespace Server_Manager.Scripts.Initialization
 
             if (serverTypeName != nameof(HasDirectory))
             {
-                bool typeFound = false;
-
                 foreach (Assembly addon in addons)
                 {
                     Type serverType = addon.GetType(serverTypeName);
@@ -434,41 +498,98 @@ namespace Server_Manager.Scripts.Initialization
 
                         hasDirectory = serverTypeConstructor.Invoke(Array.Empty<object>()) as IHasDirectory;
 
-                        typeFound = true;
-
                         break;
                     }
-                }
-
-                if (!typeFound)
-                {
-                    Trace.WriteLine("No type for " + Path.GetFileName(path) + " found");
-
-                    hasDirectory = new HasDirectory();
                 }
             }
 
             PropertyInfo directoryProperty = typeof(IHasDirectory).GetProperty(nameof(IHasDirectory.Directory));
             directoryProperty.SetValue(hasDirectory, path);
 
+            PropertyInfo configProperty = typeof(IHasDirectory).GetProperty(nameof(IHasDirectory.Config));
+            configProperty.SetValue(hasDirectory, config);
+
             HasDirectoryList.AddServer(hasDirectory);
+
+            MethodInfo initializedMethod = typeof(IHasDirectory).GetMethod("Initialized");
+            initializedMethod.Invoke(hasDirectory, null);
         }
 
-        private static async Task InitializeServers()
+        public static async Task InitializeServers()
         {
+            HasDirectoryList.Clear();
+
             //Initialize Servers
             List<Task> initializeServerTasks = new();
             foreach (string path in Directory.EnumerateDirectories(GlobalConfig.ServersPath))
             {
+                string filePath = Path.Combine(path, DONTLOADFILENAME);
+
+                if (File.Exists(filePath))
+                {
+                    continue;
+                }
+
                 initializeServerTasks.Add(InitializeServer(path));
             }
             await Task.WhenAll(initializeServerTasks);
         }
+
+        public static async Task CreateServer(string path, Type serverType, InstallAction installAction)
+        {
+            Directory.CreateDirectory(path);
+
+            string filePath = Path.Combine(path, DONTLOADFILENAME);
+            Stream stream = File.Create(filePath);
+
+            //Load Config File
+            string configFilePath = Path.Combine(path, CONFIGFILENAME);
+
+            Config config = new("type=" + serverType.FullName);
+            await File.WriteAllTextAsync(configFilePath, config.ToString());
+
+            //Initialize Server
+            ConstructorInfo serverTypeConstructor = serverType.GetConstructor(Array.Empty<Type>());
+
+            IHasDirectory hasDirectory = serverTypeConstructor.Invoke(Array.Empty<object>()) as IHasDirectory;
+
+            InstallingServer installingServer = new()
+            {
+                Directory = path,
+                Config = config,
+                NewServer = hasDirectory
+            };
+
+            HasDirectoryList.AddServer(installingServer);
+
+            await foreach (Progress progress in installAction(path))
+            {
+                installingServer.Text = progress.Text;
+                installingServer.Percentage = progress.Percentage;
+            }
+
+            installingServer.InvokeInstalled();
+
+            PropertyInfo directoryProperty = typeof(IHasDirectory).GetProperty(nameof(IHasDirectory.Directory));
+            directoryProperty.SetValue(hasDirectory, path);
+
+            PropertyInfo configProperty = typeof(IHasDirectory).GetProperty(nameof(IHasDirectory.Config));
+            configProperty.SetValue(hasDirectory, config);
+
+            HasDirectoryList.AddServer(hasDirectory);
+
+            MethodInfo initializedMethod = typeof(IHasDirectory).GetMethod("Initialized");
+            initializedMethod.Invoke(hasDirectory, null);
+
+            await stream.DisposeAsync();
+            File.Delete(filePath);
+        }
+
         private static void InitializeComboBox()
         {
             Trace.WriteLine($"ComboBoxInitializer: Initializing combobox.");
 
-            ComboBoxItems.Add(new NameTypePair("All", null));
+            ComboBoxItems.Add(new NameTypePair("All", typeof(IHasDirectory)));
             ComboBoxItems.Add(new NameTypePair("Unknown", typeof(HasDirectory)));
 
             foreach (Assembly addon in addons)

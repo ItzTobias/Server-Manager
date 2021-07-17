@@ -1,29 +1,33 @@
 ﻿using Server_Manager.Scripts;
 using ServerManagerFramework;
+using ServerManagerFramework.Config;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 
 namespace Server_Manager.Views
 {
     /// <summary>
     /// Interaction logic for Settings.xaml
     /// </summary>
-    public partial class Settings : Grid, IHasTopMenuItems
+    public partial class Settings : Grid, IHasTopMenuItems, INotifyPropertyChanged
     {
         public UIElement[] Items { get; } = new UIElement[1]
         {
             new TextBlock()
             {
-                Style = Application.Current.Resources["Header"] as Style,
+                Style = System.Windows.Application.Current.Resources["Header"] as Style,
                 Foreground = SMR.WhiteBrush,
                 Text = "Settings"
             }
         };
 
-        public static string ServersPath
+        public string ServersPath
         {
-            get => GlobalConfig.GetValue("serverspath");
+            get => GlobalConfig.ServersPath;
             set
             {
                 if (!Directory.Exists(value))
@@ -32,11 +36,13 @@ namespace Server_Manager.Views
                 }
 
                 GlobalConfig.SetValue("serverspath", value);
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ServersPath)));
             }
         }
-        public static string BackupsPath
+        public string BackupsPath
         {
-            get => GlobalConfig.GetValue("backupspath");
+            get => GlobalConfig.BackupsPath;
             set
             {
                 if (!Directory.Exists(value))
@@ -45,6 +51,8 @@ namespace Server_Manager.Views
                 }
 
                 GlobalConfig.SetValue("backupspath", value);
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BackupsPath)));
             }
         }
 
@@ -52,6 +60,8 @@ namespace Server_Manager.Views
         {
             InitializeComponent();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnSaveClick(object sender, RoutedEventArgs e)
         {
@@ -61,6 +71,33 @@ namespace Server_Manager.Views
         private void OnBackClick(object sender, RoutedEventArgs e)
         {
             _ = MainWindow.GetMainWindow.ChangeCurrentControl(new ServerList());
+        }
+
+        private void PickServersFolder(object sender, RoutedEventArgs e)
+        {
+            using FolderBrowserDialog fileBrowser = new();
+            DialogResult result = fileBrowser.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                ServersPath = fileBrowser.SelectedPath;
+            }
+        }
+
+        private void PickBackupsFolder(object sender, RoutedEventArgs e)
+        {
+            using FolderBrowserDialog fileBrowser = new();
+            DialogResult result = fileBrowser.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                BackupsPath = fileBrowser.SelectedPath;
+            }
+        }
+
+        private void OpenServerManagerFolder(object sender, RoutedEventArgs e)
+        {
+            Process.Start("explorer.exe", '"' + GlobalConfig.ManagerPath + '"');
         }
     }
 }

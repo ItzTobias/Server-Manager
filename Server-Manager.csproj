@@ -15,17 +15,11 @@
     <RepositoryType>GitHub</RepositoryType>
     <PackageIcon>alphaLogo.png</PackageIcon>
     <PackageIconUrl />
-    <ApplicationIcon>alphaLogo.ico</ApplicationIcon>
+    <ApplicationIcon>server-manager.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <NoWarn>1701;1702</NoWarn>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="_old\**" />
-    <EmbeddedResource Remove="_old\**" />
-    <None Remove="_old\**" />
-    <Page Remove="_old\**" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="D:\Pictures\alphaLogo.png">
       <Pack>True</Pack>
@@ -74,6 +68,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="_old\" />
+    <Compile Update="Scripts\InstallingServer.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
   </ItemGroup>
 </Project>

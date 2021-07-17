@@ -1,67 +1,85 @@
-﻿using ServerManagerFramework;
+﻿using ServerManagerFramework.Servers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows;
 
 namespace Server_Manager.Scripts.Initialization
 {
-    //ComboBoxButtonAttribute in Initializer.InitializeComboBox()
     public class HasDirectoryList
     {
         private Type currentFilter = typeof(IHasDirectory);
-        private readonly List<IHasDirectory> serverProcesses = new();
-        public ObservableCollection<IHasDirectory> ServerProcesses { get; private set; } = new();
+        private readonly List<IHasDirectory> servers = new();
+        private readonly List<InstallingServer> installingServers = new();
+        public ObservableCollection<IHasDirectory> Servers { get; private set; } = new();
+
+        public HasDirectoryList()
+        {
+            Application.Current.Exit += delegate
+            {
+                foreach (IHasDirectory server in servers)
+                {
+                    string path = Path.Combine(server.Directory, Initializer.CONFIGFILENAME);
+
+                    _ = File.WriteAllTextAsync(path, server.Config.ToString());
+                }
+            };
+        }
 
         public void AddServer(IHasDirectory server)
         {
-            serverProcesses.Add(server);
+            if (server is InstallingServer installingServer)
+            {
+                installingServers.Add(installingServer);
+
+                if (installingServer.NewServer.GetType().IsAssignableTo(currentFilter))
+                {
+                    Servers.Add(installingServer);
+                }
+
+                installingServer.Installed += delegate
+                {
+                    installingServers.Remove(installingServer);
+                    Servers.Remove(server);
+                };
+
+                return;
+            }
+
+            servers.Add(server);
 
             if (server.GetType().IsAssignableTo(currentFilter))
             {
-                ServerProcesses.Add(server);
+                Servers.Add(server);
             }
         }
 
         public void RemoveServer(IHasDirectory server)
         {
-            serverProcesses.Remove(server);
+            servers.Remove(server);
 
             if (currentFilter.Equals(server.GetType()))
             {
-                ServerProcesses.Remove(server);
+                Servers.Remove(server);
             }
-        }
-
-        public bool Contains(IHasDirectory server)
-        {
-            return serverProcesses.Contains(server);
-        }
-
-        public void ResetFilter()
-        {
-            ServerProcesses.Clear();
-            serverProcesses.ForEach(ServerProcesses.Add);
-            currentFilter = typeof(IHasDirectory);
-        }
-
-        public void Filter<T>()
-        {
-            List<IHasDirectory> filteredProcesses = serverProcesses.FindAll(t => t is T);
-
-            ServerProcesses.Clear();
-            filteredProcesses.ForEach(ServerProcesses.Add);
-
-            currentFilter = typeof(T);
         }
 
         public void Filter(Type serverType)
         {
-            List<IHasDirectory> filteredProcesses = serverProcesses.FindAll(t => t.GetType() == serverType);
+            List<IHasDirectory> filteredProcesses = servers.FindAll(t => t.GetType().IsAssignableTo(serverType));
+            filteredProcesses.AddRange(installingServers.FindAll(t => t.NewServer.GetType().IsAssignableTo(serverType)));
 
-            ServerProcesses.Clear();
-            filteredProcesses.ForEach(ServerProcesses.Add);
+            Servers.Clear();
+            filteredProcesses.ForEach(Servers.Add);
 
             currentFilter = serverType;
+        }
+
+        public void Clear()
+        {
+            servers.Clear();
+            Filter(currentFilter);
         }
     }
 }
